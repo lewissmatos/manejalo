@@ -1,0 +1,52 @@
+{
+	"HomePage": {
+		"slogan": "Stay on budget without the stress.",
+		"features": {
+			"title": "What You Can Do with Manejalo!",
+			"monthlyBudgets": {
+				"title": "Create Monthly Budgets",
+				"description": "Set limits for different spending categories every month.",
+				"tooltip": "Plan your month by assigning a maximum amount to each category, like food, transport, or entertainment."
+			},
+			"visualizeSpending": {
+				"title": "Visualize Your Spending",
+				"description": "Get clear charts and summaries to see where your money goes.",
+				"tooltip": "Track spending trends with visual breakdowns to understand which areas consume most of your budget."
+			},
+			"spendingHistory": {
+				"title": "Access Spending History",
+				"description": "View detailed records filtered by month and category.",
+				"tooltip": "Go back in time and review what you spent, when, and in which category — all neatly organized."
+			},
+			"stayWithinLimits": {
+				"title": "Stay Within Your Limits",
+				"description": "Know instantly if you’re overspending or staying on track.",
+				"tooltip": "Get alerts or visual cues when you approach or exceed your planned budget for any category."
+			},
+			"categorizeEverything": {
+				"title": "Categorize Everything",
+				"description": "Organize your financial life with fully customizable categories.",
+				"tooltip": "Create, edit, or delete categories to match how you manage your personal expenses — flexible and personal."
+			},
+			"moreComingSoon": {
+				"title": "More Features Coming Soon!",
+				"description": "We’re working on new features to enhance your experience.",
+				"tooltip": "Expect frequent updates with tools to improve how you plan, spend, and save your money."
+			}
+		},
+		"authState": {
+			"loggedIn": "Continue as",
+			"switchAccount": "Switch Account",
+			"loginWithGoogle": "Login with Google"
+		}
+	},
+	"LanguageSelector": {
+		"label": "Language"
+	},
+	"ThemeSelector": {
+		"label": "Theme",
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System"
+	}
+}

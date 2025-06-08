@@ -1,0 +1,26 @@
+[
+	{
+		"icon": "🗓️",
+		"key": "monthlyBudgets"
+	},
+	{
+		"icon": "📊",
+		"key": "visualizeSpending"
+	},
+	{
+		"icon": "📚",
+		"key": "spendingHistory"
+	},
+	{
+		"icon": "✅",
+		"key": "stayWithinLimits"
+	},
+	{
+		"icon": "🏷️",
+		"key": "categorizeEverything"
+	},
+	{
+		"icon": "🔜",
+		"key": "moreComingSoon"
+	}
+]

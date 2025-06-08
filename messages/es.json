@@ -1,0 +1,52 @@
+{
+	"HomePage": {
+		"slogan": "Mantén tu presupuesto sin estrés.",
+		"features": {
+			"title": "Lo que puedes hacer con Manejalo!",
+			"monthlyBudgets": {
+				"title": "Crea presupuestos mensuales",
+				"description": "Establece límites para diferentes categorías de gastos cada mes.",
+				"tooltip": "Planifica tu mes asignando un monto máximo a cada categoría como comida, transporte o entretenimiento."
+			},
+			"visualizeSpending": {
+				"title": "Visualiza tus gastos",
+				"description": "Obtén gráficos y resúmenes claros para ver en qué se va tu dinero.",
+				"tooltip": "Sigue patrones de gasto con gráficos que te ayudan a entender en qué áreas estás invirtiendo más."
+			},
+			"spendingHistory": {
+				"title": "Accede al historial de gastos",
+				"description": "Consulta registros detallados filtrados por mes y categoría.",
+				"tooltip": "Revisa lo que gastaste, cuándo y en qué categoría, todo bien organizado para fácil consulta."
+			},
+			"stayWithinLimits": {
+				"title": "Mantente dentro de tus límites",
+				"description": "Sabrás al instante si estás gastando de más o si vas bien.",
+				"tooltip": "Recibe alertas o señales visuales cuando te acerques o superes tu presupuesto en alguna categoría."
+			},
+			"categorizeEverything": {
+				"title": "Categoriza todo",
+				"description": "Organiza tu vida financiera con categorías totalmente personalizables.",
+				"tooltip": "Crea, edita o elimina categorías para que se adapten a cómo tú manejas tus finanzas personales."
+			},
+			"moreComingSoon": {
+				"title": "¡Más funciones próximamente!",
+				"description": "Estamos trabajando en nuevas características para mejorar tu experiencia.",
+				"tooltip": "Prepárate para actualizaciones con herramientas que te ayudarán a planificar, gastar y ahorrar mejor."
+			}
+		},
+		"authState": {
+			"loggedIn": "Continuar como",
+			"switchAccount": "Cambiar cuenta",
+			"loginWithGoogle": "Iniciar sesión con Google"
+		}
+	},
+	"LanguageSelector": {
+		"label": "Idioma"
+	},
+	"ThemeSelector": {
+		"label": "Tema",
+		"light": "Claro",
+		"dark": "Oscuro",
+		"system": "Sistema"
+	}
+}
