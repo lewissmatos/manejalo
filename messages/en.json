@@ -37,7 +37,9 @@
 		"authState": {
 			"loggedIn": "Continue as",
 			"switchAccount": "Switch Account",
-			"loginWithGoogle": "Login with Google"
+			"signUp": "Sign Up",
+			"signUpAlt": "Or sign up by clicking here",
+			"switchAccountAlt": "Or switch accounts by clicking here"
 		}
 	},
 	"LanguageSelector": {
@@ -48,5 +50,43 @@
 		"light": "Light",
 		"dark": "Dark",
 		"system": "System"
+	},
+	"LoginDialog": {
+		"triggerText": "Log In",
+		"title": "Log In to Manejalo!",
+		"subtitle": "Enter your credentials to continue.",
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"loginButton": "Log In"
+	},
+	"SignUpDialog": {
+		"triggerText": "Sign Up",
+		"title": "Create Your Manejalo Account",
+		"subtitle": "Join us to start managing your budget.",
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"confirmPasswordLabel": "Confirm Password",
+		"signUpButton": "Sign Up",
+		"successMessage": "Account created successfully! You can now log in.",
+		"errorMessage": "There was an error creating your account. Please try again."
+	},
+	"common": {
+		"loading": "Loading...",
+		"error": "An error occurred",
+		"ok": "OK",
+		"cancel": "Cancel",
+		"close": "Close",
+		"username": "Username",
+		"password": "Password",
+		"submit": "Submit",
+		"email": "Email",
+		"confirmPassword": "Confirm Password",
+		"birthdate": "Birthdate",
+		"fullName": "Full Name",
+		"phoneNumber": "Phone Number"
+	},
+	"ui": {
+		"showPassword": "Show Password",
+		"hidePassword": "Hide Password"
 	}
 }

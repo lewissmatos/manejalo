@@ -9,8 +9,12 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import GoogleIcon from "@/components/icons/google-icon";
 import { ArrowRight } from "lucide-react";
+import * as React from "react";
+const LoginDialog = React.lazy(() => import("@/components/auth/login-dialog"));
+const SignUpDialog = React.lazy(
+	() => import("@/components/auth/sign-up-dialog")
+);
 export default async function HomePage() {
 	const t = await getTranslations("HomePage");
 	const isAuthenticated = false; // Replace with actual authentication logic
@@ -72,15 +76,17 @@ const AuthenticatedBottomContent = async () => {
 	const t = await getTranslations("HomePage");
 	return (
 		<div className="flex flex-col items-center">
-			<Button variant="outline" size="lg">
+			<Button variant="default" size="lg">
 				{`${t("authState.loggedIn")} NAME`}{" "}
 				{/* Replace NAME with actual user name */}
 				<ArrowRight />
 			</Button>
-			<Button variant="outline" size="lg">
-				<GoogleIcon />
-				{t("authState.loginWithGoogle")}
-			</Button>
+			<span>
+				{t("authState.loggedInDescription")}:
+				<Button variant="link" size="lg" className="p-1">
+					{t("authState.switchAccountAlt")}
+				</Button>
+			</span>
 		</div>
 	);
 };
@@ -89,10 +95,11 @@ const UnauthenticatedBottomContent = async () => {
 	const t = await getTranslations("HomePage");
 	return (
 		<div className="flex flex-col items-center gap-4">
-			<Button variant="outline" size="lg">
-				<GoogleIcon />
-				{t("authState.loginWithGoogle")}
-			</Button>
+			<LoginDialog />
+			<span>
+				{t("authState.signUpAlt")}:
+				<SignUpDialog />
+			</span>
 		</div>
 	);
 };

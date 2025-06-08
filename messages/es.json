@@ -37,7 +37,9 @@
 		"authState": {
 			"loggedIn": "Continuar como",
 			"switchAccount": "Cambiar cuenta",
-			"loginWithGoogle": "Iniciar sesión con Google"
+			"signUp": "Registrarse",
+			"signUpAlt": "O regístrate clicando aquí",
+			"switchAccountAlt": "O cambia de cuenta clicando aquí"
 		}
 	},
 	"LanguageSelector": {
@@ -48,5 +50,43 @@
 		"light": "Claro",
 		"dark": "Oscuro",
 		"system": "Sistema"
+	},
+	"LoginDialog": {
+		"triggerText": "Iniciar sesión",
+		"title": "Iniciar sesión en Manejalo!",
+		"subtitle": "Ingresa tus credenciales para continuar.",
+		"emailLabel": "Correo electrónico",
+		"passwordLabel": "Contraseña",
+		"loginButton": "Acceder"
+	},
+	"SignUpDialog": {
+		"triggerText": "Registrarse",
+		"title": "Regístrate en Manejalo!",
+		"subtitle": "Crea una cuenta para comenzar a gestionar tus finanzas.",
+		"emailLabel": "Correo electrónico",
+		"passwordLabel": "Contraseña",
+		"confirmPasswordLabel": "Confirmar contraseña",
+		"registerButton": "Registrarse",
+		"successMessage": "¡Registro exitoso! Ahora puedes iniciar sesión.",
+		"errorMessage": "Error al crear la cuenta. Por favor, inténtalo de nuevo."
+	},
+	"common": {
+		"loading": "Cargando...",
+		"error": "Ocurrió un error",
+		"ok": "Aceptar",
+		"cancel": "Cancelar",
+		"close": "Cerrar",
+		"username": "Nombre de usuario",
+		"password": "Contraseña",
+		"submit": "Enviar",
+		"email": "Correo electrónico",
+		"confirmPassword": "Confirmar contraseña",
+		"birthdate": "Fecha de nacimiento",
+		"fullName": "Nombre completo",
+		"phoneNumber": "Número de teléfono"
+	},
+	"ui": {
+		"showPassword": "Mostrar contraseña",
+		"hidePassword": "Ocultar contraseña"
 	}
 }

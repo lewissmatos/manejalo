@@ -5,6 +5,8 @@ import { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme/theme-providder";
+import { Toaster } from "@/components/ui/sonner";
+
 const font = Outfit({
 	variable: "--font-sans",
 	subsets: ["latin"],
@@ -39,6 +41,7 @@ export default async function LocaleLayout({
 					// disableTransitionOnChange
 				>
 					<NextIntlClientProvider>{children}</NextIntlClientProvider>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>
