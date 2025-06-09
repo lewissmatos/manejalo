@@ -57,7 +57,12 @@
 		"subtitle": "Ingresa tus credenciales para continuar.",
 		"emailLabel": "Correo electrónico",
 		"passwordLabel": "Contraseña",
-		"loginButton": "Acceder"
+		"loginButton": "Acceder",
+		"messages": {
+			"defaultSuccessMessage": "¡Inicio de sesión exitoso! Bienvenido de nuevo.",
+			"defaultErrorMessage": "Error al iniciar sesión. Por favor, inténtalo de nuevo.",
+			"wrongCredentials": "El correo electrónico o la contraseña son incorrectos. Por favor, inténtalo de nuevo."
+		}
 	},
 	"SignUpDialog": {
 		"triggerText": "Registrarse",
@@ -67,8 +72,11 @@
 		"passwordLabel": "Contraseña",
 		"confirmPasswordLabel": "Confirmar contraseña",
 		"registerButton": "Registrarse",
-		"successMessage": "¡Registro exitoso! Ahora puedes iniciar sesión.",
-		"errorMessage": "Error al crear la cuenta. Por favor, inténtalo de nuevo."
+		"messages": {
+			"defaultSuccessMessage": "¡Registro exitoso! Ahora puedes iniciar sesión.",
+			"defaultErrorMessage": "Error al crear la cuenta. Por favor, inténtalo de nuevo.",
+			"usernameOrEmailExists": "El nombre de usuario o correo electrónico ya está en uso. Por favor, elige otro."
+		}
 	},
 	"common": {
 		"loading": "Cargando...",

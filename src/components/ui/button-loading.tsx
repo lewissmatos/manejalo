@@ -10,7 +10,7 @@ export function ButtonLoading({
 	isLoading?: boolean;
 } & React.ComponentProps<typeof Button>) {
 	return (
-		<Button disabled {...rest}>
+		<Button {...rest} disabled={rest.disabled || isLoading}>
 			{children}
 			{isLoading ? <Loader2Icon className="animate-spin" /> : null}
 		</Button>

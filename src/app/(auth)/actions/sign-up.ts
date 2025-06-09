@@ -2,11 +2,21 @@
 
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { Inputs as SignUpPayload } from "@/components/auth/sign-up-dialog";
-export const signUp = async (formData: SignUpPayload) => {
-	const { fullName, username, email, password, birthdate, phoneNumber } =
-		formData;
+import { getTranslations } from "next-intl/server";
+export const signUp = async (payload: SignUpPayload) => {
+	const t = await getTranslations("SignUpDialog");
+	const { fullName, email, password, birthdate, phoneNumber } = payload;
 	const supabase = await createServerSupabaseClient();
 	try {
+		const profileExists = await supabase
+			.from("profiles")
+			.select("id")
+			.eq("email", email)
+			.single();
+
+		if (profileExists.data)
+			throw new Error(t("messages.usernameOrEmailExists"));
+
 		const { error: signUpError, data: signUpData } = await supabase.auth.signUp(
 			{
 				email,
@@ -14,37 +24,32 @@ export const signUp = async (formData: SignUpPayload) => {
 				options: {
 					data: {
 						full_name: fullName,
-						phone_number: phoneNumber,
+						phone: phoneNumber,
 					},
 				},
 			}
 		);
-		console.log(signUpData, signUpError);
-		if (signUpError || !signUpData?.user) throw signUpError;
+		if (signUpError || !signUpData?.user)
+			throw new Error(t("messages.defaultErrorMessage"));
+
 		const { error: profileError } = await supabase.from("profiles").insert({
 			user_id: signUpData.user!.id,
 			full_name: fullName,
-			username,
 			birthdate,
 			password,
-			phone_number: phoneNumber,
+			email,
+			phone_number: phoneNumber?.replaceAll(/[^0-9]/g, ""),
 		});
-		if (profileError) throw profileError;
+		if (profileError) throw t("messages.defaultErrorMessage");
 		return {
-			user: signUpData.user,
-			message: "Sign up successful",
-			status: "success",
-			error: null,
+			data: signUpData.user,
+			message: t("messages.defaultSuccessMessage"),
 			isSuccess: true,
 		};
 	} catch (error) {
-		console.error("Sign up error:", error);
 		return {
-			user: null,
-			profile: null,
-			message: "Sign up failed",
-			status: "error",
-			error: error instanceof Error ? error.message : "Unknown error",
+			data: null,
+			message: error instanceof Error ? error.message : "Unknown error",
 			isSuccess: false,
 		};
 	}

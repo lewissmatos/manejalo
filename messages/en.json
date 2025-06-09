@@ -57,7 +57,12 @@
 		"subtitle": "Enter your credentials to continue.",
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
-		"loginButton": "Log In"
+		"loginButton": "Log In",
+		"messages": {
+			"defaultSuccessMessage": "Logged in successfully! Welcome back.",
+			"defaultErrorMessage": "There was an error logging in. Please check your credentials and try again.",
+			"wrongCredentials": "Invalid email or password. Please try again."
+		}
 	},
 	"SignUpDialog": {
 		"triggerText": "Sign Up",
@@ -67,8 +72,11 @@
 		"passwordLabel": "Password",
 		"confirmPasswordLabel": "Confirm Password",
 		"signUpButton": "Sign Up",
-		"successMessage": "Account created successfully! You can now log in.",
-		"errorMessage": "There was an error creating your account. Please try again."
+		"messages": {
+			"defaultSuccessMessage": "Account created successfully! You can now log in.",
+			"defaultErrorMessage": "There was an error creating your account. Please try again.",
+			"usernameOrEmailExists": "The username or email is already in use. Please choose another."
+		}
 	},
 	"common": {
 		"loading": "Loading...",

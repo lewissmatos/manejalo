@@ -17,7 +17,7 @@ const SignUpDialog = React.lazy(
 );
 export default async function HomePage() {
 	const t = await getTranslations("HomePage");
-	const isAuthenticated = false; // Replace with actual authentication logic
+	const isAuthenticated = false;
 	return (
 		<div className="flex flex-col items-center min-h-screen p-4">
 			<section className="bg-secondary h-32 md:w-1/2 w-full flex justify-between items-start rounded-lg shadow-md p-4">
@@ -61,7 +61,7 @@ export default async function HomePage() {
 					</div>
 				</div>
 			</section>
-			<section className="py-8">
+			<section className="py-4">
 				{isAuthenticated ? (
 					<AuthenticatedBottomContent />
 				) : (

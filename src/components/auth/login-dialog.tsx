@@ -16,31 +16,59 @@ import { Input } from "../ui/input";
 import { useTranslations } from "next-intl";
 import { PasswordInput } from "../ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useDisclosure } from "@/hooks/useDisclosure";
+import { login } from "@/app/(auth)/actions/login";
+import { toast } from "sonner";
+import { ButtonLoading } from "../ui/button-loading";
 
-type Inputs = {
-	username: string;
+export type Inputs = {
+	email: string;
 	password: string;
 };
 const LoginDialog = () => {
 	const localT = useTranslations("LoginDialog");
 	const commonT = useTranslations("common");
+	const { isOpen, onClose, onOpenChange } = useDisclosure();
+
 	const {
 		register,
 		handleSubmit,
-		watch,
-		formState: { errors, isValid },
+
+		reset,
+		formState: { errors, isValid, isSubmitting },
 	} = useForm<Inputs>();
 
-	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+	const onSubmit: SubmitHandler<Inputs> = async (data) => {
+		try {
+			const res = await login({
+				...data,
+			} as Inputs);
+
+			console.log("res", res);
+			if (!res.isSuccess) {
+				throw new Error(res.message || localT("messages.defaultErrorMessage"));
+			}
+			toast(res.message);
+			handleCloseDialog();
+		} catch (err) {
+			console.log(err);
+			toast.error(err instanceof Error ? err.message : String(err));
+		}
+	};
+
+	const handleCloseDialog = () => {
+		reset();
+		onClose();
+	};
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
 				<Button variant="default" size="lg">
 					{localT("triggerText")}
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
 						<DialogTitle>{localT("title")}</DialogTitle>
@@ -48,29 +76,34 @@ const LoginDialog = () => {
 					</DialogHeader>
 					<div className="grid gap-4 mt-2">
 						<div className="grid gap-3">
-							<Label htmlFor="username">{commonT("username")}</Label>
+							<Label htmlFor="email">{commonT("email")}</Label>
 							<Input
-								id="username"
-								placeholder="@lewissmatos"
-								{...register("username", { required: true })}
+								type="email"
+								id="email"
+								{...register("email", { required: true })}
 							/>
 						</div>
 						<div className="grid gap-3">
 							<Label htmlFor="password">{commonT("password")}</Label>
 							<PasswordInput
 								id="password"
-								placeholder="********"
 								{...register("password", { required: true, minLength: 8 })}
 							/>
 						</div>
 					</div>
 					<DialogFooter className="mt-4">
 						<DialogClose asChild>
-							<Button variant="outline">{commonT("cancel")}</Button>
+							<Button variant="outline" onClick={handleCloseDialog}>
+								{commonT("cancel")}
+							</Button>
 						</DialogClose>
-						<Button disabled={!isValid} type="submit">
+						<ButtonLoading
+							isLoading={isSubmitting}
+							disabled={!isValid}
+							type="submit"
+						>
 							{commonT("submit")}
-						</Button>
+						</ButtonLoading>
 					</DialogFooter>
 				</form>
 			</DialogContent>

@@ -24,7 +24,6 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 
 export type Inputs = {
 	fullName: string;
-	username: string;
 	password: string;
 	email: string;
 	confirmPassword?: string;
@@ -40,6 +39,7 @@ const SignUpDialog = () => {
 		register,
 		handleSubmit,
 		setValue,
+		reset,
 		formState: { isSubmitting, isValid },
 		watch,
 	} = useForm<Inputs>();
@@ -50,21 +50,13 @@ const SignUpDialog = () => {
 				...data,
 			} as Inputs);
 			if (!res.isSuccess) {
-				throw new Error(res.error || "Unknown error");
+				throw new Error(res.message || localT("messages.defaultErrorMessage"));
 			}
-			toast(
-				localT("successMessage", {
-					fullName: data.fullName,
-				})
-			);
-			onClose();
+			toast(res.message);
+			handleCloseDialog();
 		} catch (err) {
-			console.error(err);
-			toast.error(
-				localT("errorMessage", {
-					error: err instanceof Error ? err.message : String(err),
-				})
-			);
+			console.log(err);
+			toast.error(err instanceof Error ? err.message : String(err));
 		}
 	};
 
@@ -74,6 +66,10 @@ const SignUpDialog = () => {
 		return String(password) === String(confirmPassword);
 	}, [watch("password"), watch("confirmPassword")]);
 
+	const handleCloseDialog = () => {
+		reset();
+		onClose();
+	};
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
@@ -81,7 +77,7 @@ const SignUpDialog = () => {
 					{localT("triggerText")}
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
 						<DialogTitle>{localT("title")}</DialogTitle>
@@ -98,17 +94,7 @@ const SignUpDialog = () => {
 								{...register("fullName", { required: true })}
 							/>
 						</div>
-						<div className="grid gap-3">
-							<Label isRequired htmlFor="username">
-								{commonT("username")}
-							</Label>
-							<Input
-								required
-								id="username"
-								placeholder="@lewissmatos"
-								{...register("username", { required: true })}
-							/>
-						</div>
+
 						<div className="grid gap-3">
 							<Label isRequired htmlFor="email">
 								{commonT("email")}
@@ -133,7 +119,19 @@ const SignUpDialog = () => {
 							<Input
 								id="phoneNumber"
 								placeholder="849-123-4567"
+								type="tel"
 								{...register("phoneNumber")}
+								onBlur={(e) => {
+									const value = e.target.value.replace(/\D/g, "");
+									if (value.length === 10) {
+										const formattedValue = `(${value.slice(
+											0,
+											3
+										)}) ${value.slice(3, 6)}-${value.slice(6)}`;
+										setValue("phoneNumber", formattedValue);
+									}
+								}}
+								pattern="^\(\d{3}\) \d{3}-\d{4}$"
 							/>
 						</div>
 						<div className="grid gap-3">
@@ -161,10 +159,12 @@ const SignUpDialog = () => {
 						</div>
 					</div>
 					<DialogFooter className="mt-4">
-						<Button variant="outline">{commonT("cancel")}</Button>
+						<Button variant="outline" onClick={handleCloseDialog}>
+							{commonT("cancel")}
+						</Button>
 						<ButtonLoading
 							type="submit"
-							disabled={isSubmitting || !isValid || !hasMatchedPasswords}
+							disabled={!isValid || !hasMatchedPasswords}
 							isLoading={isSubmitting}
 						>
 							{commonT("submit")}

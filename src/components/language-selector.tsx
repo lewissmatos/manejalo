@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useTransition } from "react";
 import {
 	Select,
 	SelectContent,
@@ -7,33 +7,31 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "./ui/select";
-import { useTranslations } from "next-intl";
+import { Locale, useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-const langs = {
+
+export const langs = {
 	en: "English",
 	es: "Español",
 };
 const LanguageSelector = () => {
 	const t = useTranslations("LanguageSelector");
+	const [isPending, startTransition] = useTransition();
 	const locale = useLocale();
 	const router = useRouter();
 	const pathname = usePathname();
-	const handleChange = (value: "en" | "es") => {
-		const segments = pathname.split("/");
-		if (Object.keys(langs).includes(segments[1])) {
-			segments[1] = value;
-		} else {
-			segments.splice(1, 0, value);
-		}
-		const newPath = segments.join("/") || "/";
-		router.push(newPath);
+	const handleChange = async (value: Locale) => {
+		startTransition(() => {
+			document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000; samesite=strict; secure`;
+			router.refresh();
+		});
 	};
 
 	return (
 		<Select
 			defaultValue={langs[locale as keyof typeof langs] || "es"}
-			value={locale as "en" | "es"}
+			value={locale as Locale}
 			onValueChange={handleChange}
 		>
 			<SelectTrigger className="w-32 bg-background text-foreground">
