@@ -20,12 +20,18 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { login } from "@/app/server-actions/(auth)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "../ui/button-loading";
+import { useSetAtom } from "jotai/react";
+import { authAtom } from "@/lib/jotai/auth-atoms";
 
 export type Inputs = {
 	email: string;
 	password: string;
 };
-const LoginDialog = () => {
+
+type Props = {
+	dialogTrigger?: React.ReactNode;
+};
+const LoginDialog = ({ dialogTrigger }: Props) => {
 	const localT = useTranslations("LoginDialog");
 	const commonT = useTranslations("common");
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
@@ -38,16 +44,25 @@ const LoginDialog = () => {
 		formState: { errors, isValid, isSubmitting },
 	} = useForm<Inputs>();
 
+	const onSetAuthData = useSetAtom(authAtom);
+
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		try {
 			const res = await login({
 				...data,
 			} as Inputs);
 
-			console.log("res", res);
 			if (!res.isSuccess) {
 				throw new Error(res.message || localT("messages.defaultErrorMessage"));
 			}
+			const { profile, user } = res.data || {};
+
+			onSetAuthData({
+				isAuthenticated: true,
+				profile: profile || null,
+				user: user || null,
+			});
+
 			toast(res.message);
 			handleCloseDialog();
 		} catch (err) {
@@ -64,9 +79,15 @@ const LoginDialog = () => {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
-				<Button variant="default" size="lg">
-					{localT("triggerText")}
-				</Button>
+				{dialogTrigger || (
+					<Button
+						variant="default"
+						size="lg"
+						className="text-xl p-4 rounded-lg"
+					>
+						{localT("triggerText")}
+					</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>

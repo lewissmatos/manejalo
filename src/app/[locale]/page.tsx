@@ -11,13 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import * as React from "react";
-const LoginDialog = React.lazy(() => import("@/components/auth/login-dialog"));
-const SignUpDialog = React.lazy(
-	() => import("@/components/auth/sign-up-dialog")
-);
+import MainPageBottomContent from "./MainPageBottomContent";
+
 export default async function HomePage() {
 	const t = await getTranslations("HomePage");
-	const isAuthenticated = false;
+
 	return (
 		<div className="flex flex-col items-center min-h-screen p-4">
 			<section className="w-full flex justify-between items-start mb-8 gap-4">
@@ -64,44 +62,8 @@ export default async function HomePage() {
 				</div>
 			</section>
 			<section className="py-4">
-				{isAuthenticated ? (
-					<AuthenticatedBottomContent />
-				) : (
-					<UnauthenticatedBottomContent />
-				)}
+				<MainPageBottomContent />
 			</section>
 		</div>
 	);
 }
-
-const AuthenticatedBottomContent = async () => {
-	const t = await getTranslations("HomePage");
-	return (
-		<div className="flex flex-col items-center">
-			<Button variant="default" size="lg">
-				{`${t("authState.loggedIn")} NAME`}{" "}
-				{/* Replace NAME with actual user name */}
-				<ArrowRight />
-			</Button>
-			<span>
-				{t("authState.loggedInDescription")}:
-				<Button variant="link" size="lg" className="p-1">
-					{t("authState.switchAccountAlt")}
-				</Button>
-			</span>
-		</div>
-	);
-};
-
-const UnauthenticatedBottomContent = async () => {
-	const t = await getTranslations("HomePage");
-	return (
-		<div className="flex flex-col items-center gap-4">
-			<LoginDialog />
-			<span>
-				{t("authState.signUpAlt")}:
-				<SignUpDialog />
-			</span>
-		</div>
-	);
-};

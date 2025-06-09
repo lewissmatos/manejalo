@@ -30,7 +30,11 @@ export type Inputs = {
 	birthdate?: string;
 	phoneNumber?: string;
 };
-const SignUpDialog = () => {
+
+type Props = {
+	dialogTrigger?: React.ReactNode;
+};
+const SignUpDialog = ({ dialogTrigger }: Props) => {
 	const localT = useTranslations("SignUpDialog");
 	const commonT = useTranslations("common");
 
@@ -74,9 +78,11 @@ const SignUpDialog = () => {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild>
-				<Button variant="link" size="lg" className="p-1">
-					{localT("triggerText")}
-				</Button>
+				{dialogTrigger || (
+					<Button variant="link" size="lg" className="p-1">
+						{localT("triggerText")}
+					</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
