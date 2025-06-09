@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { PasswordInput } from "../ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { DatePicker } from "../ui/date-picker";
-import { signUp } from "@/app/(auth)/actions/sign-up";
+import { signUp } from "@/app/server-actions/(auth)/actions";
 import { ButtonLoading } from "../ui/button-loading";
 import { toast } from "sonner";
 import { useDisclosure } from "@/hooks/useDisclosure";
@@ -49,6 +49,7 @@ const SignUpDialog = () => {
 			const res = await signUp({
 				...data,
 			} as Inputs);
+			console.log(res);
 			if (!res.isSuccess) {
 				throw new Error(res.message || localT("messages.defaultErrorMessage"));
 			}

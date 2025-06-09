@@ -20,13 +20,15 @@ export default async function HomePage() {
 	const isAuthenticated = false;
 	return (
 		<div className="flex flex-col items-center min-h-screen p-4">
-			<section className="bg-secondary h-32 md:w-1/2 w-full flex justify-between items-start rounded-lg shadow-md p-4">
-				<div className="w-1/5">
+			<section className="w-full flex justify-between items-start mb-8 gap-4">
+				<div className="w-1/5 ">
 					<ThemeSelector />
 				</div>
-				<div className="items-center flex flex-col gap-2 h-full w-3/5">
-					<h1 className="text-6xl font-semibold">{"Manejalo!"}</h1>
-					<p>{t("slogan")}</p>
+				<div className="bg-secondary h-32 md:w-3/5 w-full flex justify-center items-start rounded-lg shadow-md p-4">
+					<div className="items-center flex flex-col gap-2 h-full w-3/5">
+						<h1 className="text-6xl font-semibold">{"Manejalo!"}</h1>
+						<p>{t("slogan")}</p>
+					</div>
 				</div>
 				<div className="w-1/5 flex justify-end">
 					<LanguageSelector />

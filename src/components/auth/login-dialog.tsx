@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { PasswordInput } from "../ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDisclosure } from "@/hooks/useDisclosure";
-import { login } from "@/app/(auth)/actions/login";
+import { login } from "@/app/server-actions/(auth)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "../ui/button-loading";
 
