@@ -5,6 +5,7 @@ import { authAtom } from "@/lib/jotai/auth-atoms";
 import { useAtomValue } from "jotai/react";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const LoginDialog = React.lazy(() => import("@/components/auth/login-dialog"));
@@ -27,10 +28,17 @@ const MainPageBottomContent = () => {
 const AuthenticatedBottomContent = () => {
 	const t = useTranslations("HomePage");
 	const { profile } = useAtomValue(authAtom);
+	const router = useRouter();
 
 	return (
 		<div className="flex flex-col items-center">
-			<Button variant="default" size="lg" className="text-xl p-4 rounded-lg ">
+			<Button
+				variant="default"
+				size="lg"
+				onClick={() => router.push("/my-budget")}
+				disabled={!profile}
+				className="text-xl p-4 rounded-lg "
+			>
 				{`${t("authState.loggedIn")} ${profile?.fullName?.split(" ")?.[0]}`}{" "}
 				{/* Replace NAME with actual user name */}
 				<ArrowRight className="animate-pulse" />

@@ -8,11 +8,17 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import * as React from "react";
-import MainPageBottomContent from "./MainPageBottomContent";
+import MainPageBottomContent from "./components/MainPageBottomContent";
 
+const metadata = {
+	title: "Manejalo! - Home",
+	description: "Manejalo! is a personal finance management app.",
+	openGraph: {
+		title: "Manejalo! - Home",
+		description: "Manejalo! is a personal finance management app.",
+	},
+};
 export default async function HomePage() {
 	const t = await getTranslations("HomePage");
 
