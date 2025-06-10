@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { PasswordInput } from "../ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { DatePicker } from "../ui/date-picker";
-import { signUp } from "@/app/server-actions/(auth)/actions";
+import { signUp } from "@/app/_server-actions/(auth)/actions";
 import { ButtonLoading } from "../ui/button-loading";
 import { toast } from "sonner";
 import { useDisclosure } from "@/hooks/useDisclosure";
@@ -35,8 +35,7 @@ type Props = {
 	dialogTrigger?: React.ReactNode;
 };
 const SignUpDialog = ({ dialogTrigger }: Props) => {
-	const localT = useTranslations("SignUpDialog");
-	const commonT = useTranslations("common");
+	const t = useTranslations();
 
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
 	const {
@@ -54,7 +53,9 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 				...data,
 			} as Inputs);
 			if (!res.isSuccess) {
-				throw new Error(res.message || localT("messages.defaultErrorMessage"));
+				throw new Error(
+					res.message || t("SignUpDialog.messages.defaultErrorMessage")
+				);
 			}
 			toast(res.message);
 			handleCloseDialog();
@@ -79,20 +80,20 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 			<DialogTrigger asChild>
 				{dialogTrigger || (
 					<Button variant="link" size="lg" className="p-1">
-						{localT("triggerText")}
+						{t("SignUpDialog.triggerText")}
 					</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
-						<DialogTitle>{localT("title")}</DialogTitle>
-						<DialogDescription>{localT("subtitle")}</DialogDescription>
+						<DialogTitle>{t("SignUpDialog.title")}</DialogTitle>
+						<DialogDescription>{t("SignUpDialog.subtitle")}</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 mt-2">
 						<div className="grid gap-3">
 							<Label isRequired htmlFor="fullName">
-								{commonT("fullName")}
+								{t("common.fullName")}
 							</Label>
 							<Input
 								id="fullName"
@@ -103,7 +104,7 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 
 						<div className="grid gap-3">
 							<Label isRequired htmlFor="email">
-								{commonT("email")}
+								{t("common.email")}
 							</Label>
 							<Input
 								id="email"
@@ -113,7 +114,7 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 							/>
 						</div>
 						<div className="grid gap-3">
-							<Label>{commonT("birthdate")}</Label>
+							<Label>{t("common.birthdate")}</Label>
 							<DatePicker
 								onChangeDate={(date) =>
 									setValue("birthdate", date?.toISOString())
@@ -121,7 +122,7 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 							/>
 						</div>
 						<div className="grid gap-3">
-							<Label htmlFor="phoneNumber">{commonT("phoneNumber")}</Label>
+							<Label htmlFor="phoneNumber">{t("common.phoneNumber")}</Label>
 							<Input
 								id="phoneNumber"
 								placeholder="849-123-4567"
@@ -142,7 +143,7 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 						</div>
 						<div className="grid gap-3">
 							<Label isRequired htmlFor="password">
-								{commonT("password")}
+								{t("common.password")}
 							</Label>
 							<PasswordInput
 								id="password"
@@ -152,7 +153,7 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 						</div>
 						<div className="grid gap-3">
 							<Label isRequired htmlFor="confirmPassword">
-								{commonT("confirmPassword")}
+								{t("common.confirmPassword")}
 							</Label>
 							<PasswordInput
 								id="confirmPassword"
@@ -166,14 +167,14 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 					</div>
 					<DialogFooter className="mt-4">
 						<Button variant="outline" onClick={handleCloseDialog}>
-							{commonT("cancel")}
+							{t("common.cancel")}
 						</Button>
 						<ButtonLoading
 							type="submit"
 							disabled={!isValid || !hasMatchedPasswords}
 							isLoading={isSubmitting}
 						>
-							{commonT("submit")}
+							{t("common.submit")}
 						</ButtonLoading>
 					</DialogFooter>
 				</form>

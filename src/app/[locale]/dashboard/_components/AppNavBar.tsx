@@ -16,7 +16,7 @@ import { LogOut, X } from "lucide-react";
 import { useAtom, useAtomValue } from "jotai/react";
 import { authAtom, logoutAtom } from "@/lib/jotai/auth-atom";
 import { usePathname, useRouter } from "next/navigation";
-import { logout } from "@/app/server-actions/(auth)/actions";
+import { logout } from "@/app/_server-actions/(auth)/actions";
 import { useMemo, useState } from "react";
 import LanguageSelector from "@/components/language/language-selector";
 import { ThemeSelector } from "@/components/theme/theme-selector";

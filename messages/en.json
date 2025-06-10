@@ -59,7 +59,7 @@
 		"passwordLabel": "Password",
 		"loginButton": "Log In",
 		"messages": {
-			"defaultSuccessMessage": "Logged in successfully! Welcome back.",
+			"defaultSuccessMessage": "Logged in successfully! Welcome back, {userName}.",
 			"defaultErrorMessage": "There was an error logging in. Please check your credentials and try again.",
 			"wrongCredentials": "Invalid email or password. Please try again."
 		}
@@ -96,16 +96,21 @@
 	"ui": {
 		"showPassword": "Show Password",
 		"hidePassword": "Hide Password",
-		"selectedDate": "Selected Date"
+		"selectedDateWithValue": "Selected Date: {date}"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
 		"navigationItems": {
 			"overview": "Overview",
-			"myBudget": "My Budgets",
+			"myBudget": "My Budget",
 			"history": "History",
 			"profile": "Profile"
 		},
 		"logout": "Log Out"
+	},
+	"HomePageFooter": {
+		"top": "© {year} {appName} All rights reserved.",
+		"bottom": "Made with ❤️ by {developerName}.",
+		"contacts": "Contacts"
 	}
 }

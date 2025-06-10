@@ -24,7 +24,7 @@ const AppSideCalendar = () => {
 				setSelectedDate(date || new Date());
 			}}
 			locale={locales[locale as keyof typeof locales] || locales.en}
-			className="rounded-md border shadow-sm w-full"
+			className="rounded-md border shadow-sm"
 			captionLayout="dropdown"
 		/>
 	);

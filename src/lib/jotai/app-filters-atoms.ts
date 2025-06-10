@@ -1,9 +1,5 @@
-import { locales } from "@/app/[locale]/dashboard/_components/AppSideCalendar";
-import { format, setDefaultOptions } from "date-fns";
-import { es } from "date-fns/locale";
-import { atomWithStorage, loadable } from "jotai/utils";
+import { atomWithStorage } from "jotai/utils";
 import { atom } from "jotai/vanilla";
-import { Locale } from "next-intl";
 type AppFiltersAtom = {
 	selectedDate: Date | null;
 };

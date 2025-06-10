@@ -1,8 +1,7 @@
-import React, { Suspense } from "react";
-import Loading from "./loading";
+import React from "react";
 import AppNavBar from "./_components/AppNavBar";
 const AppSideCalendar = dynamic(() => import("./_components/AppSideCalendar"), {
-	loading: () => <Skeleton className="w-full h-80 rounded-md" />,
+	loading: () => <Skeleton className="w-full h-96 rounded-md" />,
 	ssr: !!false,
 });
 import { redirect } from "next/navigation";
@@ -37,11 +36,11 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div className="flex w-screen flex-col gap-2">
 			<AppNavBar />
-			<div className="w-screen flex flex-row gap-4 p-4 items-start">
-				<div className="flex-1 overflow-x-hidden overflow-y-auto  w-5/6 ">
-					<Suspense fallback={<Loading />}>{children}</Suspense>
+			<div className="w-screen flex flex-col md:flex-row gap-4 p-4 items-start">
+				<div className="flex-1 overflow-x-hidden overflow-y-auto w-full md:w-5/6">
+					{children}
 				</div>
-				<div className="flex flex-col items-center justify-center w-1/6 ">
+				<div className="flex flex-col items-center justify-center w-full md:w-1/6">
 					<AppSideCalendar />
 				</div>
 			</div>

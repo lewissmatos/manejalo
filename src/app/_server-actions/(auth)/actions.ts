@@ -5,7 +5,7 @@ import { Inputs as LoginPayload } from "@/components/auth/login-dialog";
 import { getTranslations } from "next-intl/server";
 import { Inputs as SignUpPayload } from "@/components/auth/sign-up-dialog";
 import { Profile } from "@/generated/prisma";
-import { ResponseModel } from "../_utils/actions.utils";
+import { ResponseModel } from "../utils/actions.utils";
 import { User } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma/prisma";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -46,12 +46,19 @@ export const login = async (
 			},
 		});
 
+		const userName =
+			profilePrisma?.fullName?.split(" ")?.[0] ||
+			email.split("@")?.[0] ||
+			"bro";
+
 		return {
 			data: {
 				profile: profilePrisma,
 				user: signUpData.user,
 			},
-			message: t("messages.defaultSuccessMessage"),
+			message: t("messages.defaultSuccessMessage", {
+				userName,
+			}),
 			isSuccess: true,
 		};
 	} catch (error) {

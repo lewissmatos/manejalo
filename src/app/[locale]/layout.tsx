@@ -34,12 +34,7 @@ export default async function LocaleLayout({
 		<html lang={locale} className={font.className} suppressHydrationWarning>
 			<head />
 			<body suppressHydrationWarning className={`${font.variable} antialiased`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					// disableTransitionOnChange
-				>
+				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					<NextIntlClientProvider>{children}</NextIntlClientProvider>
 					<Toaster />
 				</ThemeProvider>

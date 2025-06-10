@@ -59,7 +59,7 @@
 		"passwordLabel": "Contraseña",
 		"loginButton": "Acceder",
 		"messages": {
-			"defaultSuccessMessage": "¡Inicio de sesión exitoso! Bienvenido de nuevo.",
+			"defaultSuccessMessage": "¡Inicio de sesión exitoso! Bienvenido, {userName}.",
 			"defaultErrorMessage": "Error al iniciar sesión. Por favor, inténtalo de nuevo.",
 			"wrongCredentials": "El correo electrónico o la contraseña son incorrectos. Por favor, inténtalo de nuevo."
 		}
@@ -96,16 +96,21 @@
 	"ui": {
 		"showPassword": "Mostrar contraseña",
 		"hidePassword": "Ocultar contraseña",
-		"selectedDate": "Fecha seleccionada"
+		"selectedDateWithValue": "Fecha seleccionada: {date}"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
 		"navigationItems": {
 			"overview": "Resumen",
-			"myBudget": "Presupuestos",
+			"myBudget": "Mi Presupuesto",
 			"history": "Historial",
 			"profile": "Perfil"
 		},
 		"logout": "Cerrar sesión"
+	},
+	"HomePageFooter": {
+		"top": "© {year} {appName} Todos los derechos reservados.",
+		"bottom": "Hecho con ❤️ por {developerName}.",
+		"contacts": "Contactos"
 	}
 }

@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { PasswordInput } from "../ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDisclosure } from "@/hooks/useDisclosure";
-import { login } from "@/app/server-actions/(auth)/actions";
+import { login } from "@/app/_server-actions/(auth)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "../ui/button-loading";
 import { useSetAtom } from "jotai/react";
@@ -33,8 +33,7 @@ type Props = {
 	dialogTrigger?: React.ReactNode;
 };
 const LoginDialog = ({ dialogTrigger }: Props) => {
-	const localT = useTranslations("LoginDialog");
-	const commonT = useTranslations("common");
+	const t = useTranslations();
 
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
 
@@ -55,7 +54,9 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 			} as Inputs);
 
 			if (!res.isSuccess) {
-				throw new Error(res.message || localT("messages.defaultErrorMessage"));
+				throw new Error(
+					res.message || t("LoginDialog.messages.defaultErrorMessage")
+				);
 			}
 			const { profile, user } = res.data || {};
 
@@ -88,19 +89,19 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 						size="lg"
 						className="text-xl p-4 rounded-lg"
 					>
-						{localT("triggerText")}
+						{t("LoginDialog.triggerText")}
 					</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
-						<DialogTitle>{localT("title")}</DialogTitle>
-						<DialogDescription>{localT("subtitle")}</DialogDescription>
+						<DialogTitle>{t("LoginDialog.title")}</DialogTitle>
+						<DialogDescription>{t("LoginDialog.subtitle")}</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 mt-2">
 						<div className="grid gap-3">
-							<Label htmlFor="email">{commonT("email")}</Label>
+							<Label htmlFor="email">{t("common.email")}</Label>
 							<Input
 								type="email"
 								id="email"
@@ -108,7 +109,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 							/>
 						</div>
 						<div className="grid gap-3">
-							<Label htmlFor="password">{commonT("password")}</Label>
+							<Label htmlFor="password">{t("common.password")}</Label>
 							<PasswordInput
 								id="password"
 								{...register("password", { required: true, minLength: 8 })}
@@ -118,7 +119,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 					<DialogFooter className="mt-4">
 						<DialogClose asChild>
 							<Button variant="outline" onClick={handleCloseDialog}>
-								{commonT("cancel")}
+								{t("common.cancel")}
 							</Button>
 						</DialogClose>
 						<ButtonLoading
@@ -126,7 +127,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 							disabled={!isValid}
 							type="submit"
 						>
-							{commonT("submit")}
+							{t("common.submit")}
 						</ButtonLoading>
 					</DialogFooter>
 				</form>
