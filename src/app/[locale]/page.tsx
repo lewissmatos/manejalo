@@ -1,4 +1,3 @@
-import LanguageSelector from "@/components/language-selector";
 import { ThemeSelector } from "@/components/theme/theme-selector";
 import { getTranslations } from "next-intl/server";
 
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import * as React from "react";
 import MainPageBottomContent from "./_components/MainPageBottomContent";
+import LanguageSelector from "@/components/language/language-selector";
 
 const metadata = {
 	title: "Manejalo! - Home",

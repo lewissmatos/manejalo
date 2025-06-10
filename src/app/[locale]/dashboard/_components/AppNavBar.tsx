@@ -12,12 +12,17 @@ import {
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import { useAtom, useAtomValue } from "jotai/react";
 import { authAtom, logoutAtom } from "@/lib/jotai/auth-atom";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/app/server-actions/(auth)/actions";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import LanguageSelector from "@/components/language/language-selector";
+import { ThemeSelector } from "@/components/theme/theme-selector";
+
+// Add hamburger icon for mobile
+import { Menu } from "lucide-react";
 
 const navItems = [
 	{
@@ -33,11 +38,16 @@ const navItems = [
 		href: "/dashboard/history",
 	},
 ];
+
 export default function AppNavBar() {
 	const t = useTranslations("AppNavBar");
 	const [, onLogout] = useAtom(logoutAtom);
+	const router = useRouter();
+	const pathname = usePathname();
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const profile = useAtomValue(authAtom).profile;
+
 	const userName = useMemo(() => {
 		if (profile) {
 			return (
@@ -48,67 +58,126 @@ export default function AppNavBar() {
 		}
 		return null;
 	}, [profile]);
-	const router = useRouter();
-	return (
-		<NavigationMenu
-			className="border-1 border-background-200 shadow-sm rounded-md justify-end z-30"
-			viewport={false}
-		>
-			<NavigationMenuList className="flex justify-end items-center gap-4 px-4 py-1">
-				{navItems.map((item) => (
-					<NavigationMenuItem key={item.titleKey}>
-						<NavigationMenuLink
-							asChild
-							className={navigationMenuTriggerStyle()}
-						>
-							<Link href={item.href}>
-								{t(`navigationItems.${item.titleKey}`)}
-							</Link>
-						</NavigationMenuLink>
-					</NavigationMenuItem>
-				))}
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>
-						{userName || t("navigationItems.profile")}
-					</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<Button
-							variant="ghost"
-							onClick={async () => {
-								// remove the global state auth info
-								await onLogout();
-								// call the logout server action and remove the cookie
-								await logout();
-								router.push("/");
-							}}
-						>
-							{t("logout")}
 
-							<LogOut />
-						</Button>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-		</NavigationMenu>
-	);
-}
-
-function ListItem({
-	title,
-	children,
-	href,
-	...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
 	return (
-		<li {...props}>
-			<NavigationMenuLink asChild className="bg-red-500">
-				<Link href={href}>
-					<div className="text-sm leading-none font-medium">{title}</div>
-					<p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-						{children}
-					</p>
-				</Link>
-			</NavigationMenuLink>
-		</li>
+		<nav className="p-4 flex justify-between items-center w-full">
+			<h1 className="text-2xl sm:text-4xl font-bold text-primary w-auto sm:w-1/5">
+				Manejalo!
+			</h1>
+			{/* Desktop Navigation */}
+			<div className="hidden md:flex flex-1 justify-center">
+				<NavigationMenu
+					className="border-1 border-background-200 shadow-sm rounded-md justify-end z-30"
+					viewport={false}
+				>
+					<NavigationMenuList className="flex justify-end items-center gap-4 p-1">
+						{navItems.map((item) => {
+							const isSelected = pathname?.includes(item.href);
+							return (
+								<NavigationMenuItem key={item.titleKey}>
+									<NavigationMenuLink
+										asChild
+										className={`${navigationMenuTriggerStyle()} ${
+											isSelected ? "bg-accent text-accent-foreground" : ""
+										}`}
+									>
+										<Link href={item.href}>
+											{t(`navigationItems.${item.titleKey}`)}
+										</Link>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							);
+						})}
+						<NavigationMenuItem>
+							<NavigationMenuTrigger>
+								{userName || t("navigationItems.profile")}
+							</NavigationMenuTrigger>
+							<NavigationMenuContent>
+								<Button
+									variant="ghost"
+									onClick={async () => {
+										await onLogout();
+										await logout();
+										router.push("/");
+									}}
+								>
+									{t("logout")}
+									<LogOut />
+								</Button>
+							</NavigationMenuContent>
+						</NavigationMenuItem>
+					</NavigationMenuList>
+				</NavigationMenu>
+			</div>
+			{/* Mobile Hamburger */}
+			<div className="md:hidden flex items-center justify-end">
+				<Button
+					className="p-2 rounded-md focus:outline-none"
+					onClick={() => setMobileMenuOpen((v) => !v)}
+					aria-label="Open menu"
+					variant={"outline"}
+				>
+					<Menu size={28} />
+				</Button>
+			</div>
+			{/* Theme/Language Selectors */}
+			<div className=" items-center gap-2 w-auto justify-end hidden md:flex">
+				<ThemeSelector />
+				<LanguageSelector />
+			</div>
+			{/* Mobile Menu Drawer */}
+			{mobileMenuOpen && (
+				<div
+					className="fixed inset-0 z-40 bg-black/40 md:hidden"
+					onClick={() => setMobileMenuOpen(false)}
+				>
+					<div
+						className="absolute top-0 right-0 w-3/4 max-w-xs bg-background shadow-lg h-full flex flex-col p-6 gap-4 justify-between"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<div className="flex flex-col gap-4">
+							<Button
+								variant="ghost"
+								className="self-end mb-4"
+								onClick={() => setMobileMenuOpen(false)}
+								aria-label="Close menu"
+							>
+								<X size={24} />
+							</Button>
+							{navItems.map((item) => (
+								<Link
+									key={item.titleKey}
+									href={item.href}
+									className="py-2 text-lg font-medium"
+									onClick={() => setMobileMenuOpen(false)}
+								>
+									{t(`navigationItems.${item.titleKey}`)}
+								</Link>
+							))}
+							<div className="border-t pt-4 mt-4">
+								<Button
+									variant="ghost"
+									className="w-full justify-start"
+									onClick={async () => {
+										await onLogout();
+										await logout();
+										router.push("/");
+										setMobileMenuOpen(false);
+									}}
+								>
+									{t("logout")}
+									<LogOut className="ml-2" />
+								</Button>
+							</div>
+						</div>
+
+						<div className="flex items-end gap-2 w-auto justify-end ">
+							<ThemeSelector />
+							<LanguageSelector />
+						</div>
+					</div>
+				</div>
+			)}
+		</nav>
 	);
 }

@@ -33,7 +33,7 @@ export default async function LocaleLayout({
 	return (
 		<html lang={locale} className={font.className} suppressHydrationWarning>
 			<head />
-			<body className={`${font.variable} antialiased`}>
+			<body suppressHydrationWarning className={`${font.variable} antialiased`}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"

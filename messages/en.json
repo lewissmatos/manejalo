@@ -95,7 +95,8 @@
 	},
 	"ui": {
 		"showPassword": "Show Password",
-		"hidePassword": "Hide Password"
+		"hidePassword": "Hide Password",
+		"selectedDate": "Selected Date"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",

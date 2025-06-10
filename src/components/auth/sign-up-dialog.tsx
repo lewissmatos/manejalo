@@ -53,14 +53,13 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 			const res = await signUp({
 				...data,
 			} as Inputs);
-			console.log(res);
 			if (!res.isSuccess) {
 				throw new Error(res.message || localT("messages.defaultErrorMessage"));
 			}
 			toast(res.message);
 			handleCloseDialog();
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			toast.error(err instanceof Error ? err.message : String(err));
 		}
 	};

@@ -69,7 +69,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 			handleCloseDialog();
 			router.push("/dashboard/overview");
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			toast.error(err instanceof Error ? err.message : String(err));
 		}
 	};

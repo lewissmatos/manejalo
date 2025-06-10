@@ -28,7 +28,7 @@ export function DatePicker({ defaultDate = new Date(), onChangeDate }: Props) {
 			<div className="relative flex gap-2">
 				<Input
 					id="date"
-					value={date instanceof Date ? format(date, "dd/MM/yyyy") : ""}
+					value={date instanceof Date ? format(date, "PPP") : ""}
 					placeholder="June 01, 2025"
 					className="bg-background pr-10"
 					onChange={(e) => {
