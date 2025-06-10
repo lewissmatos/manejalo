@@ -10,8 +10,9 @@ import { User } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma/prisma";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import { ProfileWithIncomes } from "@/lib/jotai/auth-atom";
 type ResponseData = {
-	profile: Profile | null;
+	profile: ProfileWithIncomes | null;
 	user: User;
 } | null;
 export const login = async (

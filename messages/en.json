@@ -124,5 +124,18 @@
 				"actionTitle": "Add Category to my budget"
 			}
 		}
+	},
+	"ProfilePage": {
+		"title": "Profile",
+		"profileNotFound": "Profile not found",
+		"profileTotalMonthlyIncomeWithValue": "Total Monthly Income: {value}",
+		"addIncomeButton": "Add Income",
+		"myMonthlyIncomes": "My Monthly Incomes",
+		"subtitle": "Manage your account settings and personal information.",
+		"yearsWithValue": "{years} years",
+		"ProfileInfoSection": {},
+		"editProfileButton": "Edit Profile",
+		"changePasswordButton": "Change Password",
+		"deleteAccountButton": "Delete Account"
 	}
 }

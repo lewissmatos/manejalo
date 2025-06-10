@@ -89,7 +89,13 @@ export default function AppNavBar() {
 							);
 						})}
 						<NavigationMenuItem>
-							<NavigationMenuTrigger>
+							<NavigationMenuTrigger
+								className={`${navigationMenuTriggerStyle()} ${
+									pathname?.includes("profile")
+										? "bg-accent text-accent-foreground"
+										: ""
+								}`}
+							>
 								{userName || t("navigationItems.profile")}
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>

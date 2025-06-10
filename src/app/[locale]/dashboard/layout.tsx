@@ -36,11 +36,11 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div className="flex w-screen flex-col gap-2">
 			<AppNavBar />
-			<div className="w-screen flex flex-col md:flex-row gap-4 p-4 items-start">
-				<div className="flex-1 overflow-x-hidden overflow-y-auto w-full md:w-5/6">
+			<div className="w-full flex flex-row md:flex-row gap-4 p-4 items-start">
+				<div className="overflow-x-hidden overflow-y-auto w-full">
 					{children}
 				</div>
-				<div className="flex flex-col items-center justify-center w-full md:w-1/6">
+				<div className="flex flex-col items-center justify-center w-full md:w-fit">
 					<AppSideCalendar />
 				</div>
 			</div>

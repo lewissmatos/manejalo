@@ -53,7 +53,6 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 				...data,
 			} as Inputs);
 
-			console.log(res);
 			if (!res.isSuccess) {
 				throw new Error(
 					res.message || t("LoginDialog.messages.defaultErrorMessage")
@@ -61,10 +60,14 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 			}
 			const { profile, user } = res.data || {};
 
+			const totalIncome =
+				profile?.incomes?.reduce((sum, income) => sum + income.amount, 0) ?? 0;
+
 			onSetAuthData({
 				isAuthenticated: true,
 				profile: profile || null,
 				user: user || null,
+				profileTotalMonthlyIncome: totalIncome,
 			});
 
 			toast(res.message);

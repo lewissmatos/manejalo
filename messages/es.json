@@ -124,5 +124,18 @@
 				"actionTitle": "Agregar a mi presupuesto"
 			}
 		}
+	},
+	"ProfilePage": {
+		"title": "Perfil",
+		"profileNotFound": "Perfil no encontrado",
+		"profileTotalMonthlyIncomeWithValue": "Ingresos totales mensuales: {value}",
+		"addIncomeButton": "Agregar ingreso",
+		"myMonthlyIncomes": "Mis ingresos mensuales",
+		"subtitle": "Administra tu información personal y preferencias.",
+		"yearsWithValue": "{years} años",
+		"ProfileInfoSection": {},
+		"editProfileButton": "Editar perfil",
+		"changePasswordButton": "Cambiar contraseña",
+		"deleteAccountButton": "Eliminar cuenta"
 	}
 }
