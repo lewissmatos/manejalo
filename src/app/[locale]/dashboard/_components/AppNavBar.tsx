@@ -12,7 +12,7 @@ import {
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogOut, X } from "lucide-react";
+import { LogOut, User, X } from "lucide-react";
 import { useAtom, useAtomValue } from "jotai/react";
 import { authAtom, logoutAtom } from "@/lib/jotai/auth-atom";
 import { usePathname, useRouter } from "next/navigation";
@@ -95,11 +95,22 @@ export default function AppNavBar() {
 							<NavigationMenuContent>
 								<Button
 									variant="ghost"
+									onClick={() => {
+										router.push("/dashboard/profile");
+									}}
+									className="w-full justify-between"
+								>
+									{t("profile")}
+									<User className="ml-2" />
+								</Button>
+								<Button
+									variant="ghost"
 									onClick={async () => {
 										await onLogout();
 										await logout();
 										router.push("/");
 									}}
+									className="w-full justify-between"
 								>
 									{t("logout")}
 									<LogOut />
@@ -155,6 +166,16 @@ export default function AppNavBar() {
 								</Link>
 							))}
 							<div className="border-t pt-4 mt-4">
+								<Button
+									variant="ghost"
+									className="w-full justify-start"
+									onClick={() => {
+										router.push("/dashboard/profile");
+									}}
+								>
+									{t("logout")}
+									<User className="ml-2" />
+								</Button>
 								<Button
 									variant="ghost"
 									className="w-full justify-start"

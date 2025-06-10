@@ -53,6 +53,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 				...data,
 			} as Inputs);
 
+			console.log(res);
 			if (!res.isSuccess) {
 				throw new Error(
 					res.message || t("LoginDialog.messages.defaultErrorMessage")

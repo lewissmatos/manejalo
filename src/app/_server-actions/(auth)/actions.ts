@@ -44,6 +44,7 @@ export const login = async (
 			where: {
 				email: email,
 			},
+			include: { incomes: true },
 		});
 
 		const userName =

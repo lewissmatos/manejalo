@@ -106,11 +106,23 @@
 			"history": "History",
 			"profile": "Profile"
 		},
-		"logout": "Log Out"
+		"logout": "Log Out",
+		"profile": "Profile"
 	},
 	"HomePageFooter": {
 		"top": "© {year} {appName} All rights reserved.",
 		"bottom": "Made with ❤️ by {developerName}.",
 		"contacts": "Contacts"
+	},
+	"MyBudget": {
+		"title": "My Budget",
+		"subtitle": "Manage your monthly budget effectively.",
+		"RecommendedCategories": {
+			"title": "Recommended Categories",
+			"subtitle": "These are the recommended categories to start with. You can add or remove categories as needed.",
+			"Card": {
+				"actionTitle": "Add Category to my budget"
+			}
+		}
 	}
 }

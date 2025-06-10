@@ -8,7 +8,7 @@ const initialState: AppFiltersAtom = {
 };
 export const appFiltersAtom = atomWithStorage("app-filters", initialState);
 
-export const setSelectedDateAtom = atom(
+export const selectedDateAtom = atom(
 	(get) => get(appFiltersAtom).selectedDate,
 	(get, set, newDate: Date | null) => {
 		const prev = get(appFiltersAtom);

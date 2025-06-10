@@ -106,11 +106,23 @@
 			"history": "Historial",
 			"profile": "Perfil"
 		},
+		"profile": "Perfil",
 		"logout": "Cerrar sesión"
 	},
 	"HomePageFooter": {
 		"top": "© {year} {appName} Todos los derechos reservados.",
 		"bottom": "Hecho con ❤️ por {developerName}.",
 		"contacts": "Contactos"
+	},
+	"MyBudget": {
+		"title": "Mi Presupuesto",
+		"subtitle": "Aquí puedes gestionar tu presupuesto mensual.",
+		"RecommendedCategories": {
+			"title": "Categorías recomendadas",
+			"subtitle": "Estas son las categorías recomendadas para tu presupuesto. Puedes personalizarlas según tus necesidades.",
+			"Card": {
+				"actionTitle": "Agregar a mi presupuesto"
+			}
+		}
 	}
 }

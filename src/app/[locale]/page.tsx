@@ -12,6 +12,11 @@ import MainPageBottomContent from "./_components/MainPageBottomContent";
 import LanguageSelector from "@/components/language/language-selector";
 import { Footer } from "react-day-picker";
 import HomePageFooter from "./_components/HomePageFooter";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const metadata = {
 	title: "Manejalo! - Home",
@@ -52,8 +57,8 @@ export default async function HomePage() {
 						</h2>
 						<main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 							{features.map((feature) => (
-								<Tooltip key={feature.key}>
-									<TooltipTrigger>
+								<HoverCard key={feature.key}>
+									<HoverCardTrigger>
 										<div className="bg-white  dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 shadow-sm ">
 											<div className="text-3xl mb-2">{feature.icon}</div>
 											<h3 className="text-xl font-semibold mb-1">
@@ -63,13 +68,11 @@ export default async function HomePage() {
 												{t(`features.${feature.key}.description`)}
 											</p>
 										</div>
-									</TooltipTrigger>
-									<TooltipContent className=" bg-background max-w-xs border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 shadow-sm">
-										<p className="text-lg text-foreground">
-											{t(`features.${feature.key}.tooltip`)}
-										</p>
-									</TooltipContent>
-								</Tooltip>
+									</HoverCardTrigger>
+									<HoverCardContent>
+										{t(`features.${feature.key}.tooltip`)}
+									</HoverCardContent>
+								</HoverCard>
 							))}
 						</main>
 					</div>

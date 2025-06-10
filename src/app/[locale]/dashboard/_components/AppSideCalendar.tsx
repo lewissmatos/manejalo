@@ -1,9 +1,9 @@
 "use client";
 
 import { Calendar } from "@/components/ui/calendar";
-import { setSelectedDateAtom } from "@/lib/jotai/app-filters-atoms";
-import { useAtom, useAtomValue } from "jotai/react";
-import React, { useEffect } from "react";
+import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
+import { useAtom } from "jotai/react";
+import React from "react";
 import { useLocale } from "next-intl";
 import { es, enUS } from "date-fns/locale";
 
@@ -13,7 +13,7 @@ export const locales = {
 };
 
 const AppSideCalendar = () => {
-	const [date, setSelectedDate] = useAtom(setSelectedDateAtom);
+	const [date, setSelectedDate] = useAtom(selectedDateAtom);
 	const locale = useLocale();
 
 	return (

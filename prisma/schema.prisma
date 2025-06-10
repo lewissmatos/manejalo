@@ -10,13 +10,36 @@ datasource db {
 }
 
 model Profile {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String    @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   birthdate   DateTime? @default(now()) @map("birthdate") @db.Timestamp(6)
   phoneNumber String?   @map("phone_number")
   fullName    String?   @map("full_name")
   userId      String?   @unique @map("user_id") @db.Uuid
   email       String?   @unique @map("email")
+  incomes MonthlyIncome[]
 
   @@map("profiles")
 }
+
+model MonthlyIncome {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  profile     Profile   @relation(fields: [profileId], references: [id])
+  profileId   String    @map("profile_id") @db.Uuid
+  amount      Float     @map("amount") @db.DoublePrecision
+  description String? @map("description")
+  
+  @@map("monthly_incomes")
+}
+
+// model BudgetCategory {
+//   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+//   name        String    @unique
+//   description String?   @map("description")
+//   profileId      String?   @map("profile_id") @db.Uuid
+//   estimation   Float?    @map("estimation") @db.DoublePrecision
+
+//   // @@map("budget_categories")
+// } 
