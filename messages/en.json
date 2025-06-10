@@ -91,7 +91,8 @@
 		"confirmPassword": "Confirm Password",
 		"birthdate": "Birthdate",
 		"fullName": "Full Name",
-		"phoneNumber": "Phone Number"
+		"phoneNumber": "Phone Number",
+		"save": "Save"
 	},
 	"ui": {
 		"showPassword": "Show Password",
@@ -133,6 +134,10 @@
 		"myMonthlyIncomes": "My Monthly Incomes",
 		"subtitle": "Manage your account settings and personal information.",
 		"yearsWithValue": "{years} years",
+		"AddIncomeDialog": {
+			"title": "Add Income",
+			"subtitle": "Enter the details of your income."
+		},
 		"ProfileInfoSection": {},
 		"editProfileButton": "Edit Profile",
 		"changePasswordButton": "Change Password",

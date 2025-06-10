@@ -1,9 +1,9 @@
 import React from "react";
-import ScreenTitle from "../_components/ScreenTitle";
+import ScreenTitle from "../_components/screen-title";
 import { getTranslations } from "next-intl/server";
 import dynamic from "next/dynamic";
 const ProfileInfoSection = dynamic(
-	() => import("./_components/ProfileInfoSection"),
+	() => import("./_components/profile-info-section"),
 	{ ssr: !!false }
 );
 

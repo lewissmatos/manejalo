@@ -8,10 +8,10 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import * as React from "react";
-import MainPageBottomContent from "./_components/MainPageBottomContent";
+import MainPageBottomContent from "./_components/main-page-bottom-content";
 import LanguageSelector from "@/components/language/language-selector";
 import { Footer } from "react-day-picker";
-import HomePageFooter from "./_components/HomePageFooter";
+import HomePageFooter from "./_components/home-page-footer";
 import {
 	HoverCard,
 	HoverCardContent,

@@ -1,9 +1,12 @@
 import React from "react";
-import AppNavBar from "./_components/AppNavBar";
-const AppSideCalendar = dynamic(() => import("./_components/AppSideCalendar"), {
-	loading: () => <Skeleton className="w-full h-96 rounded-md" />,
-	ssr: !!false,
-});
+import AppNavBar from "./_components/app-navbar";
+const AppSideCalendar = dynamic(
+	() => import("./_components/app-side-calendar"),
+	{
+		loading: () => <Skeleton className="w-full h-96 rounded-md" />,
+		ssr: !!false,
+	}
+);
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { Metadata } from "next";

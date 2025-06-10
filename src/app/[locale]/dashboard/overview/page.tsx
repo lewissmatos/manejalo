@@ -2,7 +2,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 const CurrentDateFormatted = dynamic(
-	() => import("../_components/CurrentFormattedDate"),
+	() => import("../_components/current-formatted-date"),
 	{
 		loading: () => <div className="text-lg text-primary">Loading...</div>,
 		ssr: !!false,

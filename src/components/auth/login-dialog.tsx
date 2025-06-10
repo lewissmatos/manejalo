@@ -85,7 +85,15 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={onOpenChange}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={(isOpen) => {
+				onOpenChange(isOpen);
+				if (!isOpen) {
+					handleCloseDialog();
+				}
+			}}
+		>
 			<DialogTrigger asChild>
 				{dialogTrigger || (
 					<Button

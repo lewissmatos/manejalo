@@ -91,12 +91,15 @@
 		"confirmPassword": "Confirmar contraseña",
 		"birthdate": "Fecha de nacimiento",
 		"fullName": "Nombre completo",
-		"phoneNumber": "Número de teléfono"
+		"phoneNumber": "Número de teléfono",
+		"save": "Guardar",
+		"amount": "Monto"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
 		"hidePassword": "Ocultar contraseña",
-		"selectedDateWithValue": "Fecha seleccionada: {date}"
+		"selectedDateWithValue": "Fecha seleccionada: {date}",
+		"description": "Descripción"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -134,6 +137,10 @@
 		"subtitle": "Administra tu información personal y preferencias.",
 		"yearsWithValue": "{years} años",
 		"ProfileInfoSection": {},
+		"AddIncomeDialog": {
+			"title": "Agregar ingreso",
+			"subtitle": "Ingresa los detalles de tu ingreso mensual."
+		},
 		"editProfileButton": "Editar perfil",
 		"changePasswordButton": "Cambiar contraseña",
 		"deleteAccountButton": "Eliminar cuenta"

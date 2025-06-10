@@ -4,11 +4,10 @@ import { authAtom } from "@/lib/jotai/auth-atom";
 import { useAtomValue } from "jotai/react";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
-import ScreenTitle from "../../_components/ScreenTitle";
+import ScreenTitle from "../../_components/screen-title";
 import { formatCurrency } from "@/lib/formatters";
-import MonthlyIncomeCard from "./MonthlyIncomeCard";
-import { Card, CardContent } from "@/components/ui/card";
-import { PlusCircle } from "lucide-react";
+import MonthlyIncomeCard from "./monthly-icome-card";
+import ManageIncomeDialog from "./manage-income-dialog";
 
 const ProfileInfoSection = () => {
 	const t = useTranslations("ProfilePage");
@@ -60,16 +59,7 @@ const ProfileInfoSection = () => {
 			<section className="flex flex-col items justify-center mt-4 ">
 				<p className="text-lg text-primary/90 ">{t("myMonthlyIncomes")}</p>
 				<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mt-2">
-					{profile.incomes?.length < 5 ? (
-						<Card className="w-full md:w-28 p-0 max-w-sm h-24 items-center justify-center cursor-pointer hover:bg-secondary/20 transition-all">
-							<CardContent className="flex items-center justify-between gap-2 flex-col p-0">
-								<PlusCircle size={34} className="text-primary/80" />
-								<span className="text-sm text-primary/80">
-									{t("addIncomeButton")}
-								</span>
-							</CardContent>
-						</Card>
-					) : null}
+					{profile.incomes?.length < 5 ? <ManageIncomeDialog /> : null}
 
 					{profile.incomes?.map((income) => (
 						<MonthlyIncomeCard

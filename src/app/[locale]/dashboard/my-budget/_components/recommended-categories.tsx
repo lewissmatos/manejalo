@@ -8,7 +8,7 @@ import {
 import { getTranslations } from "next-intl/server";
 
 import defaultCategories from "../../../../../../data/default-categories.json";
-import RecommendedCategoryCard from "./RecommendedCategoryCard";
+import RecommendedCategoryCard from "./recommended-category-card";
 const RecommendedCategories = async () => {
 	const t = await getTranslations("MyBudget.RecommendedCategories");
 	return (

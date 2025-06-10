@@ -1,8 +1,8 @@
 import React from "react";
-import ScreenTitle from "../_components/ScreenTitle";
+import ScreenTitle from "../_components/screen-title";
 import { getTranslations } from "next-intl/server";
-import BudgetItemCard from "./_components/BudgetCategoryCard";
-import RecommendedCategories from "./_components/RecommendedCategories";
+import BudgetItemCard from "./_components/budget-category-card";
+import RecommendedCategories from "./_components/recommended-categories";
 
 const mockData = [
 	{

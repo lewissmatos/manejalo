@@ -76,7 +76,15 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 		onClose();
 	};
 	return (
-		<Dialog open={isOpen} onOpenChange={onOpenChange}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={(isOpen) => {
+				onOpenChange(isOpen);
+				if (!isOpen) {
+					handleCloseDialog();
+				}
+			}}
+		>
 			<DialogTrigger asChild>
 				{dialogTrigger || (
 					<Button variant="link" size="lg" className="p-1">

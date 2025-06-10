@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useAtomValue } from "jotai/react";
 import { useLocale, useTranslations } from "next-intl";
 import React from "react";
-import { locales } from "./AppSideCalendar";
+import { locales } from "./app-side-calendar";
 
 const CurrentFormattedDate = () => {
 	const date = useAtomValue(selectedDateAtom);
