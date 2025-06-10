@@ -9,7 +9,7 @@ import {
 } from "./ui/select";
 import { Locale, useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const langs = {
 	en: "English",
@@ -17,10 +17,9 @@ export const langs = {
 };
 const LanguageSelector = () => {
 	const t = useTranslations("LanguageSelector");
-	const [isPending, startTransition] = useTransition();
+	const [, startTransition] = useTransition();
 	const locale = useLocale();
 	const router = useRouter();
-	const pathname = usePathname();
 	const handleChange = async (value: Locale) => {
 		startTransition(() => {
 			document.cookie = `NEXT_LOCALE=${value}; path=/; max-age=31536000; samesite=strict; secure`;

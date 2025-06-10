@@ -8,6 +8,8 @@ import { Profile } from "@/generated/prisma";
 import { ResponseModel } from "../_utils/actions.utils";
 import { User } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma/prisma";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 type ResponseData = {
 	profile: Profile | null;
 	user: User;
@@ -17,7 +19,16 @@ export const login = async (
 ): Promise<ResponseModel<ResponseData>> => {
 	const t = await getTranslations("LoginDialog");
 	const { email, password } = payload;
-	const supabase = supabaseAdmin;
+	const supabase = await createServerSupabaseClient();
+	const cookieStore = await cookies();
+
+	cookieStore.set("is-authenticated", "true", {
+		httpOnly: true,
+		path: "/",
+		sameSite: "lax",
+		secure: process.env.NODE_ENV === "production",
+	});
+
 	try {
 		const { error: signUpError, data: signUpData } =
 			await supabase.auth.signInWithPassword({ email, password });
@@ -51,6 +62,7 @@ export const login = async (
 		};
 	}
 };
+
 export const signUp = async (payload: SignUpPayload) => {
 	const t = await getTranslations("SignUpDialog");
 	const { fullName, email, password, birthdate, phoneNumber } = payload;
@@ -112,4 +124,12 @@ export const signUp = async (payload: SignUpPayload) => {
 			isSuccess: false,
 		};
 	}
+};
+
+export const logout = async () => {
+	const cookieStore = await cookies();
+
+	cookieStore.set("is-authenticated", "false", {
+		httpOnly: true,
+	});
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { authAtom } from "@/lib/jotai/auth-atoms";
+import { authAtom } from "@/lib/jotai/auth-atom";
 import { useAtomValue } from "jotai/react";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -35,7 +35,7 @@ const AuthenticatedBottomContent = () => {
 			<Button
 				variant="default"
 				size="lg"
-				onClick={() => router.push("/my-budget")}
+				onClick={() => router.push("/dashboard")}
 				disabled={!profile}
 				className="text-xl p-4 rounded-lg "
 			>

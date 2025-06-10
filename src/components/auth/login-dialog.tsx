@@ -21,7 +21,8 @@ import { login } from "@/app/server-actions/(auth)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "../ui/button-loading";
 import { useSetAtom } from "jotai/react";
-import { authAtom } from "@/lib/jotai/auth-atoms";
+import { authAtom } from "@/lib/jotai/auth-atom";
+import { useRouter } from "next/navigation";
 
 export type Inputs = {
 	email: string;
@@ -34,14 +35,15 @@ type Props = {
 const LoginDialog = ({ dialogTrigger }: Props) => {
 	const localT = useTranslations("LoginDialog");
 	const commonT = useTranslations("common");
+
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
 
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
-
 		reset,
-		formState: { errors, isValid, isSubmitting },
+		formState: { isValid, isSubmitting },
 	} = useForm<Inputs>();
 
 	const onSetAuthData = useSetAtom(authAtom);
@@ -65,6 +67,7 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 
 			toast(res.message);
 			handleCloseDialog();
+			router.push("/dashboard/overview");
 		} catch (err) {
 			console.log(err);
 			toast.error(err instanceof Error ? err.message : String(err));

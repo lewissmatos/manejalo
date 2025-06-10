@@ -9,7 +9,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import * as React from "react";
-import MainPageBottomContent from "./components/MainPageBottomContent";
+import MainPageBottomContent from "./_components/MainPageBottomContent";
 
 const metadata = {
 	title: "Manejalo! - Home",

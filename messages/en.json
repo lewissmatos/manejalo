@@ -96,5 +96,15 @@
 	"ui": {
 		"showPassword": "Show Password",
 		"hidePassword": "Hide Password"
+	},
+	"AppNavBar": {
+		"title": "Manejalo!",
+		"navigationItems": {
+			"overview": "Overview",
+			"myBudget": "My Budgets",
+			"history": "History",
+			"profile": "Profile"
+		},
+		"logout": "Log Out"
 	}
 }
