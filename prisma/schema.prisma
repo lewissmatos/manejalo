@@ -19,6 +19,7 @@ model Profile {
   userId      String?   @unique @map("user_id") @db.Uuid
   email       String   @unique @map("email")
   incomes MonthlyIncome[]
+  totalMonthlyIncome Float? @default(0) @map("total_monthly_income") @db.DoublePrecision
 
   @@map("profiles")
 }
@@ -40,6 +41,7 @@ model MonthlyIncome {
   amount      Float     @map("amount") @db.DoublePrecision
   description String? @map("description") @db.Text
   emoji String? @map("emoji") @db.Text
+  isActive    Boolean?   @default(true) @map("is_active")
   type       IncomeType @default(OTHER)
 
   @@map("monthly_incomes")

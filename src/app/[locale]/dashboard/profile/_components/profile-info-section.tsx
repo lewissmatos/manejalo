@@ -15,7 +15,7 @@ import { MonthlyIncome } from "@/generated/prisma";
 const ProfileInfoSection = () => {
 	const t = useTranslations("ProfilePage");
 
-	const { profile, profileTotalMonthlyIncome } = useAtomValue(authAtom);
+	const { profile, totalMonthlyIncome } = useAtomValue(authAtom);
 	const onSetProfileData = useSetAtom(updateProfileDataAtom);
 
 	const { data: profileData, refetch } = useQuery({
@@ -68,17 +68,20 @@ const ProfileInfoSection = () => {
 			) : null}
 			<p className="text-xl text-primary font-semibold">
 				{t("profileTotalMonthlyIncomeWithValue", {
-					value: formatCurrency(profileTotalMonthlyIncome || 0),
+					value: formatCurrency(totalMonthlyIncome || 0),
 				})}
 			</p>
 			<section className="flex flex-col items justify-center mt-4 ">
 				<p className="text-lg text-primary/90 ">{t("myMonthlyIncomes")}</p>
 				<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mt-2">
-					<ManageIncomeDialog canAddMore={profile.incomes?.length < 5} />
+					<ManageIncomeDialog
+						canAddMore={profile.incomes?.length < 5}
+						refetchProfileData={refetch}
+					/>
 
 					{profile.incomes?.map((income) => (
 						<MonthlyIncomeCard
-							refetchIncomes={refetch}
+							refetchProfileData={refetch}
 							key={income.id}
 							income={income}
 						/>

@@ -96,7 +96,9 @@
 		"amount": "Monto",
 		"type": "Tipo",
 		"category": "Categoría",
-		"confirm": "Confirmar"
+		"confirm": "Confirmar",
+		"disabled": "Deshabilitado",
+		"enabled": "Habilitado"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
@@ -150,19 +152,16 @@
 			},
 			"emoji": "Emoji"
 		},
-		"DeleteIncomeDialog": {
-			"title": "Eliminar ingreso",
-			"subtitle": "¿Estás seguro de que deseas eliminar este ingreso?",
-			"deleteButton": "Eliminar",
-			"cancelButton": "Cancelar",
+		"MonthlyIncomeCard": {
 			"messages": {
-				"deleteDefaultSuccessMessage": "Ingreso eliminado exitosamente.",
-				"deleteDefaultErrorMessage": "Hubo un error al eliminar tu ingreso. Por favor, inténtalo de nuevo."
+				"setMonthlyIncomeStatusSuccessMessage": "Estado actualizado exitosamente.",
+				"setMonthlyIncomeStatusErrorMessage": "Error al actualizar el estado. Por favor, inténtalo de nuevo."
 			}
 		},
 		"editProfileButton": "Editar perfil",
 		"changePasswordButton": "Cambiar contraseña",
-		"deleteAccountButton": "Eliminar cuenta"
+		"deleteAccountButton": "Eliminar cuenta",
+		"profileNotFoundMessage": "Perfil no encontrado. Por favor, crea un perfil para gestionar tu presupuesto."
 	},
 	"IncomeTypes": {
 		"employment": "Empleo",

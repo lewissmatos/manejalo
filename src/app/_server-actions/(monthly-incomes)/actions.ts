@@ -67,25 +67,34 @@ export const updateMonthlyIncome = async (
 	}
 };
 
-export const deleteMonthlyIncome = async (
-	incomeId: string
+export const setMonthlyIncomeStatus = async (
+	incomeId: string,
+	newStatus: boolean
 ): Promise<ResponseModel<null>> => {
-	const t = await getTranslations("ProfilePage.DeleteIncomeDialog");
+	const t = await getTranslations("ProfilePage");
 	try {
-		await prisma.monthlyIncome.delete({
+		await prisma.monthlyIncome.update({
 			where: { id: incomeId },
+			data: {
+				isActive: newStatus,
+			},
 		});
-
 		return {
 			data: null,
-			message: t("messages.deleteDefaultSuccessMessage"),
+			//UPDATE
+			message: t(
+				"MonthlyIncomeCard.messages.setMonthlyIncomeStatusSuccessMessage"
+			),
 			isSuccess: true,
 		};
 	} catch (error) {
 		console.error("Error removing monthly income:", error);
 		return {
 			data: null,
-			message: t("messages.deleteDefaultErrorMessage"),
+			//UPDATE
+			message: t(
+				"MonthlyIncomeCard.messages.setMonthlyIncomeStatusErrorMessage"
+			),
 			isSuccess: false,
 		};
 	}

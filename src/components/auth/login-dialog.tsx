@@ -60,21 +60,17 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 			}
 			const { profile, user } = res.data || {};
 
-			const totalIncome =
-				profile?.incomes?.reduce((sum, income) => sum + income.amount, 0) ?? 0;
-
 			onSetAuthData({
 				isAuthenticated: true,
 				profile: profile || null,
 				user: user || null,
-				profileTotalMonthlyIncome: totalIncome,
+				totalMonthlyIncome: profile?.totalMonthlyIncome || 0,
 			});
 
 			toast(res.message);
 			handleCloseDialog();
 			router.push("/dashboard/overview");
 		} catch (err) {
-			console.error(err);
 			toast.error(err instanceof Error ? err.message : String(err));
 		}
 	};

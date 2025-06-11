@@ -7,16 +7,17 @@ type AuthAtom = {
 	isAuthenticated: boolean;
 	profile: ProfileWithIncomes | null;
 	user: User | null;
-	profileTotalMonthlyIncome?: number;
+	totalMonthlyIncome?: number;
 };
 const initialAuthState: AuthAtom = {
 	isAuthenticated: false,
 	profile: null,
 	user: null,
-	profileTotalMonthlyIncome: undefined,
+	totalMonthlyIncome: 0,
 };
 
 export const authAtom = atomWithStorage("auth", initialAuthState);
+
 export const updateProfileDataAtom = atom(
 	(get) => get(authAtom).profile,
 	(get, set, newProfileData: Partial<ProfileWithIncomes>) => {
@@ -27,9 +28,7 @@ export const updateProfileDataAtom = atom(
 				...currentAuth?.profile,
 				...newProfileData,
 			} as ProfileWithIncomes,
-			profileTotalMonthlyIncome: newProfileData.incomes
-				? newProfileData.incomes.reduce((sum, income) => sum + income.amount, 0)
-				: currentAuth.profileTotalMonthlyIncome,
+			totalMonthlyIncome: newProfileData.totalMonthlyIncome || 0,
 		});
 	}
 );

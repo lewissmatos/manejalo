@@ -65,12 +65,14 @@ type Props = {
 	canAddMore?: boolean;
 	dialogTrigger?: React.ReactNode;
 	defaultValues?: Partial<MonthlyIncome>;
+	refetchProfileData: () => void;
 };
 
 const ManageIncomeDialog = ({
 	canAddMore = true,
 	dialogTrigger,
 	defaultValues,
+	refetchProfileData,
 }: Props) => {
 	const t = useTranslations();
 
@@ -112,6 +114,7 @@ const ManageIncomeDialog = ({
 						emoji: data?.emoji || incomeEmojis[0],
 						type: data?.type || IncomeType.EMPLOYMENT,
 						profileId: profileData?.id || "",
+						isActive: true,
 				  })
 				: await updateMonthlyIncome(defaultValues?.id!, {
 						amount: data.amount || 0,
@@ -119,6 +122,7 @@ const ManageIncomeDialog = ({
 						emoji: data?.emoji || incomeEmojis[0],
 						type: data?.type || IncomeType.EMPLOYMENT,
 						profileId: profileData?.id || "",
+						isActive: true,
 				  });
 
 			if (!res.isSuccess) {
@@ -132,21 +136,23 @@ const ManageIncomeDialog = ({
 					t("ProfilePage.AddIncomeDialog.messages.defaultSuccessMessage")
 			);
 
-			if (isEditMode) {
-				// Update the existing income in the profile data
-				setProfileData({
-					incomes: profileData.incomes.map((income) =>
-						income.id === defaultValues?.id
-							? (res.data as MonthlyIncome)
-							: income
-					),
-				});
-			} else {
-				// Add the new income to the profile data
-				setProfileData({
-					incomes: [...profileData.incomes, res.data as MonthlyIncome],
-				});
-			}
+			await refetchProfileData();
+
+			// if (isEditMode) {
+			// 	// Update the existing income in the profile data
+			// 	setProfileData({
+			// 		incomes: profileData.incomes.map((income) =>
+			// 			income.id === defaultValues?.id
+			// 				? (res.data as MonthlyIncome)
+			// 				: income
+			// 		),
+			// 	});
+			// } else {
+			// 	// Add the new income to the profile data
+			// 	setProfileData({
+			// 		incomes: [...profileData.incomes, res.data as MonthlyIncome],
+			// 	});
+			// }
 
 			reset();
 			onClose();
@@ -193,10 +199,8 @@ const ManageIncomeDialog = ({
 									{t("ProfilePage.AddIncomeDialog.addIncomeButton")}
 								</span>
 								<span
-									className={`text-sm ${
-										canAddMore
-											? "text-center text-muted-foreground"
-											: "text-red-500/70"
+									className={`text-sm text-center ${
+										canAddMore ? "text-muted-foreground" : "text-red-500/70"
 									}`}
 								>
 									{canAddMore
