@@ -145,9 +145,9 @@ const ManageIncomeDialog = ({
 		>
 			<DialogTrigger asChild>
 				{dialogTrigger || (
-					<div className="flex flex-col items-start gap-1 justify-between w-full md:w-32 ">
+					<div className="flex flex-col items-start gap-1 justify-between w-full md:w-36 ">
 						<Card
-							className={`w-full md:w-32 p-0 max-w-sm h-36 items-center justify-center ${
+							className={`w-full p-1 max-w-sm h-36 items-center justify-center ${
 								canAddMore
 									? "cursor-pointer hover:bg-secondary/20"
 									: "opacity-40 cursor-not-allowed select-none"
