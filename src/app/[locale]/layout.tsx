@@ -6,6 +6,7 @@ import { Outfit } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme/theme-providder";
 import { Toaster } from "@/components/ui/sonner";
+import { ReactQueryClientProvider } from "@/lib/tanstack-query/tanstack-query-provider";
 
 const font = Outfit({
 	variable: "--font-sans",
@@ -31,14 +32,19 @@ export default async function LocaleLayout({
 	}
 
 	return (
-		<html lang={locale} className={font.className} suppressHydrationWarning>
-			<head />
-			<body suppressHydrationWarning className={`${font.variable} antialiased`}>
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-					<NextIntlClientProvider>{children}</NextIntlClientProvider>
-					<Toaster />
-				</ThemeProvider>
-			</body>
-		</html>
+		<ReactQueryClientProvider>
+			<html lang={locale} className={font.className} suppressHydrationWarning>
+				<head />
+				<body
+					suppressHydrationWarning
+					className={`${font.variable} antialiased`}
+				>
+					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+						<NextIntlClientProvider>{children}</NextIntlClientProvider>
+						<Toaster />
+					</ThemeProvider>
+				</body>
+			</html>
+		</ReactQueryClientProvider>
 	);
 }

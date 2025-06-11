@@ -23,14 +23,25 @@ model Profile {
   @@map("profiles")
 }
 
+
+enum IncomeType {
+  EMPLOYMENT     // Salaries, wages, bonuses
+  FREELANCE      // Gig work, self-employed jobs
+  BUSINESS       // Business profits, side hustles
+  RENTAL         // Property or equipment rent
+  INVESTMENT     // Dividends, interest, capital gains
+  OTHER          // Gifts, lottery, misc.
+}
 model MonthlyIncome {
   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   profile     Profile   @relation(fields: [profileId], references: [id])
   profileId   String    @map("profile_id") @db.Uuid
   amount      Float     @map("amount") @db.DoublePrecision
-  description String? @map("description")
-  
+  description String? @map("description") @db.Text
+  emoji String? @map("emoji") @db.Text
+  type       IncomeType @default(OTHER)
+
   @@map("monthly_incomes")
 }
 

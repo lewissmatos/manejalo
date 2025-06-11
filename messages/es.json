@@ -93,7 +93,10 @@
 		"fullName": "Nombre completo",
 		"phoneNumber": "Número de teléfono",
 		"save": "Guardar",
-		"amount": "Monto"
+		"amount": "Monto",
+		"type": "Tipo",
+		"category": "Categoría",
+		"confirm": "Confirmar"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
@@ -132,17 +135,41 @@
 		"title": "Perfil",
 		"profileNotFound": "Perfil no encontrado",
 		"profileTotalMonthlyIncomeWithValue": "Ingresos totales mensuales: {value}",
-		"addIncomeButton": "Agregar ingreso",
 		"myMonthlyIncomes": "Mis ingresos mensuales",
 		"subtitle": "Administra tu información personal y preferencias.",
 		"yearsWithValue": "{years} años",
-		"ProfileInfoSection": {},
 		"AddIncomeDialog": {
+			"addIncomeButton": "Agregar ingreso",
+			"addIncomeInfo": "Puedes agregar hasta 5 ingresos mensuales.",
+			"limitReached": "Límite alcanzado. No puedes agregar más ingresos.",
 			"title": "Agregar ingreso",
-			"subtitle": "Ingresa los detalles de tu ingreso mensual."
+			"subtitle": "Ingresa los detalles de tu ingreso mensual.",
+			"messages": {
+				"defaultSuccessMessage": "Ingreso agregado exitosamente.",
+				"defaultErrorMessage": "Hubo un error al agregar tu ingreso. Por favor, inténtalo de nuevo."
+			},
+			"emoji": "Emoji"
+		},
+		"DeleteIncomeDialog": {
+			"title": "Eliminar ingreso",
+			"subtitle": "¿Estás seguro de que deseas eliminar este ingreso?",
+			"deleteButton": "Eliminar",
+			"cancelButton": "Cancelar",
+			"messages": {
+				"deleteDefaultSuccessMessage": "Ingreso eliminado exitosamente.",
+				"deleteDefaultErrorMessage": "Hubo un error al eliminar tu ingreso. Por favor, inténtalo de nuevo."
+			}
 		},
 		"editProfileButton": "Editar perfil",
 		"changePasswordButton": "Cambiar contraseña",
 		"deleteAccountButton": "Eliminar cuenta"
+	},
+	"IncomeTypes": {
+		"employment": "Empleo",
+		"business": "Negocios",
+		"freelance": "Freelance",
+		"investment": "Inversión",
+		"rental": "Alquiler",
+		"other": "Otro"
 	}
 }
