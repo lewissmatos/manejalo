@@ -23,13 +23,6 @@ export const login = async (
 	const supabase = await createServerSupabaseClient();
 	const cookieStore = await cookies();
 
-	cookieStore.set("is-authenticated", "true", {
-		httpOnly: true,
-		path: "/",
-		sameSite: "lax",
-		secure: process.env.NODE_ENV === "production",
-	});
-
 	try {
 		const { error: signUpError, data: signUpData } =
 			await supabase.auth.signInWithPassword({ email, password });
@@ -48,10 +41,28 @@ export const login = async (
 			include: { incomes: true },
 		});
 
+		if (!profilePrisma) {
+			throw new Error(t("messages.profileNotFound"));
+		}
+
 		const userName =
 			profilePrisma?.fullName?.split(" ")?.[0] ||
 			email.split("@")?.[0] ||
 			"bro";
+
+		cookieStore.set("is-authenticated", "true", {
+			httpOnly: true,
+			path: "/",
+			sameSite: "lax",
+			secure: process.env.NODE_ENV === "production",
+		});
+
+		cookieStore.set("profile-id", profilePrisma.id!, {
+			httpOnly: true,
+			path: "/",
+			sameSite: "lax",
+			secure: process.env.NODE_ENV === "production",
+		});
 
 		return {
 			data: {

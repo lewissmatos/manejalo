@@ -1,0 +1,96 @@
+{
+	"es": [
+		{
+			"name": "General",
+			"description": "Gastos generales que no encajan en otras categorías.",
+			"emoji": "💸"
+		},
+		{
+			"name": "Salud",
+			"description": "Gastos relacionados con la salud, como consultas médicas y medicamentos.",
+			"emoji": "🏥"
+		},
+		{
+			"name": "Tecnología",
+			"description": "Compras de dispositivos electrónicos, software y servicios tecnológicos.",
+			"emoji": "🤖"
+		},
+		{
+			"name": "Supermercado",
+			"description": "Compras de alimentos y productos de uso diario.",
+			"emoji": "🧼"
+		},
+		{
+			"name": "Transporte",
+			"description": "Gastos de transporte, como gasolina, transporte público y taxis.",
+			"emoji": "📱"
+		},
+		{
+			"name": "Vivienda",
+			"description": "Gastos relacionados con la vivienda, como alquiler o hipoteca.",
+			"emoji": "🏠"
+		},
+		{
+			"name": "Entretenimiento",
+			"description": "Gastos en actividades recreativas, como cine, conciertos y eventos.",
+			"emoji": "🎲"
+		},
+		{
+			"name": "Ahorros",
+			"description": "Dinero reservado para el futuro, inversiones o emergencias.",
+			"emoji": "💰"
+		},
+		{
+			"name": "Suscripciones",
+			"description": "Pagos recurrentes por servicios como streaming, productos o membresías.",
+			"emoji": "💳"
+		}
+	],
+	"en": [
+		{
+			"name": "General",
+			"description": "General expenses that do not fit into other categories.",
+			"emoji": "💸"
+		},
+		{
+			"name": "Health",
+			"description": "Expenses related to health, such as medical consultations and medications.",
+			"emoji": "🏥"
+		},
+		{
+			"name": "Technology",
+			"description": "Purchases of electronic devices, software, and technology services.",
+			"emoji": "🤖"
+		},
+		{
+			"name": "Supermarket",
+			"description": "Purchases of food and daily use products.",
+			"emoji": "🧼"
+		},
+		{
+			"name": "Transport",
+			"description": "Transportation expenses, such as fuel, public transport, and taxis.",
+			"emoji": "📱"
+		},
+		{
+			"name": "Housing",
+			"description": "Expenses related to housing, such as rent or mortgage.",
+			"emoji": "🏠"
+		},
+		{
+			"name": "Entertainment",
+			"description": "Expenses on recreational activities, such as movies, concerts, and events.",
+			"emoji": "🎲"
+		},
+		{
+			"name": "Savings",
+			"description": "Money set aside for the future, investments, or emergencies.",
+			"emoji": "💰"
+		},
+		{
+			"name": "Subscriptions",
+			"description": "Recurring payments for services like streaming, products, or memberships.",
+			"emoji": "💳"
+		}
+	]
+}

@@ -94,17 +94,20 @@
 		"phoneNumber": "Número de teléfono",
 		"save": "Guardar",
 		"amount": "Monto",
+		"estimation": "Estimación",
 		"type": "Tipo",
 		"category": "Categoría",
 		"confirm": "Confirmar",
 		"disabled": "Deshabilitado",
-		"enabled": "Habilitado"
+		"enabled": "Habilitado",
+		"name": "Nombre",
+		"emoji": "Emoji",
+		"description": "Descripción"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
 		"hidePassword": "Ocultar contraseña",
-		"selectedDateWithValue": "Fecha seleccionada: {date}",
-		"description": "Descripción"
+		"selectedDateWithValue": "Fecha seleccionada: {date}"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -149,8 +152,7 @@
 			"messages": {
 				"defaultSuccessMessage": "Ingreso agregado exitosamente.",
 				"defaultErrorMessage": "Hubo un error al agregar tu ingreso. Por favor, inténtalo de nuevo."
-			},
-			"emoji": "Emoji"
+			}
 		},
 		"MonthlyIncomeCard": {
 			"messages": {
@@ -170,5 +172,29 @@
 		"investment": "Inversión",
 		"rental": "Alquiler",
 		"other": "Otro"
+	},
+	"MyBudgetsPage": {
+		"messages": {
+			"createSuccessMessage": "Presupuesto creado exitosamente.",
+			"createErrorMessage": "Hubo un error al crear el presupuesto. Por favor, inténtalo de nuevo.",
+			"deleteSuccessMessage": "Presupuesto eliminado exitosamente.",
+			"deleteErrorMessage": "Hubo un error al eliminar el presupuesto. Por favor, inténtalo de nuevo.",
+			"updateSuccessMessage": "Presupuesto actualizado exitosamente.",
+			"updateErrorMessage": "Hubo un error al actualizar el presupuesto. Por favor, inténtalo de nuevo.",
+			"defaultErrorMessage": "Hubo un error al obtener tus presupuestos. Por favor, inténtalo de nuevo."
+		},
+		"BudgetCategoryCard": {
+			"ConfirmDeletionDialog": {
+				"title": "Confirmar eliminación",
+				"subtitle": "¿Estás seguro de que deseas eliminar este presupuesto? Esta acción no se puede deshacer."
+			}
+		},
+		"addBudgetCategoryButton": "Añadir categoría",
+		"addBudgetCategoryInfo": "Puedes agregar hasta 12 categorías a tu presupuesto.",
+		"limitReached": "Has alcanzado el límite de 12 categorías.",
+		"ManageBudgetCategoryDialog": {
+			"title": "Administrar categoría de presupuesto",
+			"subtitle": "Aquí puedes agregar, editar o eliminar categorías de tu presupuesto."
+		}
 	}
 }

@@ -22,11 +22,12 @@ export const getProfileData = async (
 
 		return {
 			data: res,
+			// TODO
 			message: "",
 			isSuccess: true,
 		};
 	} catch (error) {
-		console.error("Error adding monthly income:", error);
+		console.error(error);
 		return {
 			data: null,
 			message: error instanceof Error ? error.message : "",

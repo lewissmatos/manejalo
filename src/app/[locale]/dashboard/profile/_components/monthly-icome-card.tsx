@@ -2,15 +2,6 @@
 
 import React, { useTransition } from "react";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-import {
 	Card,
 	CardContent,
 	CardFooter,
@@ -19,13 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatters";
-import {
-	ArrowLeftRight,
-	CircleAlert,
-	CircleCheck,
-	CircleMinus,
-	PenIcon,
-} from "lucide-react";
+import { ArrowLeftRight, CircleMinus, PenIcon } from "lucide-react";
 import { MonthlyIncome } from "@/generated/prisma";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import {
@@ -35,7 +20,6 @@ import {
 } from "@/components/ui/tooltip";
 import ManageIncomeDialog from "./manage-income-dialog";
 import { useTranslations } from "next-intl";
-import { useDisclosure } from "@/hooks/useDisclosure";
 import { setMonthlyIncomeStatus } from "@/app/_server-actions/(monthly-incomes)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "@/components/ui/button-loading";

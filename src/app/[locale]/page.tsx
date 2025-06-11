@@ -1,7 +1,7 @@
 import { ThemeSelector } from "@/components/theme/theme-selector";
 import { getTranslations } from "next-intl/server";
 
-import features from "../../../data/app-features.json";
+import features from "@/lib/constants/app-features.json";
 import * as React from "react";
 import MainPageBottomContent from "./_components/main-page-bottom-content";
 import LanguageSelector from "@/components/language/language-selector";

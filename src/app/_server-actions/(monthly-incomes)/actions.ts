@@ -6,7 +6,7 @@ import { ResponseModel } from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 type ResponseData = MonthlyIncome | null;
 
-export const addMonthlyIncome = async (
+export const createMonthlyIncome = async (
 	payload: Omit<MonthlyIncome, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
 	const t = await getTranslations("ProfilePage.AddIncomeDialog");

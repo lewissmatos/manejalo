@@ -19,6 +19,7 @@ model Profile {
   userId      String?   @unique @map("user_id") @db.Uuid
   email       String   @unique @map("email")
   incomes MonthlyIncome[]
+  budgetCategories BudgetCategory[]
   totalMonthlyIncome Float? @default(0) @map("total_monthly_income") @db.DoublePrecision
 
   @@map("profiles")
@@ -47,13 +48,15 @@ model MonthlyIncome {
   @@map("monthly_incomes")
 }
 
-// model BudgetCategory {
-//   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-//   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-//   name        String    @unique
-//   description String?   @map("description")
-//   profileId      String?   @map("profile_id") @db.Uuid
-//   estimation   Float?    @map("estimation") @db.DoublePrecision
+model BudgetCategory {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  name        String    @unique  @map("name") @db.Text
+  description String?   @map("description")
+  emoji String? @map("emoji") @db.Text
+  profile     Profile   @relation(fields: [profileId], references: [id])
+  profileId      String   @map("profile_id") @db.Uuid
+  estimation   Float    @map("estimation") @db.DoublePrecision
 
-//   // @@map("budget_categories")
-// } 
+  @@map("budget_categories")
+} 

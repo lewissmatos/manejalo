@@ -18,14 +18,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PlusCircle } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IncomeType, MonthlyIncome } from "@/generated/prisma";
+import { BudgetCategory, IncomeType } from "@/generated/prisma";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	createMonthlyIncome,
-	updateMonthlyIncome,
-} from "@/app/_server-actions/(monthly-incomes)/actions";
 import { useAtomValue } from "jotai/react";
 import { updateProfileDataAtom } from "@/lib/jotai/auth-atom";
 import { toast } from "sonner";
@@ -38,19 +34,25 @@ import {
 } from "@/components/ui/select";
 
 import incomeEmojis from "@/lib/constants/emojis.json";
+import {
+	addBudgetCategory,
+	updateBudgetCategory,
+} from "@/app/_server-actions/(budget-categories)/actions";
 
 type Props = {
 	canAddMore?: boolean;
 	dialogTrigger?: React.ReactNode;
-	defaultValues?: Partial<MonthlyIncome>;
-	refetchProfileData: () => void;
+	defaultValues?: Partial<BudgetCategory>;
+	refetchBudgetCategories: () => void;
 };
 
-const ManageIncomeDialog = ({
+type Input = Partial<BudgetCategory>;
+
+const ManageBudgetCategoryDialog = ({
 	canAddMore = true,
 	dialogTrigger,
 	defaultValues,
-	refetchProfileData,
+	refetchBudgetCategories,
 }: Props) => {
 	const t = useTranslations();
 
@@ -64,9 +66,8 @@ const ManageIncomeDialog = ({
 		reset,
 		formState: { isValid, isSubmitting },
 		setValue,
-	} = useForm<Partial<MonthlyIncome>>({
+	} = useForm<Input>({
 		defaultValues: {
-			type: IncomeType.EMPLOYMENT,
 			emoji: incomeEmojis[0],
 			...defaultValues,
 		},
@@ -74,48 +75,42 @@ const ManageIncomeDialog = ({
 
 	const isEditMode = !!defaultValues?.id;
 
-	const onSubmit: SubmitHandler<Partial<MonthlyIncome>> = async (data) => {
+	const onSubmit: SubmitHandler<Input> = async (data) => {
 		if (
 			!profileData?.id ||
-			!data.amount ||
-			data.amount <= 0 ||
-			!data.description
+			!data.estimation ||
+			data.estimation <= 0 ||
+			!data.description ||
+			!data.name
 		) {
-			throw new Error(t("ProfilePage.AddIncomeDialog.errors.profileNotFound"));
+			return;
 		}
 
 		try {
 			const res = !isEditMode
-				? await createMonthlyIncome({
-						amount: data.amount || 0,
+				? await addBudgetCategory({
+						estimation: data.estimation || 0,
 						description: data.description?.trim() || "",
+						name: data.name.trim(),
 						emoji: data?.emoji || incomeEmojis[0],
-						type: data?.type || IncomeType.EMPLOYMENT,
 						profileId: profileData?.id || "",
-						isActive: true,
 				  })
-				: await updateMonthlyIncome(defaultValues?.id!, {
-						amount: data.amount || 0,
+				: await updateBudgetCategory(defaultValues?.id!, {
+						estimation: data.estimation || 0,
 						description: data.description?.trim() || "",
+						name: data.name.trim(),
 						emoji: data?.emoji || incomeEmojis[0],
-						type: data?.type || IncomeType.EMPLOYMENT,
 						profileId: profileData?.id || "",
-						isActive: true,
 				  });
 
 			if (!res.isSuccess) {
 				throw new Error(
-					res.message ||
-						t("ProfilePage.AddIncomeDialog.messages.defaultErrorMessage")
+					res.message || t("MyBudgetsPage.messages.defaultErrorMessage")
 				);
 			}
-			toast.success(
-				res.message ||
-					t("ProfilePage.AddIncomeDialog.messages.defaultSuccessMessage")
-			);
+			toast.success(res.message);
 
-			await refetchProfileData();
-
+			await refetchBudgetCategories();
 			reset();
 			onClose();
 		} catch (err) {
@@ -147,7 +142,7 @@ const ManageIncomeDialog = ({
 				{dialogTrigger || (
 					<div className="flex flex-col items-start gap-1 justify-between w-full md:w-32 ">
 						<Card
-							className={`w-full md:w-32 p-0 max-w-sm h-36 items-center justify-center ${
+							className={`w-full md:w-32 p-0 max-w-sm h-40 items-center justify-center ${
 								canAddMore
 									? "cursor-pointer hover:bg-secondary/20"
 									: "opacity-40 cursor-not-allowed select-none"
@@ -156,7 +151,7 @@ const ManageIncomeDialog = ({
 							<CardContent className="flex items-center justify-between gap-2 flex-col p-0">
 								<PlusCircle size={30} className="text-primary/80" />
 								<span className="text-sm text-primary/80 font-semibold">
-									{t("ProfilePage.AddIncomeDialog.addIncomeButton")}
+									{t("MyBudgetsPage.addBudgetCategoryButton")}
 								</span>
 								<span
 									className={`text-sm text-center ${
@@ -164,8 +159,8 @@ const ManageIncomeDialog = ({
 									}`}
 								>
 									{canAddMore
-										? t("ProfilePage.AddIncomeDialog.addIncomeInfo")
-										: t("ProfilePage.AddIncomeDialog.limitReached")}
+										? t("MyBudgetsPage.addBudgetCategoryInfo")
+										: t("MyBudgetsPage.limitReached")}
 								</span>
 							</CardContent>
 						</Card>
@@ -175,30 +170,32 @@ const ManageIncomeDialog = ({
 			<DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
-						<DialogTitle>{t("ProfilePage.AddIncomeDialog.title")}</DialogTitle>
+						<DialogTitle>
+							{t("MyBudgetsPage.ManageBudgetCategoryDialog.title")}
+						</DialogTitle>
 						<DialogDescription>
-							{t("ProfilePage.AddIncomeDialog.subtitle")}
+							{t("MyBudgetsPage.ManageBudgetCategoryDialog.subtitle")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 mt-2">
+						<div className="grid gap-3">
+							<Label htmlFor="name">{t("common.name")}</Label>
+							<Input
+								id="estimation"
+								{...register("name", {
+									required: true,
+								})}
+							/>
+						</div>
 						<div className="grid gap-3">
 							<Label htmlFor="description">{t("common.description")}</Label>
 							<Textarea
 								id="description"
 								{...register("description", { required: true })}
-								maxLength={60}
+								maxLength={150}
 							/>
 						</div>
-						<div className="grid gap-3">
-							<Label htmlFor="amount">{t("common.amount")}</Label>
-							<Input
-								id="amount"
-								type="number"
-								{...register("amount", { required: true, valueAsNumber: true })}
-								step="1"
-								placeholder="DOP 0.00"
-							/>
-						</div>
+
 						<div className="flex flex-row gap-4">
 							<div className="grid gap-3">
 								<Label>{t("common.emoji")}</Label>
@@ -224,25 +221,18 @@ const ManageIncomeDialog = ({
 									</SelectContent>
 								</Select>
 							</div>
-							<div className="grid gap-3">
-								<Label>{t("common.type")}</Label>
-								<Select
-									defaultValue={defaultValues?.type || IncomeType.EMPLOYMENT}
-									onValueChange={(value) => {
-										setValue("type", value as IncomeType);
-									}}
-								>
-									<SelectTrigger className="w-32 bg-background text-foreground">
-										<SelectValue />
-									</SelectTrigger>
-									<SelectContent>
-										{Object.values(IncomeType).map((type) => (
-											<SelectItem key={type} value={type}>
-												{t(`IncomeTypes.${type.toLowerCase()}`)}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
+							<div className="grid gap-3 w-full">
+								<Label htmlFor="estimation">{t("common.estimation")}</Label>
+								<Input
+									id="estimation"
+									type="number"
+									{...register("estimation", {
+										required: true,
+										valueAsNumber: true,
+									})}
+									step="1"
+									placeholder="DOP 0.00"
+								/>
 							</div>
 						</div>
 					</div>
@@ -266,4 +256,4 @@ const ManageIncomeDialog = ({
 	);
 };
 
-export default ManageIncomeDialog;
+export default ManageBudgetCategoryDialog;

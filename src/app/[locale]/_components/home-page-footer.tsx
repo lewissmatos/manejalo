@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import React from "react";
-import contacts from "../../../../data/contacts-info.json";
+import contacts from "@/lib/constants/contacts-info.json";
 import { ExternalLink } from "lucide-react";
 const HomePageFooter = async () => {
 	const t = await getTranslations("HomePageFooter");

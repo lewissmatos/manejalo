@@ -94,17 +94,20 @@
 		"phoneNumber": "Phone Number",
 		"save": "Save",
 		"amount": "Amount",
+		"estimation": "Estimation",
 		"type": "Type",
 		"category": "Category",
 		"confirm": "Confirm",
 		"disabled": "Disabled",
-		"enabled": "Enabled"
+		"enabled": "Enabled",
+		"name": "Name",
+		"emoji": "Emoji",
+		"description": "Description"
 	},
 	"ui": {
 		"showPassword": "Show Password",
 		"hidePassword": "Hide Password",
-		"selectedDateWithValue": "Selected Date: {date}",
-		"description": "Description"
+		"selectedDateWithValue": "Selected Date: {date}"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -149,8 +152,7 @@
 			"messages": {
 				"defaultSuccessMessage": "Income added successfully!",
 				"defaultErrorMessage": "There was an error adding your income. Please try again."
-			},
-			"emoji": "Emoji"
+			}
 		},
 		"MonthlyIncomeCard": {
 			"messages": {
@@ -170,5 +172,29 @@
 		"investment": "Investment",
 		"rental": "Rental",
 		"other": "Other"
+	},
+	"MyBudgetsPage": {
+		"messages": {
+			"createSuccessMessage": "Budget created successfully!",
+			"createErrorMessage": "There was an error creating your budget. Please try again.",
+			"updateSuccessMessage": "Budget updated successfully!",
+			"updateErrorMessage": "There was an error updating your budget. Please try again.",
+			"deleteSuccessMessage": "Budget deleted successfully!",
+			"deleteErrorMessage": "There was an error deleting your budget. Please try again.",
+			"defaultErrorMessage": "There was an error getting your budgets. Please, try again."
+		},
+		"BudgetCategoryCard": {
+			"ConfirmDeletionDialog": {
+				"title": "Confirm Deletion",
+				"subtitle": "Are you sure you want to delete this category? This action cannot be undone."
+			}
+		},
+		"addBudgetCategoryButton": "Add Category",
+		"addBudgetCategoryInfo": "You can add up to 12 categories to your budget.",
+		"limitReached": "You have reached the limit of 12 categories.",
+		"ManageBudgetCategoryDialog": {
+			"title": "Manage Budget Category",
+			"subtitle": "Add or remove categories from your budget."
+		}
 	}
 }

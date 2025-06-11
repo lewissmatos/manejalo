@@ -5,19 +5,29 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getTranslations } from "next-intl/server";
 
-import defaultCategories from "../../../../../../data/default-categories.json";
+import defaultCategories from "@/lib/constants/recommended-categories.json";
 import RecommendedCategoryCard from "./recommended-category-card";
-const RecommendedCategories = async () => {
-	const t = await getTranslations("MyBudget.RecommendedCategories");
+import { useLocale } from "next-intl";
+import { useTranslations } from "use-intl";
+import { BudgetCategory } from "@/generated/prisma";
+
+type Props = {
+	refetchCategories: () => void;
+	data: BudgetCategory[];
+};
+const RecommendedCategories = ({ refetchCategories, data }: Props) => {
+	const t = useTranslations("MyBudget.RecommendedCategories");
+	const locale = useLocale();
+	const currentCategories =
+		defaultCategories[locale as keyof typeof defaultCategories];
+
 	return (
 		<section id="default-categories" className="flex flex-col my-2">
 			<Accordion
 				type="single"
 				collapsible
-				className="w-full border border-secondary/50 rounded-lg shadow-md px-2"
-				// defaultValue="item-1"
+				className="w-full border border/50 rounded-lg shadow-md px-2"
 			>
 				<AccordionItem value="item-1">
 					<AccordionTrigger unselectable="on">
@@ -28,13 +38,16 @@ const RecommendedCategories = async () => {
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col gap-4 text-balance">
 						<div className="flex flex-wrap gap-4 overflow-y-auto max-h-96">
-							{defaultCategories.map(({ name, description }) => (
-								<RecommendedCategoryCard
-									key={name}
-									title={name}
-									description={description}
-								/>
-							))}
+							{currentCategories
+								.filter((x) => !data?.map((c) => c.name).includes(x.name))
+								.map(({ name, description }) => (
+									<RecommendedCategoryCard
+										key={name}
+										title={name}
+										description={description}
+										refetchBudgetCategories={refetchCategories}
+									/>
+								))}
 						</div>
 					</AccordionContent>
 				</AccordionItem>
