@@ -10,7 +10,7 @@ const CurrentDateFormatted = dynamic(
 );
 const Overview = () => {
 	return (
-		<div className="h-96 px-4">
+		<div className="h-96">
 			<CurrentDateFormatted />
 		</div>
 	);

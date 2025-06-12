@@ -34,7 +34,7 @@ const RecommendedCategoryCard = ({
 				<div className="flex justify-end">
 					<ManageBudgetCategoryDialog
 						dialogTrigger={
-							<Button variant="default" size={"sm"} className="w-full mt-2">
+							<Button variant="ghost" size={"sm"} className="w-full mt-2">
 								{t("actionTitle")}
 							</Button>
 						}

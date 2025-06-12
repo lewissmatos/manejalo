@@ -1,13 +1,7 @@
 "use client";
 
 import React from "react";
-import ManageBudgetCategoryDialog from "./manage-budget-category-dialog";
-import BudgetItemCard from "./budget-category-card";
-import { useAtom, useAtomValue } from "jotai/react";
-import { authAtom } from "@/lib/jotai/auth-atom";
-import { useQuery } from "@tanstack/react-query";
-import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
-import { useTranslations } from "next-intl";
+import BudgetCategoryCard from "./budget-category-card";
 import { BudgetCategory } from "@/generated/prisma";
 
 type Props = {
@@ -15,22 +9,11 @@ type Props = {
 	data: BudgetCategory[];
 	refetchCategories: () => void;
 };
-const BudgetCategoryList = ({
-	isFetching,
-	data = [],
-	refetchCategories,
-}: Props) => {
-	const t = useTranslations();
-
+const BudgetCategoryList = ({ data = [], refetchCategories }: Props) => {
 	return (
 		<>
-			{isFetching && (
-				<div className="flex p-4 h-24 items-center justify-center ">
-					<p className="text-sm text-gray-500">{t("common.loading")}</p>
-				</div>
-			)}
 			{data?.map((category) => (
-				<BudgetItemCard
+				<BudgetCategoryCard
 					key={category.name}
 					category={category}
 					refetchBudgetCategories={refetchCategories}

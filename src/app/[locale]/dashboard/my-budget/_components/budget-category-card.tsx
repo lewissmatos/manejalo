@@ -1,5 +1,5 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useOptimistic, useTransition } from "react";
 
 import {
 	Card,
@@ -10,9 +10,8 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getTranslations } from "next-intl/server";
 import { formatCurrency } from "@/lib/formatters";
-import { CircleMinus, PenIcon } from "lucide-react";
+import { CircleMinus, PenIcon, Star } from "lucide-react";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { BudgetCategory } from "@/generated/prisma";
 import { useTranslations } from "next-intl";
@@ -31,29 +30,71 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { ButtonLoading } from "@/components/ui/button-loading";
-import { deleteBudgetCategory } from "@/app/_server-actions/(budget-categories)/actions";
+import {
+	deleteBudgetCategory,
+	markBudgetCategoryAsFavorite,
+} from "@/app/_server-actions/(budget-categories)/actions";
 import { toast } from "sonner";
 
 type Props = {
 	category: BudgetCategory;
 	refetchBudgetCategories: () => void;
 };
-const BudgetItemCard = ({ category, refetchBudgetCategories }: Props) => {
+
+const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 	const t = useTranslations("MyBudget.RecommendedCategories.Card");
 	const { description, estimation, emoji, name } = category;
+
+	const [isPending, startTransition] = useTransition();
+	const onMarkAsFavorite = async () => {
+		startTransition(async () => {
+			try {
+				const res = await markBudgetCategoryAsFavorite(
+					category.id,
+					!category.isFavorite
+				);
+
+				if (!res.isSuccess) {
+					toast.error(res.message || t("common.error.defaultErrorMessage"));
+					return;
+				}
+
+				await refetchBudgetCategories();
+			} catch (error) {
+				console.error("Error marking budget category as favorite:", error);
+				toast.error(
+					error instanceof Error
+						? error.message
+						: t("error.defaultErrorMessage")
+				);
+			}
+		});
+	};
 	return (
 		<Card className="w-full md:w-72 p-2 max-w-sm h-40 flex flex-col justify-between gap-1">
-			<CardHeader className="p-0 flex flex-row gap-2 items-center ">
+			<CardHeader className="p-0 flex flex-row gap-2 items-center justify-between">
 				{emoji ? (
-					<div className="size-8">
+					<div className="size-8 ">
 						<Avatar className="size-8 rounded-full border-[2.5px] border-primary/50 flex items-center justify-center">
 							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
 						</Avatar>
 					</div>
 				) : null}
-				<CardTitle className="line-clamp-2 max-w-72 text-primary font-semibold text-xl">
+				<CardTitle className="line-clamp-2 w-full text-primary font-semibold flex-1 flex items-start">
 					{name}
 				</CardTitle>
+				<ButtonLoading
+					isLoading={isPending}
+					size="icon"
+					variant={"ghost"}
+					onClick={onMarkAsFavorite}
+				>
+					<Star
+						className={
+							category.isFavorite ? "fill-primary text-primary" : "text-primary"
+						}
+					/>
+				</ButtonLoading>
 			</CardHeader>
 			<CardContent className="p-0">
 				<Tooltip>
@@ -173,4 +214,4 @@ const ConfirmDeletionDialog = ({
 	);
 };
 
-export default BudgetItemCard;
+export default BudgetCategoryCard;

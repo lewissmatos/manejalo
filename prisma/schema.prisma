@@ -42,7 +42,7 @@ model MonthlyIncome {
   amount      Float     @map("amount") @db.DoublePrecision
   description String? @map("description") @db.Text
   emoji String? @map("emoji") @db.Text
-  isActive    Boolean?   @default(true) @map("is_active")
+  isActive    Boolean?   @default(true) @map("status")
   type       IncomeType @default(OTHER)
 
   @@map("monthly_incomes")
@@ -57,6 +57,7 @@ model BudgetCategory {
   profile     Profile   @relation(fields: [profileId], references: [id])
   profileId      String   @map("profile_id") @db.Uuid
   estimation   Float    @map("estimation") @db.DoublePrecision
+  isFavorite    Boolean? @default(false) @map("favorite")
 
   @@map("budget_categories")
 } 

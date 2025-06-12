@@ -10,7 +10,7 @@ const Profile = async () => {
 	const t = await getTranslations("ProfilePage");
 
 	return (
-		<section id="profile-page" className="flex flex-col  justify-center">
+		<section id="profile-page" className="flex flex-col justify-center">
 			<ProfileInfoSection />
 		</section>
 	);

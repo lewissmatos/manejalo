@@ -13,7 +13,11 @@ export const getBudgetCategories = async (
 	try {
 		const res = await prisma.budgetCategory.findMany({
 			where: { profileId },
-			orderBy: { createdAt: "desc" },
+			orderBy: [
+				{ isFavorite: "desc" },
+				{ estimation: "desc" },
+				{ createdAt: "desc" },
+			],
 		});
 
 		return {
@@ -113,6 +117,35 @@ export const deleteBudgetCategory = async (
 		return {
 			data: null,
 			message: t("deleteErrorMessage"),
+			isSuccess: false,
+		};
+	}
+};
+
+export const markBudgetCategoryAsFavorite = async (
+	categoryId: string,
+	isFavorite: boolean
+): Promise<ResponseModel<ResponseData>> => {
+	const t = await getTranslations("MyBudgetsPage.messages");
+
+	try {
+		const res = await prisma.budgetCategory.update({
+			where: { id: categoryId },
+			data: { isFavorite },
+		});
+
+		return {
+			data: res,
+			message: isFavorite
+				? t("markAsFavoriteSuccessMessage")
+				: t("unmarkAsFavoriteSuccessMessage"),
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error("Error marking budget category as favorite:", error);
+		return {
+			data: null,
+			message: t("defaultErrorMessage"),
 			isSuccess: false,
 		};
 	}

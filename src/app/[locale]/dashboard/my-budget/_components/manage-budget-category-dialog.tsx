@@ -94,6 +94,7 @@ const ManageBudgetCategoryDialog = ({
 						name: data.name.trim(),
 						emoji: data?.emoji || incomeEmojis[0],
 						profileId: profileData?.id || "",
+						isFavorite: false,
 				  })
 				: await updateBudgetCategory(defaultValues?.id!, {
 						estimation: data.estimation || 0,
@@ -101,6 +102,7 @@ const ManageBudgetCategoryDialog = ({
 						name: data.name.trim(),
 						emoji: data?.emoji || incomeEmojis[0],
 						profileId: profileData?.id || "",
+						isFavorite: defaultValues?.isFavorite || false,
 				  });
 
 			if (!res.isSuccess) {

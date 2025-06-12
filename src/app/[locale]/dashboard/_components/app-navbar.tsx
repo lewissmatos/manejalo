@@ -21,7 +21,6 @@ import { useMemo, useState } from "react";
 import LanguageSelector from "@/components/language/language-selector";
 import { ThemeSelector } from "@/components/theme/theme-selector";
 
-// Add hamburger icon for mobile
 import { Menu } from "lucide-react";
 
 const navItems = [
@@ -58,6 +57,12 @@ export default function AppNavBar() {
 		}
 		return null;
 	}, [profile]);
+
+	const handleLogOut = async () => {
+		await logout();
+		router.push("/");
+		await onLogout();
+	};
 
 	return (
 		<nav className="p-4 flex justify-between items-center w-full">
@@ -111,11 +116,7 @@ export default function AppNavBar() {
 								</Button>
 								<Button
 									variant="ghost"
-									onClick={async () => {
-										await onLogout();
-										await logout();
-										router.push("/");
-									}}
+									onClick={handleLogOut}
 									className="w-full justify-between"
 								>
 									{t("logout")}
@@ -185,12 +186,7 @@ export default function AppNavBar() {
 								<Button
 									variant="ghost"
 									className="w-full justify-start"
-									onClick={async () => {
-										await onLogout();
-										await logout();
-										router.push("/");
-										setMobileMenuOpen(false);
-									}}
+									onClick={handleLogOut}
 								>
 									{t("logout")}
 									<LogOut className="ml-2" />

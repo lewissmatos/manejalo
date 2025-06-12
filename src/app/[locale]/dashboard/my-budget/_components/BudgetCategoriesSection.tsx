@@ -8,8 +8,11 @@ import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/a
 import { useAtomValue } from "jotai/react";
 import { authAtom } from "@/lib/jotai/auth-atom";
 import RecommendedCategories from "./recommended-categories";
+import { useTranslations } from "next-intl";
+import Loading from "@/app/[locale]/loading";
 
 const BudgetCategoriesSection = () => {
+	const t = useTranslations();
 	const { profile } = useAtomValue(authAtom);
 
 	const {
@@ -17,7 +20,7 @@ const BudgetCategoriesSection = () => {
 		refetch,
 		isFetching,
 	} = useQuery({
-		queryKey: ["profileData", profile?.id],
+		queryKey: ["budget-categories", profile?.id],
 		queryFn: () => getBudgetCategories(profile?.id || ""),
 		enabled: !!profile?.id,
 	});
@@ -25,7 +28,11 @@ const BudgetCategoriesSection = () => {
 	return (
 		<div className="flex flex-col gap-4">
 			<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mb-4">
-				<ManageBudgetCategoryDialog refetchBudgetCategories={refetch} />
+				{isFetching ? (
+					<Loading />
+				) : (
+					<ManageBudgetCategoryDialog refetchBudgetCategories={refetch} />
+				)}
 				<BudgetCategoryList
 					isFetching={isFetching}
 					data={budgetCategories?.data || []}
