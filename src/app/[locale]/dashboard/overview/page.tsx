@@ -8,6 +8,7 @@ const CurrentDateFormatted = dynamic(
 		ssr: !!false,
 	}
 );
+
 const Overview = () => {
 	return (
 		<div className="h-96">

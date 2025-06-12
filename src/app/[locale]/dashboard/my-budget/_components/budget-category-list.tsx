@@ -5,7 +5,6 @@ import BudgetCategoryCard from "./budget-category-card";
 import { BudgetCategory } from "@/generated/prisma";
 
 type Props = {
-	isFetching: boolean;
 	data: BudgetCategory[];
 	refetchCategories: () => void;
 };

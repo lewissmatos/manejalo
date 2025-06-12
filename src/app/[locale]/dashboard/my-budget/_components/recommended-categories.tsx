@@ -11,14 +11,15 @@ import RecommendedCategoryCard from "./recommended-category-card";
 import { useLocale } from "next-intl";
 import { useTranslations } from "use-intl";
 import { BudgetCategory } from "@/generated/prisma";
+import { getLocale, getTranslations } from "next-intl/server";
 
 type Props = {
 	refetchCategories: () => void;
 	data: BudgetCategory[];
 };
-const RecommendedCategories = ({ refetchCategories, data }: Props) => {
-	const t = useTranslations("MyBudget.RecommendedCategories");
-	const locale = useLocale();
+const RecommendedCategories = async ({ refetchCategories, data }: Props) => {
+	const t = await getTranslations("MyBudget.RecommendedCategories");
+	const locale = await getLocale();
 	const currentCategories =
 		defaultCategories[locale as keyof typeof defaultCategories];
 
