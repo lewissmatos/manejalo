@@ -19,8 +19,9 @@ model Profile {
   userId      String?   @unique @map("user_id") @db.Uuid
   email       String   @unique @map("email")
   incomes MonthlyIncome[]
-  budgetCategories BudgetCategory[]
   totalMonthlyIncome Float? @default(0) @map("total_monthly_income") @db.DoublePrecision
+  budgetCategories BudgetCategory[]
+  totalBudget Float? @default(0) @map("total_budget") @db.DoublePrecision
 
   @@map("profiles")
 }
@@ -58,6 +59,7 @@ model BudgetCategory {
   profileId      String   @map("profile_id") @db.Uuid
   estimation   Float    @map("estimation") @db.DoublePrecision
   isFavorite    Boolean? @default(false) @map("favorite")
+  isActive    Boolean?   @default(true) @map("status")
 
   @@map("budget_categories")
 } 

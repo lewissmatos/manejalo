@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Dialog,
 	DialogClose,
@@ -133,6 +133,14 @@ const ManageIncomeDialog = ({
 		onClose();
 	};
 
+	useEffect(() => {
+		reset({
+			emoji: defaultValues?.emoji || incomeEmojis[0],
+			type: defaultValues?.type || IncomeType.EMPLOYMENT,
+			description: defaultValues?.description || "",
+			amount: defaultValues?.amount || 0,
+		});
+	}, [defaultValues, reset, isOpen]);
 	return (
 		<Dialog
 			open={isOpen && canAddMore}

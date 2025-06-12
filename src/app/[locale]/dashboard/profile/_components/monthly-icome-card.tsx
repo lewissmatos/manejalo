@@ -4,6 +4,7 @@ import React, { useTransition } from "react";
 import {
 	Card,
 	CardContent,
+	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
@@ -20,9 +21,13 @@ import {
 } from "@/components/ui/tooltip";
 import ManageIncomeDialog from "./manage-income-dialog";
 import { useTranslations } from "next-intl";
-import { setMonthlyIncomeStatus } from "@/app/_server-actions/(monthly-incomes)/actions";
+import {
+	deleteMonthlyIncome,
+	setMonthlyIncomeStatus,
+} from "@/app/_server-actions/(monthly-incomes)/actions";
 import { toast } from "sonner";
 import { ButtonLoading } from "@/components/ui/button-loading";
+import ConfirmDeletionDialog from "@/components/common/confirm-deletion-dialog";
 
 type Props = {
 	income: MonthlyIncome;
@@ -43,7 +48,6 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 					throw new Error(res.message);
 				}
 				toast(res.message);
-				console.log(res.message);
 				await refetchProfileData();
 			} catch (error) {
 				toast.error(
@@ -60,7 +64,7 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 	return (
 		<Card
 			className={`w-full md:w-80 p-2 max-w-sm h-36 gap-2 justify-between ${
-				isDisabled ? "opacity-50 " : ""
+				isDisabled ? "opacity-50" : ""
 			}`}
 		>
 			<CardHeader className="p-0 flex flex-row gap-2 items-center ">
@@ -80,19 +84,19 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="p-0 flex flex-row gap-2 items-center">
-				<p className="line-clamp-2 max-w-80 ">
-					{description}{" "}
+				<CardDescription className="line-clamp-2 text-md max-w-72 ">
+					{description || ""}
 					{isDisabled ? (
 						<span className="text-red-500">({t("common.disabled")})</span>
 					) : (
 						""
 					)}
-				</p>
+				</CardDescription>
 			</CardContent>
 			<CardFooter className="flex flex-row gap-2 items-start p-0 justify-between">
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<span className="text-xl text-primary font-semibold max-w-48 truncate">
+						<span className="text-xl text-primary font-semibold max-w-44 truncate">
 							{formatCurrency(amount)}
 						</span>
 					</TooltipTrigger>
@@ -103,15 +107,18 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 					</TooltipContent>
 				</Tooltip>
 				<div className="flex flex-row items-center">
-					<ManageIncomeDialog
-						dialogTrigger={
-							<Button variant="ghost" size={"sm"}>
-								<PenIcon />
-							</Button>
-						}
-						refetchProfileData={refetchProfileData}
-						defaultValues={income}
-					/>
+					{!isDisabled && (
+						<ManageIncomeDialog
+							dialogTrigger={
+								<Button variant="ghost" size={"sm"}>
+									<PenIcon />
+								</Button>
+							}
+							refetchProfileData={refetchProfileData}
+							defaultValues={income}
+							key={income.id}
+						/>
+					)}
 					<ButtonLoading
 						variant="ghost"
 						size={"sm"}
@@ -122,6 +129,11 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 							className={income.isActive ? "text-green-500" : "text-red-500"}
 						/>
 					</ButtonLoading>
+					<ConfirmDeletionDialog
+						itemId={income.id}
+						refetchCallback={refetchProfileData}
+						confirmationCallback={deleteMonthlyIncome}
+					/>
 				</div>
 			</CardFooter>
 		</Card>

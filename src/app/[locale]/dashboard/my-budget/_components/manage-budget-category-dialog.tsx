@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Dialog,
 	DialogClose,
@@ -66,6 +66,7 @@ const ManageBudgetCategoryDialog = ({
 		reset,
 		formState: { isValid, isSubmitting },
 		setValue,
+		watch,
 	} = useForm<Input>({
 		defaultValues: {
 			emoji: incomeEmojis[0],
@@ -95,6 +96,7 @@ const ManageBudgetCategoryDialog = ({
 						emoji: data?.emoji || incomeEmojis[0],
 						profileId: profileData?.id || "",
 						isFavorite: false,
+						isActive: true,
 				  })
 				: await updateBudgetCategory(defaultValues?.id!, {
 						estimation: data.estimation || 0,
@@ -107,7 +109,7 @@ const ManageBudgetCategoryDialog = ({
 
 			if (!res.isSuccess) {
 				throw new Error(
-					res.message || t("MyBudgetsPage.messages.defaultErrorMessage")
+					res.message || t("MyBudgetPage.messages.defaultErrorMessage")
 				);
 			}
 			toast.success(res.message);
@@ -130,6 +132,14 @@ const ManageBudgetCategoryDialog = ({
 		onClose();
 	};
 
+	useEffect(() => {
+		reset({
+			emoji: defaultValues?.emoji || incomeEmojis[0],
+			name: defaultValues?.name || "",
+			description: defaultValues?.description || "",
+			estimation: defaultValues?.estimation || 0,
+		});
+	}, [defaultValues, reset, isOpen]);
 	return (
 		<Dialog
 			open={isOpen && canAddMore}
@@ -153,7 +163,7 @@ const ManageBudgetCategoryDialog = ({
 							<CardContent className="flex items-center justify-between gap-2 flex-col p-0">
 								<PlusCircle size={30} className="text-primary/80" />
 								<span className="text-sm text-primary/80 font-semibold">
-									{t("MyBudgetsPage.addBudgetCategoryButton")}
+									{t("MyBudgetPage.addBudgetCategoryButton")}
 								</span>
 								<span
 									className={`text-sm text-center ${
@@ -161,8 +171,8 @@ const ManageBudgetCategoryDialog = ({
 									}`}
 								>
 									{canAddMore
-										? t("MyBudgetsPage.addBudgetCategoryInfo")
-										: t("MyBudgetsPage.limitReached")}
+										? t("MyBudgetPage.addBudgetCategoryInfo")
+										: t("MyBudgetPage.limitReached")}
 								</span>
 							</CardContent>
 						</Card>
@@ -173,10 +183,10 @@ const ManageBudgetCategoryDialog = ({
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>
 						<DialogTitle>
-							{t("MyBudgetsPage.ManageBudgetCategoryDialog.title")}
+							{t("MyBudgetPage.ManageBudgetCategoryDialog.title")}
 						</DialogTitle>
 						<DialogDescription>
-							{t("MyBudgetsPage.ManageBudgetCategoryDialog.subtitle")}
+							{t("MyBudgetPage.ManageBudgetCategoryDialog.subtitle")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 mt-2">

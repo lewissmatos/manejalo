@@ -173,7 +173,7 @@
 		"rental": "Alquiler",
 		"other": "Otro"
 	},
-	"MyBudgetsPage": {
+	"MyBudgetPage": {
 		"messages": {
 			"createSuccessMessage": "Presupuesto creado exitosamente.",
 			"createErrorMessage": "Hubo un error al crear el presupuesto. Por favor, inténtalo de nuevo.",
@@ -189,6 +189,7 @@
 				"subtitle": "¿Estás seguro de que deseas eliminar este presupuesto? Esta acción no se puede deshacer."
 			}
 		},
+		"totalMonthlyBudgetWithValue": "Presupuesto mensual total: {value}",
 		"addBudgetCategoryButton": "Añadir categoría",
 		"addBudgetCategoryInfo": "Puedes agregar hasta 12 categorías a tu presupuesto.",
 		"limitReached": "Has alcanzado el límite de 12 categorías.",
@@ -196,5 +197,9 @@
 			"title": "Administrar categoría de presupuesto",
 			"subtitle": "Aquí puedes agregar, editar o eliminar categorías de tu presupuesto."
 		}
+	},
+	"ConfirmDeletionDialog": {
+		"title": "Confirmar eliminación",
+		"subtitle": "¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer."
 	}
 }

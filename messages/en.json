@@ -173,7 +173,7 @@
 		"rental": "Rental",
 		"other": "Other"
 	},
-	"MyBudgetsPage": {
+	"MyBudgetPage": {
 		"messages": {
 			"createSuccessMessage": "Budget created successfully!",
 			"createErrorMessage": "There was an error creating your budget. Please try again.",
@@ -189,6 +189,7 @@
 				"subtitle": "Are you sure you want to delete this category? This action cannot be undone."
 			}
 		},
+		"totalMonthlyBudgetWithValue": "Total Monthly Budget: {value}",
 		"addBudgetCategoryButton": "Add Category",
 		"addBudgetCategoryInfo": "You can add up to 12 categories to your budget.",
 		"limitReached": "You have reached the limit of 12 categories.",
@@ -196,5 +197,9 @@
 			"title": "Manage Budget Category",
 			"subtitle": "Add or remove categories from your budget."
 		}
+	},
+	"ConfirmDeletionDialog": {
+		"title": "Confirm Deletion",
+		"subtitle": "Are you sure you want to delete this item? This action cannot be undone."
 	}
 }

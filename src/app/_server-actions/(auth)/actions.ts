@@ -1,9 +1,9 @@
 "use server";
 
 import supabaseAdmin from "@/lib/supabase/admin";
-import { Inputs as LoginPayload } from "@/components/auth/login-dialog";
+import { Inputs as LoginPayload } from "@/app/_components/login-dialog";
 import { getTranslations } from "next-intl/server";
-import { Inputs as SignUpPayload } from "@/components/auth/sign-up-dialog";
+import { Inputs as SignUpPayload } from "@/app/_components/sign-up-dialog";
 import { Profile } from "@/generated/prisma";
 import { ResponseModel } from "../utils/actions.utils";
 import { User } from "@supabase/supabase-js";

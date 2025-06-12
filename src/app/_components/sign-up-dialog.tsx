@@ -9,15 +9,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Button } from "../../components/ui/button";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
 import { useTranslations } from "next-intl";
-import { PasswordInput } from "../ui/password-input";
+import { PasswordInput } from "../../components/ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { DatePicker } from "../ui/date-picker";
+import { DatePicker } from "../../components/ui/date-picker";
 import { signUp } from "@/app/_server-actions/(auth)/actions";
-import { ButtonLoading } from "../ui/button-loading";
+import { ButtonLoading } from "../../components/ui/button-loading";
 import { toast } from "sonner";
 import { useDisclosure } from "@/hooks/useDisclosure";
 

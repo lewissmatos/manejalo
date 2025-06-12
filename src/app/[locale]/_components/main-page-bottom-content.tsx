@@ -8,9 +8,9 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const LoginDialog = React.lazy(() => import("@/components/auth/login-dialog"));
+const LoginDialog = React.lazy(() => import("@/app/_components/login-dialog"));
 const SignUpDialog = React.lazy(
-	() => import("@/components/auth/sign-up-dialog")
+	() => import("@/app/_components/sign-up-dialog")
 );
 const MainPageBottomContent = () => {
 	const { isAuthenticated } = useAtomValue(authAtom);

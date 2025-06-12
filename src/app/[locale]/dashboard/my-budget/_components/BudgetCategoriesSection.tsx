@@ -1,15 +1,15 @@
-// "use client";
-
 import React from "react";
 import ManageBudgetCategoryDialog from "./manage-budget-category-dialog";
 import BudgetCategoryList from "./budget-category-list";
 import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
 import RecommendedCategories from "./recommended-categories";
-import Loading from "@/app/[locale]/loading";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { formatCurrency } from "@/lib/formatters";
+import { getTranslations } from "next-intl/server";
 
 const BudgetCategoriesSection = async () => {
+	const t = await getTranslations("MyBudgetPage");
 	const cookieStore = await cookies();
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
@@ -18,8 +18,10 @@ const BudgetCategoriesSection = async () => {
 		return <div className="text-red-500">Profile ID not found.</div>;
 	}
 
-	const budgetCategories = await getBudgetCategories(profileId);
+	const { data } = await getBudgetCategories(profileId);
 
+	const budgetCategories = data?.budgetCategories || [];
+	const totalBudget = data?.totalBudget || 0;
 	const refetchBudgetCategories = async () => {
 		"use server";
 		await revalidatePath("/dashboard/my-budget");
@@ -27,17 +29,22 @@ const BudgetCategoriesSection = async () => {
 
 	return (
 		<div className="flex flex-col gap-4">
+			<p className="text-xl text-primary font-semibold">
+				{t("totalMonthlyBudgetWithValue", {
+					value: formatCurrency(totalBudget || 0),
+				})}
+			</p>
 			<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mb-4">
 				<ManageBudgetCategoryDialog
 					refetchBudgetCategories={refetchBudgetCategories}
 				/>
 				<BudgetCategoryList
-					data={budgetCategories?.data || []}
+					data={budgetCategories || []}
 					refetchCategories={refetchBudgetCategories}
 				/>
 			</section>
 			<RecommendedCategories
-				data={budgetCategories?.data || []}
+				data={budgetCategories || []}
 				refetchCategories={refetchBudgetCategories}
 			/>
 		</div>
@@ -45,16 +52,3 @@ const BudgetCategoriesSection = async () => {
 };
 
 export default BudgetCategoriesSection;
-
-// const t = useTranslations();
-// 	const { profile } = useAtomValue(authAtom);
-
-// 	const {
-// 		data: budgetCategories,
-// 		refetch,
-// 		isFetching,
-// 	} = useQuery({
-// 		queryKey: ["budget-categories", profile?.id],
-// 		queryFn: () => getBudgetCategories(profile?.id || ""),
-// 		enabled: !!profile?.id,
-// 	});

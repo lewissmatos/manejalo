@@ -8,8 +8,13 @@ type ResponseData = BudgetCategory | null;
 
 export const getBudgetCategories = async (
 	profileId: string
-): Promise<ResponseModel<BudgetCategory[]>> => {
-	const t = await getTranslations("MyBudgetsPage.messages");
+): Promise<
+	ResponseModel<{
+		budgetCategories: BudgetCategory[];
+		totalBudget: number;
+	}>
+> => {
+	const t = await getTranslations("MyBudgetPage.messages");
 	try {
 		const res = await prisma.budgetCategory.findMany({
 			where: { profileId },
@@ -20,15 +25,25 @@ export const getBudgetCategories = async (
 			],
 		});
 
+		const profileData = await prisma.profile.findUnique({
+			where: { id: profileId },
+		});
+
 		return {
-			data: res,
+			data: {
+				budgetCategories: res,
+				totalBudget: profileData?.totalBudget || 0,
+			},
 			message: "",
 			isSuccess: true,
 		};
 	} catch (error) {
 		console.error("Error fetching budget categories:", error);
 		return {
-			data: [],
+			data: {
+				budgetCategories: [],
+				totalBudget: 0,
+			},
 			message: t("defaultErrorMessage"),
 			isSuccess: false,
 		};
@@ -38,7 +53,7 @@ export const getBudgetCategories = async (
 export const addBudgetCategory = async (
 	payload: Omit<BudgetCategory, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("MyBudgetsPage.messages");
+	const t = await getTranslations("MyBudgetPage.messages");
 	try {
 		const res = await prisma.budgetCategory.create({
 			data: {
@@ -69,7 +84,7 @@ export const updateBudgetCategory = async (
 	incomeId: string,
 	payload: Partial<BudgetCategory>
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("MyBudgetsPage.messages");
+	const t = await getTranslations("MyBudgetPage.messages");
 
 	try {
 		const res = await prisma.budgetCategory.update({
@@ -100,7 +115,7 @@ export const updateBudgetCategory = async (
 export const deleteBudgetCategory = async (
 	incomeId: string
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("MyBudgetsPage.messages");
+	const t = await getTranslations("MyBudgetPage.messages");
 
 	try {
 		await prisma.budgetCategory.delete({
@@ -126,7 +141,7 @@ export const markBudgetCategoryAsFavorite = async (
 	categoryId: string,
 	isFavorite: boolean
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("MyBudgetsPage.messages");
+	const t = await getTranslations("MyBudgetPage.messages");
 
 	try {
 		const res = await prisma.budgetCategory.update({
@@ -143,6 +158,35 @@ export const markBudgetCategoryAsFavorite = async (
 		};
 	} catch (error) {
 		console.error("Error marking budget category as favorite:", error);
+		return {
+			data: null,
+			message: t("defaultErrorMessage"),
+			isSuccess: false,
+		};
+	}
+};
+
+export const setBudgetCategoryStatus = async (
+	categoryId: string,
+	newStatus: boolean
+): Promise<ResponseModel<ResponseData>> => {
+	const t = await getTranslations("MyBudgetPage.messages");
+
+	try {
+		const res = await prisma.budgetCategory.update({
+			where: { id: categoryId },
+			data: { isActive: newStatus },
+		});
+
+		return {
+			data: res,
+			message: newStatus
+				? t("activateSuccessMessage")
+				: t("deactivateSuccessMessage"),
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error("Error setting budget category status:", error);
 		return {
 			data: null,
 			message: t("defaultErrorMessage"),
