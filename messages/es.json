@@ -102,7 +102,9 @@
 		"enabled": "Habilitado",
 		"name": "Nombre",
 		"emoji": "Emoji",
-		"description": "Descripción"
+		"description": "Descripción",
+		"details": "Detalles",
+		"date": "Fecha"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
@@ -124,17 +126,6 @@
 		"top": "© {year} {appName} Todos los derechos reservados.",
 		"bottom": "Hecho con ❤️ por {developerName}.",
 		"contacts": "Contactos"
-	},
-	"MyBudget": {
-		"title": "Mi Presupuesto",
-		"subtitle": "Aquí puedes gestionar tu presupuesto mensual.",
-		"RecommendedCategories": {
-			"title": "Categorías recomendadas",
-			"subtitle": "Estas son las categorías recomendadas para tu presupuesto. Puedes personalizarlas según tus necesidades.",
-			"Card": {
-				"actionTitle": "Agregar a mi presupuesto"
-			}
-		}
 	},
 	"ProfilePage": {
 		"title": "Perfil",
@@ -174,6 +165,15 @@
 		"other": "Otro"
 	},
 	"MyBudgetPage": {
+		"title": "Mi Presupuesto",
+		"subtitle": "Aquí puedes gestionar tu presupuesto mensual.",
+		"RecommendedCategories": {
+			"title": "Categorías recomendadas",
+			"subtitle": "Estas son las categorías recomendadas para tu presupuesto. Puedes personalizarlas según tus necesidades.",
+			"Card": {
+				"actionTitle": "Agregar a mi presupuesto"
+			}
+		},
 		"messages": {
 			"createSuccessMessage": "Presupuesto creado exitosamente.",
 			"createErrorMessage": "Hubo un error al crear el presupuesto. Por favor, inténtalo de nuevo.",
@@ -201,5 +201,22 @@
 	"ConfirmDeletionDialog": {
 		"title": "Confirmar eliminación",
 		"subtitle": "¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer."
+	},
+	"OverviewPage": {
+		"budgetAmountTypes": {
+			"expense": "Gasto",
+			"recovery": "Recuperación"
+		},
+		"RegisterAmountToCategoryCard": {
+			"registerAValue": "Registrar un valor a una categoría"
+		},
+		"messages": {
+			"registerAmountSuccessMessage": "¡Monto registrado exitosamente!",
+			"registerAmountErrorMessage": "Hubo un error al registrar el monto. Por favor, inténtalo de nuevo."
+		}
+	},
+	"AppSideHistorySummary": {
+		"title": "Resumen del historial",
+		"subtitle": "Aquí puedes ver un resumen de tus gastos e ingresos recientes. Puedes visualizar los últimos {value} registros."
 	}
 }

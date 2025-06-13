@@ -33,7 +33,7 @@ type Props = {
 };
 
 const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
-	const t = useTranslations("MyBudget.RecommendedCategories.Card");
+	const t = useTranslations("MyBudgetPage.RecommendedCategories.Card");
 	const { description, estimation, emoji, name } = category;
 
 	const [isMarkAsFavPending, startMarkAsFavTransition] = useTransition();
@@ -96,11 +96,9 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 		>
 			<CardHeader className="p-0 flex flex-row gap-2 items-center justify-between">
 				{emoji ? (
-					<div className="size-8 ">
-						<Avatar className="size-8 rounded-full border-[2.5px] border-primary/50 flex items-center justify-center">
-							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
-						</Avatar>
-					</div>
+					<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+						<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+					</Avatar>
 				) : null}
 				<CardTitle className="line-clamp-2 w-full text-primary font-semibold flex-1 flex items-start text-lg">
 					{name}

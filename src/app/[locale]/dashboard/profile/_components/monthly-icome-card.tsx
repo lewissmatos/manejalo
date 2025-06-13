@@ -69,15 +69,9 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 		>
 			<CardHeader className="p-0 flex flex-row gap-2 items-center ">
 				{emoji ? (
-					<div className="size-8">
-						{isDisabled ? (
-							<CircleMinus className="text-red-500" size={32} />
-						) : (
-							<Avatar className="size-8 rounded-full border-[2.5px] border-primary/50 flex items-center justify-center">
-								<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
-							</Avatar>
-						)}
-					</div>
+					<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+						<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+					</Avatar>
 				) : null}
 				<CardTitle className="line-clamp-2 max-w-72 text-primary font-semibold text-xl">
 					{t(`IncomeTypes.${type.toLowerCase()}`)}

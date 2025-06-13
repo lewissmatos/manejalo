@@ -12,6 +12,7 @@ import { cookies } from "next/headers";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import AppSideHistorySummary from "./_components/app-side-history-summary";
 
 export const metadata: Metadata = {
 	title: {
@@ -36,6 +37,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 	if (!isAuthenticated) {
 		redirect("/");
 	}
+
 	return (
 		<div className="flex w-screen flex-col gap-2">
 			<AppNavBar />
@@ -43,8 +45,9 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 				<div className="overflow-x-hidden overflow-y-auto w-full">
 					{children}
 				</div>
-				<div className="flex flex-col items-center justify-center w-full md:w-fit">
+				<div className="flex flex-col items-center justify-center w-full md:w-fit gap-2">
 					<AppSideCalendar />
+					<AppSideHistorySummary />
 				</div>
 			</div>
 		</div>

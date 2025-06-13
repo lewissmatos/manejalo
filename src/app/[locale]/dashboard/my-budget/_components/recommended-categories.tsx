@@ -18,7 +18,7 @@ type Props = {
 	data: BudgetCategory[];
 };
 const RecommendedCategories = async ({ refetchCategories, data }: Props) => {
-	const t = await getTranslations("MyBudget.RecommendedCategories");
+	const t = await getTranslations("MyBudgetPage.RecommendedCategories");
 	const locale = await getLocale();
 	const currentCategories =
 		defaultCategories[locale as keyof typeof defaultCategories];

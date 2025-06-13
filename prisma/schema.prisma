@@ -60,6 +60,24 @@ model BudgetCategory {
   estimation   Float    @map("estimation") @db.DoublePrecision
   isFavorite    Boolean? @default(false) @map("favorite")
   isActive    Boolean?   @default(true) @map("status")
-
+  budgetAmounts BudgetAmountRegistration[]
   @@map("budget_categories")
-} 
+}
+
+enum BudgetAmountType {
+  EXPENSE
+  RECOVERY
+}
+model BudgetAmountRegistration {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  budgetCategory BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
+  budgetCategoryId String @map("budget_category_id") @db.Uuid
+  amount      Float     @map("amount") @db.DoublePrecision
+  type        BudgetAmountType @default(EXPENSE) @map("type")
+  details    String?   @map("details") @db.Text
+  budgetCategoryReference Json @map("budget_category_reference") @db.Json
+  registrationDate DateTime @default(now()) @map("registration_date") @db.Timestamptz(6)
+  // profileId String @map("profile_id") @db.Uuid
+  @@map("budget_amount_registrations")
+}

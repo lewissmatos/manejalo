@@ -24,7 +24,7 @@ const RecommendedCategoryCard = ({
 	description,
 	refetchBudgetCategories,
 }: Props) => {
-	const t = useTranslations("MyBudget.RecommendedCategories.Card");
+	const t = useTranslations("MyBudgetPage.RecommendedCategories.Card");
 
 	return (
 		<Card className="w-full md:w-72 p-2 max-w-sm">

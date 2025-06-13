@@ -26,6 +26,7 @@ export const getBudgetCategories = async (
 		});
 
 		const profileData = await prisma.profile.findUnique({
+			select: { totalBudget: true },
 			where: { id: profileId },
 		});
 

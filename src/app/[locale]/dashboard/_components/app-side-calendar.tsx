@@ -9,7 +9,7 @@ import { es, enUS } from "date-fns/locale";
 
 export const locales = {
 	en: enUS,
-	es,
+	es: es,
 };
 
 const AppSideCalendar = () => {
@@ -24,8 +24,9 @@ const AppSideCalendar = () => {
 				setSelectedDate(date || new Date());
 			}}
 			locale={locales[locale as keyof typeof locales] || locales.en}
-			className="rounded-md border shadow-sm"
+			className="rounded-md border shadow-sm w-64"
 			captionLayout="dropdown"
+			disabled={(date) => date > new Date()}
 		/>
 	);
 };
