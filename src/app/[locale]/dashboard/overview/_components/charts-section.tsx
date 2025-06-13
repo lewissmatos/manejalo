@@ -16,7 +16,7 @@ const ChartsSection = async () => {
 	return (
 		<section
 			id="charts-section"
-			className="flex flex-col gap-4 items-center p-4"
+			className="flex flex-col gap-4 items-center w-5/12"
 		>
 			<ChartWrapper>
 				<BudgetCategoryExpensesChart
@@ -29,7 +29,7 @@ const ChartsSection = async () => {
 
 const ChartWrapper = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<div className="w-full flex flex-col items-center justify-center">
+		<div className="w-full rounded-md flex flex-col items-center justify-center">
 			{children}
 		</div>
 	);

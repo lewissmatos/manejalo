@@ -2,58 +2,104 @@
 
 import { BudgetCategoryExpense } from "@/app/_server-actions/(budget-amount-registration)/actions";
 import React from "react";
-import Chart from "react-apexcharts";
+import { ResponsivePie } from "@nivo/pie";
+import { useTheme } from "next-themes";
 
 type Props = {
 	data: BudgetCategoryExpense[];
 };
 const BudgetCategoryExpensesChart = ({ data }: Props) => {
-	const state = {
-		series: data.map((item) => item.amount),
-		options: {
-			chart: {
-				type: "pie",
-			},
-			labels: data.map((item) => item.label),
-			legend: {
-				position: "bottom",
-				offsetY: 0,
-				height: "100%",
-				fontSize: "14px",
-				color: "#fff",
-				itemMargin: {
-					horizontal: 10,
-					vertical: 5,
-				},
-			},
-			responsive: [
-				{
-					breakpoint: 480,
-					options: {
-						chart: {
-							width: 200,
-						},
+	const { theme } = useTheme();
+	const formattedData = data.map((item, i) => ({
+		id: item.label,
+		label: item.label,
+		value: item.amount,
+		color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
+	}));
+
+	const textProps = {
+		fill: theme === "dark" ? "#ffffff" : "#333333",
+		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
+	};
+	return (
+		<div className="h-80 w-full">
+			<ResponsivePie
+				data={formattedData}
+				margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+				innerRadius={0.5}
+				padAngle={0.6}
+				theme={{
+					text: {
+						...textProps,
+					},
+					axis: {
 						legend: {
-							position: "bottom",
+							text: {
+								...textProps,
+							},
+						},
+						ticks: {
+							text: {
+								...textProps,
+							},
 						},
 					},
-				},
-			],
-		},
-	};
-
-	return (
-		<>
-			<div id="budget-category-expenses-chart">
-				<Chart
-					options={state.options as unknown as ApexCharts.ApexOptions}
-					series={state.series}
-					type="pie"
-					width={400}
-				/>
-			</div>
-			<div id="html-dist"></div>
-		</>
+					legends: {
+						title: {
+							text: {
+								...textProps,
+							},
+						},
+						text: {
+							...textProps,
+						},
+						ticks: {
+							text: {
+								...textProps,
+							},
+						},
+					},
+					annotations: {
+						text: {
+							...textProps,
+						},
+						link: {
+							...textProps,
+						},
+						outline: {
+							...textProps,
+						},
+						symbol: {
+							...textProps,
+						},
+					},
+					tooltip: {
+						container: {
+							background: theme === "dark" ? "#333333" : "#ffffff",
+							color: theme === "dark" ? "#ffffff" : "#333333",
+						},
+					},
+				}}
+				cornerRadius={2}
+				activeOuterRadiusOffset={8}
+				arcLinkLabelsSkipAngle={10}
+				arcLinkLabelsTextColor={theme === "dark" ? "#ffffff" : "#333333"}
+				arcLinkLabelsThickness={2}
+				arcLinkLabelsColor={{ from: "color" }}
+				arcLabelsSkipAngle={10}
+				arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
+				legends={[
+					{
+						anchor: "bottom",
+						direction: "row",
+						translateY: 30,
+						itemWidth: 100,
+						itemHeight: 18,
+						symbolShape: "circle",
+					},
+				]}
+			/>
+		</div>
 	);
 };
 
