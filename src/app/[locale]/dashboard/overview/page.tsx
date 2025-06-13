@@ -5,6 +5,7 @@ import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/a
 import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
 import CurrentFormattedDate from "../_components/current-formatted-date";
+import ChartsSection from "./_components/charts-section";
 
 const Overview = async () => {
 	const t = await getTranslations("MyBudgetPage");
@@ -37,7 +38,7 @@ const Overview = async () => {
 						/>
 					))}
 				</div>
-				<div className="w-5/12">charts</div>
+				<ChartsSection />
 			</div>
 		</div>
 	);

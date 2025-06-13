@@ -17,7 +17,6 @@ const AppSideHistorySummary = async () => {
 	}
 	const history = await getBudgetAmountRegistrationHistory(profileId);
 
-	console.log(locale);
 	setDefaultOptions({
 		locale: [es, enUS].find((l) => l.code.includes(locale)) || es,
 	});
