@@ -5,13 +5,13 @@ import { BudgetAmountRegistration, BudgetAmountType } from "@/generated/prisma";
 import { ResponseModel } from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { JsonObject } from "@/generated/prisma/runtime/library";
+import { eachMonthOfInterval, format } from "date-fns";
 type ResponseData = BudgetAmountRegistration | null;
 
 export type BudgetCategoryExpense = {
 	label: string;
-	amount: number;
-	budgetCategoryId: string;
-	registrationDate: Date;
+	value: number;
+	id: string;
 };
 
 export const addBudgetAmountRegistration = async (
@@ -94,7 +94,7 @@ export const getBudgetAmountRegistrationHistory = async (
 	}
 };
 
-export const getBudgetAmountRegistrationsGroupedByCategory = async ({
+export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
 	profileId,
 	startDate,
 	endDate,
@@ -106,7 +106,7 @@ export const getBudgetAmountRegistrationsGroupedByCategory = async ({
 	const t = await getTranslations("MyBudgetPage.messages");
 	try {
 		const res = await prisma.budgetAmountRegistration.groupBy({
-			by: ["budgetCategoryId", "registrationDate"],
+			by: ["budgetCategoryId"],
 			_sum: {
 				amount: true,
 			},
@@ -119,26 +119,20 @@ export const getBudgetAmountRegistrationsGroupedByCategory = async ({
 					lte: endDate,
 				},
 			},
-			orderBy: [{ registrationDate: "desc" }],
+			orderBy: [{ budgetCategoryId: "asc" }],
 		});
 
 		const categories = await prisma.budgetCategory.findMany({
-			where: {
-				profileId,
-			},
-			select: {
-				name: true,
-				id: true,
-			},
+			where: { profileId },
+			select: { name: true, id: true },
 		});
 
 		const finalData = res.map((item) => {
 			const category = categories.find((x) => x.id === item.budgetCategoryId);
 			return {
-				amount: item._sum.amount || 0,
+				value: item._sum.amount || 0,
 				label: category?.name || "",
-				budgetCategoryId: item.budgetCategoryId || "",
-				registrationDate: item.registrationDate,
+				id: category?.name || "",
 			};
 		});
 
@@ -184,6 +178,115 @@ export const getTotalBudgetAmountRegistrationByDateRange = async ({
 		});
 		return {
 			data: res._sum.amount || 0,
+			message: "",
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error("Error fetching budget categories:", error);
+		return {
+			data: null,
+			message: t("defaultErrorMessage"),
+			isSuccess: false,
+		};
+	}
+};
+
+export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
+	year,
+	profileId,
+}: {
+	year: number;
+	profileId: string;
+}): Promise<
+	ResponseModel<
+		{
+			id: string;
+			data: Array<{ x: string; y: string }>;
+		}[]
+	>
+> => {
+	const t = await getTranslations("MyBudgetPage.messages");
+	const startDate = new Date(year, 0, 1);
+	const endDate = new Date(year, 11, 31);
+
+	try {
+		const res = await prisma.budgetAmountRegistration.groupBy({
+			by: ["budgetCategoryId", "registrationDate"],
+			_sum: {
+				amount: true,
+			},
+			where: {
+				budgetCategory: {
+					profileId: profileId,
+				},
+				registrationDate: {
+					gte: startDate,
+					lte: endDate,
+				},
+			},
+			orderBy: [{ budgetCategoryId: "asc" }],
+		});
+
+		const categories = await prisma.budgetCategory.findMany({
+			where: { profileId },
+			select: { name: true, id: true },
+		});
+
+		const months = eachMonthOfInterval({
+			start: startDate,
+			end: endDate,
+		}).map((date) => format(date, "MMM"));
+
+		const groupedRes = res?.reduce(
+			(acc, item) => {
+				const categoryId = item.budgetCategoryId;
+				const currObject = acc[categoryId];
+				if (!currObject) {
+					acc[categoryId] = {
+						budgetCategoryId: categoryId,
+						categoryName:
+							categories.find((x) => x.id === categoryId)?.name || "",
+						data: [
+							{
+								value: item._sum.amount || 0,
+								registrationDate: item.registrationDate,
+							},
+						],
+					};
+				}
+				acc[categoryId].data.push({
+					value: item._sum.amount || 0,
+					registrationDate: item.registrationDate,
+				});
+				return acc;
+			},
+			{} as Record<
+				string,
+				{
+					budgetCategoryId: string;
+					categoryName: string;
+					data: Array<{ value: number; registrationDate: Date }>;
+				}
+			>
+		);
+
+		const finalData = Object.entries(groupedRes).map(([key, value]) => {
+			return {
+				id: value.categoryName,
+				data: months.map((month) => {
+					const monthData = value.data.find((d) =>
+						format(d.registrationDate, "MMM").includes(month)
+					);
+					return {
+						x: month.toUpperCase(),
+						y: monthData ? monthData.value.toString() : "0",
+					};
+				}),
+			};
+		});
+
+		return {
+			data: finalData,
 			message: "",
 			isSuccess: true,
 		};

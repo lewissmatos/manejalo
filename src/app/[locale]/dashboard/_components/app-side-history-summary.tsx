@@ -29,7 +29,7 @@ const AppSideHistorySummary = async () => {
 				</p>
 			</div>
 			{history.data?.length ? (
-				<ul className="w-full max-h-80 overflow-y-auto">
+				<ul className="w-full h-80 overflow-y-auto">
 					{history.data.map((item) => (
 						<li
 							key={item.id}

@@ -11,14 +11,6 @@ type Props = {
 };
 const BudgetCategoryExpensesChart = ({ data }: Props) => {
 	const { theme } = useTheme();
-	const formattedData = data.map((item, i) => ({
-		id: item.label,
-		label: item.label,
-		value: item.amount,
-		color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
-	}));
-
-	console.log(formattedData);
 
 	const textProps = {
 		fill: theme === "dark" ? "#ffffff" : "#333333",
@@ -27,55 +19,19 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 	return (
 		<div className="h-[350px] w-full">
 			<ResponsivePie
-				data={formattedData}
+				data={data}
 				margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
 				innerRadius={0.5}
+				colors={{ scheme: "pastel1" }}
 				padAngle={0.6}
 				valueFormat={(val) => formatCurrency(val, "DOP", true)}
 				theme={{
-					text: {
-						...textProps,
-					},
-					axis: {
-						legend: {
-							text: {
-								...textProps,
-							},
-						},
-						ticks: {
-							text: {
-								...textProps,
-							},
-						},
-					},
+					text: { ...textProps },
 					legends: {
-						title: {
-							text: {
-								...textProps,
-							},
-						},
-						text: {
-							...textProps,
-						},
-						ticks: {
-							text: {
-								...textProps,
-							},
-						},
+						text: { ...textProps },
 					},
 					annotations: {
-						text: {
-							...textProps,
-						},
-						link: {
-							...textProps,
-						},
-						outline: {
-							...textProps,
-						},
-						symbol: {
-							...textProps,
-						},
+						text: { ...textProps },
 					},
 					tooltip: {
 						container: {
@@ -99,7 +55,7 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 						direction: "row",
 						translateY: 40,
 						itemWidth: 100,
-						itemHeight: 18,
+						itemHeight: 8,
 						symbolShape: "circle",
 					},
 				]}

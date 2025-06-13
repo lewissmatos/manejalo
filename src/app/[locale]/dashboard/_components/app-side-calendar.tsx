@@ -65,7 +65,7 @@ const AppSideCalendar = () => {
 			mode="single"
 			selected={date || new Date()}
 			month={visibleMonth}
-			onMonthChange={setVisibleMonth} // <-- Add this line
+			onMonthChange={setVisibleMonth}
 			onSelect={(date) => {
 				handleSetDate(date || new Date());
 			}}

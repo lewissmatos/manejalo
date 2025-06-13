@@ -217,7 +217,8 @@
 			"registerAmountErrorMessage": "Hubo un error al registrar el monto. Por favor, inténtalo de nuevo."
 		},
 		"ChartsSection": {
-			"registeredSummary": "Registrado: {value1}/{value2}"
+			"registeredSummary": "Registrado: ",
+			"overpassedMonthlyBudget": "Has superado tu presupuesto mensual. Por favor, revisa tus gastos."
 		}
 	},
 	"AppSideHistorySummary": {

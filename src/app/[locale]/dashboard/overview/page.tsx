@@ -8,6 +8,7 @@ import CurrentFormattedDate from "../_components/current-formatted-date";
 import ChartsSection from "./_components/charts-section";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import LineChart from "./_components/budget-category-expenses-by-month-per-year-wrapper";
 
 const Overview = async ({
 	searchParams,
@@ -33,6 +34,7 @@ const Overview = async ({
 		"use server";
 		await revalidatePath("/dashboard/overview");
 	};
+
 	return (
 		<div className="h-calculate(100vh - 64px) gap-4 w-full">
 			<section className="flex flex-col items-start">
@@ -41,8 +43,8 @@ const Overview = async ({
 			</section>
 			<Separator />
 			<CurrentFormattedDate />
-			<div className="flex flex-row mt-4 gap-4 ">
-				<div className="flex flex-wrap gap-4 w-7/12 h-[80vh] overflow-y-auto">
+			<div className="flex flex-row mt-4 gap-4">
+				<div className="flex flex-wrap gap-4 w-7/12 max-h-[80vh] justify-start items-start overflow-y-auto">
 					{budgetCategories?.map((category) => (
 						<RegisterAmountToCategoryCard
 							key={category.id}
@@ -53,6 +55,7 @@ const Overview = async ({
 				</div>
 				<ChartsSection searchParams={await searchParams} />
 			</div>
+			<LineChart />
 		</div>
 	);
 };

@@ -193,10 +193,11 @@ const ManageBudgetCategoryDialog = ({
 						<div className="grid gap-3">
 							<Label htmlFor="name">{t("common.name")}</Label>
 							<Input
-								id="estimation"
+								id="name"
 								{...register("name", {
 									required: true,
 								})}
+								disabled={isEditMode}
 							/>
 						</div>
 						<div className="grid gap-3">
