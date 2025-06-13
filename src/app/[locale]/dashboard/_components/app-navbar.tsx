@@ -15,7 +15,7 @@ import Link from "next/link";
 import { LogOut, User, X } from "lucide-react";
 import { useAtom, useAtomValue } from "jotai/react";
 import { authAtom, logoutAtom } from "@/lib/jotai/auth-atom";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { logout } from "@/app/_server-actions/(auth)/actions";
 import { useMemo, useState } from "react";
 import LanguageSelector from "@/components/language/language-selector";
@@ -40,6 +40,8 @@ const navItems = [
 
 export default function AppNavBar() {
 	const t = useTranslations("AppNavBar");
+	const searchParams = useSearchParams();
+	const queryString = searchParams.toString();
 	const [, onLogout] = useAtom(logoutAtom);
 	const router = useRouter();
 	const pathname = usePathname();
@@ -78,6 +80,9 @@ export default function AppNavBar() {
 					<NavigationMenuList className="flex justify-end items-center gap-4 p-1">
 						{navItems.map((item) => {
 							const isSelected = pathname?.includes(item.href);
+							const hrefWithParams = queryString
+								? `${item.href}?${queryString}`
+								: item.href;
 							return (
 								<NavigationMenuItem key={item.titleKey}>
 									<NavigationMenuLink
@@ -86,7 +91,7 @@ export default function AppNavBar() {
 											isSelected ? "bg-accent text-accent-foreground" : ""
 										}`}
 									>
-										<Link href={item.href}>
+										<Link href={hrefWithParams}>
 											{t(`navigationItems.${item.titleKey}`)}
 										</Link>
 									</NavigationMenuLink>
@@ -107,7 +112,10 @@ export default function AppNavBar() {
 								<Button
 									variant="ghost"
 									onClick={() => {
-										router.push("/dashboard/profile");
+										const profileHref = queryString
+											? `/dashboard/profile?${queryString}`
+											: "/dashboard/profile";
+										router.push(profileHref);
 									}}
 									className="w-full justify-between"
 								>
@@ -162,16 +170,21 @@ export default function AppNavBar() {
 							>
 								<X size={24} />
 							</Button>
-							{navItems.map((item) => (
-								<Link
-									key={item.titleKey}
-									href={item.href}
-									className="py-2 text-lg font-medium"
-									onClick={() => setMobileMenuOpen(false)}
-								>
-									{t(`navigationItems.${item.titleKey}`)}
-								</Link>
-							))}
+							{navItems.map((item) => {
+								const hrefWithParams = queryString
+									? `${item.href}?${queryString}`
+									: item.href;
+								return (
+									<Link
+										key={item.titleKey}
+										href={hrefWithParams}
+										className="py-2 text-lg font-medium"
+										onClick={() => setMobileMenuOpen(false)}
+									>
+										{t(`navigationItems.${item.titleKey}`)}
+									</Link>
+								);
+							})}
 							<div className="border-t pt-4 mt-4">
 								<Button
 									variant="ghost"

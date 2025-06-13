@@ -6,10 +6,18 @@ import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
 import CurrentFormattedDate from "../_components/current-formatted-date";
 import ChartsSection from "./_components/charts-section";
+import ScreenTitle from "../_components/screen-title";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
-const Overview = async () => {
-	const t = await getTranslations("MyBudgetPage");
-	const cookieStore = await cookies();
+const Overview = async ({
+	searchParams,
+}: {
+	searchParams?: { [key: string]: string | string[] | undefined };
+}) => {
+	const [cookieStore, t] = await Promise.all([
+		cookies(),
+		getTranslations("OverviewPage"),
+	]);
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
 
@@ -27,6 +35,11 @@ const Overview = async () => {
 	};
 	return (
 		<div className="h-calculate(100vh - 64px) gap-4 w-full">
+			<section className="flex flex-col items-start">
+				<ScreenTitle>{t("title")}</ScreenTitle>
+				<p className="text-md mb-8">{t("subtitle")}</p>
+			</section>
+			<Separator />
 			<CurrentFormattedDate />
 			<div className="flex flex-row mt-4 gap-4 ">
 				<div className="flex flex-wrap gap-4 w-7/12 h-[80vh] overflow-y-auto">
@@ -38,7 +51,7 @@ const Overview = async () => {
 						/>
 					))}
 				</div>
-				<ChartsSection />
+				<ChartsSection searchParams={await searchParams} />
 			</div>
 		</div>
 	);

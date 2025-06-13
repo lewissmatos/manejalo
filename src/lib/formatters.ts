@@ -1,9 +1,13 @@
 export const formatCurrency = (
-	value: number,
-	currency: string = "DOP"
+	value?: number | null,
+	currency: string = "DOP",
+	omitCurrency: boolean = false
 ): string => {
-	return new Intl.NumberFormat("en-US", {
+	const output = new Intl.NumberFormat("en-US", {
+		maximumFractionDigits: 0,
 		style: "currency",
 		currency: currency,
-	}).format(value);
+	}).format(value || 0);
+
+	return omitCurrency ? output.replaceAll(currency, "").trim() : output;
 };

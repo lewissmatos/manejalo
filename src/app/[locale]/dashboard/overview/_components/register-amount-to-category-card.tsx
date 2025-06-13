@@ -43,8 +43,12 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 
 	const { emoji, description, name, estimation } = category;
 	const [isPending, startTransition] = useTransition();
-	const [amountData, setAmountData] = React.useState({
-		amount: 0,
+	const [amountData, setAmountData] = React.useState<{
+		amount: number | string;
+		type: BudgetAmountType;
+		details: string;
+	}>({
+		amount: "",
 		type: BudgetAmountType.EXPENSE,
 		details: "",
 	});
@@ -64,6 +68,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 			try {
 				const res = await addBudgetAmountRegistration({
 					...amountData,
+					amount: Number(amountData.amount) || 0,
 					budgetCategoryId: category.id,
 					registrationDate: currentSelectedDate || new Date(),
 					budgetCategoryReference: {
@@ -78,7 +83,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 				toast.success(res.message);
 
 				setAmountData({
-					amount: 0,
+					amount: "",
 					type: BudgetAmountType.EXPENSE,
 					details: "",
 				});
@@ -95,7 +100,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 	};
 
 	const isSaveDisabled =
-		!amountData.amount || amountData.amount <= 0 || !amountData.type;
+		!amountData.amount || Number(amountData.amount) <= 0 || !amountData.type;
 	return (
 		<Card className="w-full md:w-80 p-2 max-w-sm h-64 gap-1 justify-between">
 			<CardHeader className="p-0 flex flex-row gap-2 items-center">

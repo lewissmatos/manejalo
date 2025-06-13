@@ -9,9 +9,10 @@ import MonthlyIncomeCard from "./_components/monthly-icome-card";
 import { revalidatePath } from "next/cache";
 
 const Profile = async () => {
-	const t = await getTranslations("ProfilePage");
-	const cookieStore = await cookies();
-
+	const [cookieStore, t] = await Promise.all([
+		cookies(),
+		getTranslations("ProfilePage"),
+	]);
 	const profileId = cookieStore.get("profile-id")?.value || "";
 	if (!profileId) {
 		return (

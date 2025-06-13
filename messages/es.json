@@ -203,6 +203,8 @@
 		"subtitle": "¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer."
 	},
 	"OverviewPage": {
+		"title": "Resumen",
+		"subtitle": "Aquí puedes ver un resumen de tu presupuesto mensual y tus gastos e ingresos recientes.",
 		"budgetAmountTypes": {
 			"expense": "Gasto",
 			"recovery": "Recuperación"
@@ -213,10 +215,14 @@
 		"messages": {
 			"registerAmountSuccessMessage": "¡Monto registrado exitosamente!",
 			"registerAmountErrorMessage": "Hubo un error al registrar el monto. Por favor, inténtalo de nuevo."
+		},
+		"ChartsSection": {
+			"registeredSummary": "Registrado: {value1}/{value2}"
 		}
 	},
 	"AppSideHistorySummary": {
 		"title": "Resumen del historial",
-		"subtitle": "Aquí puedes ver un resumen de tus gastos e ingresos recientes. Puedes visualizar los últimos {value} registros."
+		"subtitle": "Aquí puedes ver un resumen de tus gastos e ingresos recientes. Puedes visualizar los últimos {value} registros.",
+		"noHistory": "No se encontraron registros."
 	}
 }

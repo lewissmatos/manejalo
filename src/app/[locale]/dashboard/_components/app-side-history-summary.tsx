@@ -39,11 +39,11 @@ const AppSideHistorySummary = async () => {
 								<span>{(item.budgetCategoryReference as any)?.name}</span>
 								{item.type === BudgetAmountType.EXPENSE ? (
 									<span className="text-primary">
-										{formatCurrency(item.amount)}
+										{formatCurrency(Math.abs(item.amount))}
 									</span>
 								) : (
 									<span className="text-green-500 font-semibold">
-										+{formatCurrency(item.amount)}
+										+{formatCurrency(Math.abs(item.amount))}
 									</span>
 								)}
 							</div>
@@ -54,7 +54,7 @@ const AppSideHistorySummary = async () => {
 					))}
 				</ul>
 			) : (
-				<p>No history available.</p>
+				<p className="text-primary/80 text-sm">{t("noHistory")}</p>
 			)}
 		</div>
 	);

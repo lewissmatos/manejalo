@@ -10,8 +10,10 @@ import BudgetCategoryList from "./_components/budget-category-list";
 import RecommendedCategories from "./_components/recommended-categories";
 
 const MyBudget = async () => {
-	const t = await getTranslations("MyBudgetPage");
-	const cookieStore = await cookies();
+	const [cookieStore, t] = await Promise.all([
+		cookies(),
+		getTranslations("MyBudgetPage"),
+	]);
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
 

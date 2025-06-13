@@ -17,7 +17,7 @@ const CurrentFormattedDate = () => {
 	});
 
 	return (
-		<div className="text-xl text-primary">
+		<div className="text-xl font-semibold text-primary">
 			{t("selectedDateWithValue", {
 				date: formattedDate,
 			})}

@@ -4,8 +4,15 @@ import { getTranslations } from "next-intl/server";
 import { BudgetAmountRegistration, BudgetAmountType } from "@/generated/prisma";
 import { ResponseModel } from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
-import { JsonObject, JsonValue } from "@/generated/prisma/runtime/library";
+import { JsonObject } from "@/generated/prisma/runtime/library";
 type ResponseData = BudgetAmountRegistration | null;
+
+export type BudgetCategoryExpense = {
+	label: string;
+	amount: number;
+	budgetCategoryId: string;
+	registrationDate: Date;
+};
 
 export const addBudgetAmountRegistration = async (
 	payload: Omit<BudgetAmountRegistration, "id" | "createdAt">
@@ -14,7 +21,10 @@ export const addBudgetAmountRegistration = async (
 	try {
 		const res = await prisma.budgetAmountRegistration.create({
 			data: {
-				amount: payload?.amount,
+				amount:
+					payload.type === BudgetAmountType.EXPENSE
+						? payload?.amount
+						: -payload?.amount,
 				registrationDate: payload?.registrationDate,
 				details: payload?.details || "",
 				type: payload?.type || BudgetAmountType.EXPENSE,
@@ -84,18 +94,6 @@ export const getBudgetAmountRegistrationHistory = async (
 	}
 };
 
-export type BudgetCategoryExpense = {
-	label: string;
-	id: string;
-	createdAt: Date;
-	amount: number;
-	type: BudgetAmountType;
-	budgetCategoryId: string;
-	details: string | null;
-	budgetCategoryReference: JsonValue;
-	registrationDate: Date;
-};
-
 export const getBudgetAmountRegistrationsGroupedByCategory = async ({
 	profileId,
 	startDate,
@@ -107,7 +105,11 @@ export const getBudgetAmountRegistrationsGroupedByCategory = async ({
 }): Promise<ResponseModel<BudgetCategoryExpense[]>> => {
 	const t = await getTranslations("MyBudgetPage.messages");
 	try {
-		const res = await prisma.budgetAmountRegistration.findMany({
+		const res = await prisma.budgetAmountRegistration.groupBy({
+			by: ["budgetCategoryId", "registrationDate"],
+			_sum: {
+				amount: true,
+			},
 			where: {
 				budgetCategory: {
 					profileId: profileId,
@@ -117,38 +119,71 @@ export const getBudgetAmountRegistrationsGroupedByCategory = async ({
 					lte: endDate,
 				},
 			},
-			include: {
-				budgetCategory: {
-					select: {
-						id: true,
-						name: true,
-						emoji: true,
-					},
-				},
-			},
-			orderBy: [{ createdAt: "desc" }],
+			orderBy: [{ registrationDate: "desc" }],
 		});
 
-		const data = res.reduce((acc, curr) => {
-			const category = (curr.budgetCategoryReference as { name: string }).name;
-			if (!acc[category]) {
-				acc[category] = {
-					...curr,
-					amount: 0,
-				};
-			}
-			acc[category].amount += curr.amount;
-			return acc;
-		}, {} as Record<string, BudgetAmountRegistration>);
+		const categories = await prisma.budgetCategory.findMany({
+			where: {
+				profileId,
+			},
+			select: {
+				name: true,
+				id: true,
+			},
+		});
 
-		// Convert to array and add "label" property
-		const dataArray = Object.entries(data).map(([label, obj]) => ({
-			...obj,
-			label,
-		}));
+		const finalData = res.map((item) => {
+			const category = categories.find((x) => x.id === item.budgetCategoryId);
+			return {
+				amount: item._sum.amount || 0,
+				label: category?.name || "",
+				budgetCategoryId: item.budgetCategoryId || "",
+				registrationDate: item.registrationDate,
+			};
+		});
 
 		return {
-			data: dataArray,
+			data: finalData,
+			message: "",
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error("Error fetching budget categories:", error);
+		return {
+			data: null,
+			message: t("defaultErrorMessage"),
+			isSuccess: false,
+		};
+	}
+};
+
+export const getTotalBudgetAmountRegistrationByDateRange = async ({
+	profileId,
+	startDate,
+	endDate,
+}: {
+	profileId: string;
+	startDate: Date;
+	endDate: Date;
+}): Promise<ResponseModel<number>> => {
+	const t = await getTranslations("MyBudgetPage.messages");
+	try {
+		const res = await prisma.budgetAmountRegistration.aggregate({
+			_sum: {
+				amount: true,
+			},
+			where: {
+				budgetCategory: {
+					profileId: profileId,
+				},
+				registrationDate: {
+					gte: startDate,
+					lte: endDate,
+				},
+			},
+		});
+		return {
+			data: res._sum.amount || 0,
 			message: "",
 			isSuccess: true,
 		};
