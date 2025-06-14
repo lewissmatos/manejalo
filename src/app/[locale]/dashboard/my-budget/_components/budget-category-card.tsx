@@ -168,7 +168,9 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 						isLoading={isToggleStatusPending}
 					>
 						<ArrowLeftRight
-							className={category.isActive ? "text-green-500" : "text-red-500"}
+							className={
+								category.isActive ? "text-green-500" : "text-destructive"
+							}
 						/>
 					</ButtonLoading>
 					<ConfirmDeletionDialog

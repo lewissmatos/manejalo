@@ -26,7 +26,7 @@
 			"categorizeEverything": {
 				"title": "Categorize Everything",
 				"description": "Organize your financial life with fully customizable categories.",
-				"tooltip": "Create, edit, or delete categories to match how you manage your personal expenses — flexible and personal."
+				"tooltip": "Create or edit, or delete categories to match how you manage your personal expenses — flexible and personal."
 			},
 			"moreComingSoon": {
 				"title": "More Features Coming Soon!",
@@ -195,7 +195,7 @@
 		"limitReached": "You have reached the limit of 12 categories.",
 		"ManageBudgetCategoryDialog": {
 			"title": "Manage Budget Category",
-			"subtitle": "Add or remove categories from your budget."
+			"subtitle": "Add or update categories from your budget."
 		}
 	},
 	"ConfirmDeletionDialog": {
@@ -219,6 +219,9 @@
 		"ChartsSection": {
 			"registeredSummary": "Registered: ",
 			"overpassedMonthlyBudget": "You have exceeded your monthly budget. Please review your spending."
+		},
+		"BudgetCategoryExpensesByMonthPerYear": {
+			"title": "Monthly Expenses by year ({year})"
 		}
 	},
 	"AppSideHistorySummary": {

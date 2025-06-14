@@ -8,7 +8,7 @@ import CurrentFormattedDate from "../_components/current-formatted-date";
 import ChartsSection from "./_components/charts-section";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import LineChart from "./_components/budget-category-expenses-by-month-per-year-wrapper";
+import BudgetCategoryExpensesByMonthPerYearWrapper from "./_components/budget-category-expenses-by-month-per-year-wrapper";
 
 const Overview = async ({
 	searchParams,
@@ -23,7 +23,7 @@ const Overview = async ({
 	const profileId = cookieStore.get("profile-id")?.value || "";
 
 	if (!profileId) {
-		return <div className="text-red-500">Profile ID not found.</div>;
+		return <div className="text-destructive">Profile ID not found.</div>;
 	}
 
 	const { data } = await getBudgetCategories(profileId);
@@ -44,7 +44,7 @@ const Overview = async ({
 			<Separator />
 			<CurrentFormattedDate />
 			<div className="flex flex-row mt-4 gap-4">
-				<div className="flex flex-wrap gap-4 w-7/12 max-h-[80vh] justify-start items-start overflow-y-auto">
+				<div className="flex flex-wrap gap-4 w-7/12 max-h-[33rem] justify-start items-start overflow-y-auto">
 					{budgetCategories?.map((category) => (
 						<RegisterAmountToCategoryCard
 							key={category.id}
@@ -55,7 +55,7 @@ const Overview = async ({
 				</div>
 				<ChartsSection searchParams={await searchParams} />
 			</div>
-			<LineChart />
+			<BudgetCategoryExpensesByMonthPerYearWrapper />
 		</div>
 	);
 };

@@ -13,7 +13,7 @@ const AppSideHistorySummary = async () => {
 	const locale = await getLocale();
 	const profileId = cookieStore.get("profile-id")?.value || "";
 	if (!profileId) {
-		return <div className="text-red-500">Profile ID not found.</div>;
+		return <div className="text-destructive">Profile ID not found.</div>;
 	}
 	const history = await getBudgetAmountRegistrationHistory(profileId);
 

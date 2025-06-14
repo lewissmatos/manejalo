@@ -81,7 +81,7 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 				<CardDescription className="line-clamp-2 text-md max-w-72 ">
 					{description || ""}
 					{isDisabled ? (
-						<span className="text-red-500">({t("common.disabled")})</span>
+						<span className="text-destructive">({t("common.disabled")})</span>
 					) : (
 						""
 					)}
@@ -120,7 +120,9 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 						isLoading={isPending}
 					>
 						<ArrowLeftRight
-							className={income.isActive ? "text-green-500" : "text-red-500"}
+							className={
+								income.isActive ? "text-green-500" : "text-destructive"
+							}
 						/>
 					</ButtonLoading>
 					<ConfirmDeletionDialog

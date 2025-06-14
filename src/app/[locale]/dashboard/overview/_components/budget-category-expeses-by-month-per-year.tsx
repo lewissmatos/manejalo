@@ -15,7 +15,7 @@ const BudgetCategoryExpensesByMonthPerYear = ({ data }: { data: any }) => {
 		<div className="w-full h-[50vh]">
 			<ResponsiveLine
 				data={data}
-				margin={{ top: 50, right: 110, bottom: 50, left: 50 }}
+				margin={{ top: 10, right: 110, bottom: 50, left: 50 }}
 				curve="monotoneX"
 				lineWidth={4}
 				enableArea

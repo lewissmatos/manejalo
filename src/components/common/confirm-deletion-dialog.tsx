@@ -59,7 +59,7 @@ const ConfirmDeletionDialog = ({
 				<Button
 					variant="ghost"
 					size={"sm"}
-					className="text-red-500 hover:bg-red-100 hover:text-red-500"
+					className="text-destructive hover:bg-red-100 hover:text-destructive"
 				>
 					<CircleMinus />
 				</Button>

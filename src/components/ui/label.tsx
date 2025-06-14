@@ -22,7 +22,7 @@ function Label({
 				)}
 				{...props}
 			/>
-			{isRequired && <span className="text-red-500 ml-1">*</span>}
+			{isRequired && <span className="text-destructive ml-1">*</span>}
 		</div>
 	);
 }

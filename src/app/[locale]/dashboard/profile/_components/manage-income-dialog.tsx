@@ -168,7 +168,7 @@ const ManageIncomeDialog = ({
 								</span>
 								<span
 									className={`text-sm text-center ${
-										canAddMore ? "text-muted-foreground" : "text-red-500/70"
+										canAddMore ? "text-muted-foreground" : "text-destructive/70"
 									}`}
 								>
 									{canAddMore
