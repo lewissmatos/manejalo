@@ -26,6 +26,7 @@ const ChartsSection = async ({
 	const now = new Date();
 
 	const selectedDate = await searchParams?.selected_date;
+
 	const dates = {
 		startDate: format(
 			startOfMonth(
@@ -41,20 +42,23 @@ const ChartsSection = async ({
 		),
 	};
 
-	const budgetAmountRegistrationsGroupedByCategory =
-		await getBudgetAmountRegistrationsGroupedByCategoryForPieChart({
+	const [
+		budgetAmountRegistrationsGroupedByCategory,
+		totalMonthlyBudget,
+		totalBudgetAmount,
+	] = await Promise.all([
+		getBudgetAmountRegistrationsGroupedByCategoryForPieChart({
 			profileId,
 			startDate: new Date(dates.startDate),
 			endDate: new Date(dates.endDate),
-		});
-
-	const totalMonthlyBudget = await getTotalMonthlyBudget(profileId);
-
-	const totalBudgetAmount = await getTotalBudgetAmountRegistrationByDateRange({
-		profileId,
-		startDate: new Date(dates.startDate),
-		endDate: new Date(dates.endDate),
-	});
+		}),
+		getTotalMonthlyBudget(profileId),
+		getTotalBudgetAmountRegistrationByDateRange({
+			profileId,
+			startDate: new Date(dates.startDate),
+			endDate: new Date(dates.endDate),
+		}),
+	]);
 
 	const hasOverpassedMonthlyBudget =
 		(totalBudgetAmount?.data || 0) > (totalMonthlyBudget?.data || 0);

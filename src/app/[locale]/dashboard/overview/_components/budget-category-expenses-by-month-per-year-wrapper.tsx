@@ -29,11 +29,13 @@ const BudgetCategoryExpensesByMonthPerYearWrapper = async ({
 			"yyyy-MM-dd"
 		)
 	).getFullYear();
+
 	const totalBudgetAmountRegistrationPerYearForLineChart =
 		await getTotalBudgetAmountRegistrationPerYearForLineChart({
 			profileId,
 			year,
 		});
+
 	return (
 		<div className="flex flex-col items-start w-full h-fit gap-4 mt-4">
 			<h2 className="text-lg font-semibold text-primary">

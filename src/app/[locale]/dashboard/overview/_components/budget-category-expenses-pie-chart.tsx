@@ -17,7 +17,7 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
-		<div className="h-[350px] w-full">
+		<div className="h-96 w-full">
 			<ResponsivePie
 				data={data}
 				margin={{ top: 40, right: 80, bottom: 80, left: 80 }}

@@ -25,6 +25,7 @@ const MyBudget = async () => {
 
 	const budgetCategories = data?.budgetCategories || [];
 	const totalBudget = data?.totalBudget || 0;
+
 	const refetchBudgetCategories = async () => {
 		"use server";
 		await revalidatePath("/dashboard/my-budget");

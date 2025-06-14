@@ -105,6 +105,13 @@ export default function AppNavBar() {
 										? "bg-accent text-accent-foreground"
 										: ""
 								}`}
+								onClick={(e) => {
+									e.preventDefault();
+									const profileHref = queryString
+										? `/dashboard/profile?${queryString}`
+										: "/dashboard/profile";
+									router.push(profileHref);
+								}}
 							>
 								{userName || t("navigationItems.profile")}
 							</NavigationMenuTrigger>

@@ -4,11 +4,17 @@ import { cookies } from "next/headers";
 import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
 import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
-import CurrentFormattedDate from "../_components/current-formatted-date";
+const CurrentFormattedDate = dynamic(
+	() => import("../_components/current-formatted-date"),
+	{
+		ssr: !!false,
+	}
+);
 import ChartsSection from "./_components/charts-section";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import BudgetCategoryExpensesByMonthPerYearWrapper from "./_components/budget-category-expenses-by-month-per-year-wrapper";
+import dynamic from "next/dynamic";
 
 const Overview = async ({
 	searchParams,
@@ -26,11 +32,11 @@ const Overview = async ({
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
 
-	const { data } = await getBudgetCategories(profileId);
+	const { data: profileData } = await getBudgetCategories(profileId);
 
-	const budgetCategories = data?.budgetCategories || [];
+	const budgetCategories = profileData?.budgetCategories || [];
 
-	const refetchBudgetCategories = async () => {
+	const refetchData = async () => {
 		"use server";
 		await revalidatePath("/dashboard/overview");
 	};
@@ -49,7 +55,7 @@ const Overview = async ({
 						<RegisterAmountToCategoryCard
 							key={category.id}
 							category={category}
-							refetchData={refetchBudgetCategories}
+							refetchData={refetchData}
 						/>
 					))}
 				</div>
