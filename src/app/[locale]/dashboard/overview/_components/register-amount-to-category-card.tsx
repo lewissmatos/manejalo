@@ -109,9 +109,19 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 						<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
 					</Avatar>
 				) : null}
-				<CardTitle className="line-clamp-2 max-w-72 text-primary font-semibold text-xl">
-					{name}
-				</CardTitle>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<CardTitle className="line-clamp-2 w-full max-w-48 text-start text-primary font-semibold text-lg">
+							{name}
+						</CardTitle>
+					</TooltipTrigger>
+					<TooltipContent
+						side="top"
+						className="bg-secondary text-primary max-w-52 max-h-44 overflow-y-auto"
+					>
+						<span className="text-sm">{name}</span>
+					</TooltipContent>
+				</Tooltip>
 			</CardHeader>
 			<CardContent className="p-0 flex flex-col gap-2 items-start">
 				<CardDescription className="line-clamp-2 text-md max-w-72 ">

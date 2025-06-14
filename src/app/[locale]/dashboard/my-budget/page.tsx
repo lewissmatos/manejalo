@@ -43,7 +43,7 @@ const MyBudget = async () => {
 						value: formatCurrency(totalBudget || 0),
 					})}
 				</p>
-				<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mb-4">
+				<section className="flex flex-wrap gap-4 max-h-[33rem] justify-start items-start overflow-y-auto">
 					<ManageBudgetCategoryDialog
 						refetchBudgetCategories={refetchBudgetCategories}
 					/>

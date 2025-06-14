@@ -94,15 +94,27 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 				isDisabled ? "opacity-50" : ""
 			}`}
 		>
-			<CardHeader className="p-0 flex flex-row gap-2 items-center justify-between">
-				{emoji ? (
-					<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-						<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
-					</Avatar>
-				) : null}
-				<CardTitle className="line-clamp-2 w-full text-primary font-semibold flex-1 flex items-start text-lg">
-					{name}
-				</CardTitle>
+			<CardHeader className="p-0 flex flex-row gap-2 items-start justify-between">
+				<div className="flex flex-row items-center gap-2 flex-1">
+					{emoji ? (
+						<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+						</Avatar>
+					) : null}
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<CardTitle className="line-clamp-2 w-full max-w-48 text-start text-primary font-semibold text-lg">
+								{name}
+							</CardTitle>
+						</TooltipTrigger>
+						<TooltipContent
+							side="top"
+							className="bg-secondary text-primary max-w-52 max-h-44 overflow-y-auto"
+						>
+							<span className="text-sm">{name}</span>
+						</TooltipContent>
+					</Tooltip>
+				</div>
 				{!isDisabled ? (
 					<ButtonLoading
 						isLoading={isMarkAsFavPending}
@@ -131,7 +143,7 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 						side="top"
 						className="bg-secondary text-primary max-w-52 max-h-44 overflow-y-auto"
 					>
-						<span className="text-sm">{description || t("noDescription")}</span>
+						<span className="text-sm">{description}</span>
 					</TooltipContent>
 				</Tooltip>
 			</CardContent>

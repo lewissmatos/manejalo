@@ -138,7 +138,7 @@ const ManageIncomeDialog = ({
 			emoji: defaultValues?.emoji || incomeEmojis[0],
 			type: defaultValues?.type || IncomeType.EMPLOYMENT,
 			description: defaultValues?.description || "",
-			amount: defaultValues?.amount || 0,
+			amount: defaultValues?.amount,
 		});
 	}, [defaultValues, reset, isOpen]);
 	return (
@@ -202,9 +202,16 @@ const ManageIncomeDialog = ({
 							<Input
 								id="amount"
 								type="number"
-								{...register("amount", { required: true, valueAsNumber: true })}
+								{...register("amount", {
+									required: true,
+									valueAsNumber: true,
+									min: 1,
+									max: Number.MAX_SAFE_INTEGER,
+								})}
 								step="1"
 								placeholder="DOP 0.00"
+								min={1}
+								max={Number.MAX_SAFE_INTEGER}
 							/>
 						</div>
 						<div className="flex flex-row gap-4">

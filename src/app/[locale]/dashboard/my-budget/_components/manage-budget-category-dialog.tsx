@@ -66,7 +66,6 @@ const ManageBudgetCategoryDialog = ({
 		reset,
 		formState: { isValid, isSubmitting },
 		setValue,
-		watch,
 	} = useForm<Input>({
 		defaultValues: {
 			emoji: incomeEmojis[0],
@@ -137,7 +136,7 @@ const ManageBudgetCategoryDialog = ({
 			emoji: defaultValues?.emoji || incomeEmojis[0],
 			name: defaultValues?.name || "",
 			description: defaultValues?.description || "",
-			estimation: defaultValues?.estimation || 0,
+			estimation: defaultValues?.estimation,
 		});
 	}, [defaultValues, reset, isOpen]);
 	return (
@@ -198,13 +197,14 @@ const ManageBudgetCategoryDialog = ({
 									required: true,
 								})}
 								disabled={isEditMode}
+								maxLength={50}
 							/>
 						</div>
 						<div className="grid gap-3">
 							<Label htmlFor="description">{t("common.description")}</Label>
 							<Textarea
 								id="description"
-								{...register("description", { required: true })}
+								{...register("description")}
 								maxLength={150}
 							/>
 						</div>
@@ -242,9 +242,13 @@ const ManageBudgetCategoryDialog = ({
 									{...register("estimation", {
 										required: true,
 										valueAsNumber: true,
+										min: 1,
+										max: Number.MAX_SAFE_INTEGER,
 									})}
 									step="1"
 									placeholder="DOP 0.00"
+									min={1}
+									max={Number.MAX_SAFE_INTEGER}
 								/>
 							</div>
 						</div>

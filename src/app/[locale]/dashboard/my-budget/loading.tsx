@@ -4,7 +4,7 @@ export default function Loading() {
 	return (
 		<div className="h-calculate(100vh - 64px) gap-4 w-full">
 			<Skeleton className="h-8 w-48 mb-2" />
-			<Skeleton className="h-6 w-[20rem] mb-8" />
+			<Skeleton className="h-6 w-[22rem] mb-8" />
 			<Skeleton className="h-6 w-96" />
 			<div className="flex flex-wrap mt-4 gap-4 w-full max-h-[33rem] justify-start items-start overflow-y-auto">
 				<div className="flex flex-col w-full md:w-36 max-w-sm h-40 gap-2 justify-between">
