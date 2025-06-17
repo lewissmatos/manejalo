@@ -464,3 +464,63 @@ export const getHighestExpendingMonths = async ({
 		};
 	}
 };
+
+export const getTotalAmountRegistrationsForCalendarChart = async ({
+	profileId,
+	year,
+}: {
+	profileId: string;
+	year: number;
+}): Promise<
+	ResponseModel<
+		{
+			day: `${number}-${number}-${number}`;
+			value: number;
+		}[]
+	>
+> => {
+	const t = await getTranslations("MyBudgetPage.messages");
+	const startDate = new Date(year, 0, 1);
+	const endDate = new Date(year, 11, 31);
+
+	try {
+		const res = await prisma.budgetAmountRegistration.groupBy({
+			by: ["correspondingDate"],
+			_sum: { amount: true },
+			where: {
+				budgetCategory: {
+					profileId: profileId,
+				},
+				correspondingDate: {
+					gte: startDate,
+					lte: endDate,
+				},
+			},
+			orderBy: [{ correspondingDate: "asc" }],
+		});
+
+		const finalData = res.map((item) => ({
+			day: format(
+				item.correspondingDate,
+				"yyyy-MM-dd"
+			) as `${number}-${number}-${number}`,
+			value: (item._sum.amount || 0) * -1,
+		}));
+
+		return {
+			data: finalData,
+			message: "",
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error(
+			"Error fetching total amount registrations for calendar chart:",
+			error
+		);
+		return {
+			data: null,
+			message: t("defaultErrorMessage"),
+			isSuccess: false,
+		};
+	}
+};

@@ -80,9 +80,6 @@ export default function AppNavBar() {
 					<NavigationMenuList className="flex justify-end items-center gap-4 p-1">
 						{navItems.map((item) => {
 							const isSelected = pathname?.includes(item.href);
-							const hrefWithParams = queryString
-								? `${item.href}?${queryString}`
-								: item.href;
 							return (
 								<NavigationMenuItem key={item.titleKey}>
 									<NavigationMenuLink
@@ -91,7 +88,7 @@ export default function AppNavBar() {
 											isSelected ? "bg-accent text-accent-foreground" : ""
 										}`}
 									>
-										<Link href={hrefWithParams}>
+										<Link href={item.href}>
 											{t(`navigationItems.${item.titleKey}`)}
 										</Link>
 									</NavigationMenuLink>
@@ -178,13 +175,10 @@ export default function AppNavBar() {
 								<X size={24} />
 							</Button>
 							{navItems.map((item) => {
-								const hrefWithParams = queryString
-									? `${item.href}?${queryString}`
-									: item.href;
 								return (
 									<Link
 										key={item.titleKey}
-										href={hrefWithParams}
+										href={item.href}
 										className="py-2 text-lg font-medium"
 										onClick={() => setMobileMenuOpen(false)}
 									>

@@ -30,8 +30,8 @@ const HighestExpendingMonthsBarChart = ({
 		labelSkipHeight: 16,
 	};
 	return (
-		<div className="h-[300px] w-full">
-			<h2 className="text-lg font-semibold mb-4">
+		<div className="h-64 w-full gap-2">
+			<h2 className="text-lg font-semibold ">
 				{t("title", { count: data.length })}
 			</h2>
 			<ResponsiveBar

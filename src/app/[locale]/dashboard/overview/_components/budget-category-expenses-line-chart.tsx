@@ -17,10 +17,10 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
-		<div className="w-full h-[80vh]">
+		<div className="w-full h-[40vh]">
 			<ResponsiveLine
 				data={data}
-				margin={{ top: 10, right: 50, bottom: 150, left: 50 }}
+				margin={{ top: 10, right: 180, bottom: 30, left: 50 }}
 				curve="monotoneX"
 				lineWidth={4}
 				enableArea
@@ -69,10 +69,10 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 				useMesh={true}
 				legends={[
 					{
-						anchor: "bottom",
-						direction: "row",
-						translateY: 50,
-						itemWidth: 200,
+						anchor: "top-right",
+						direction: "column",
+						translateX: 160,
+						itemWidth: 150,
 						itemHeight: 22,
 						symbolShape: "circle",
 					},

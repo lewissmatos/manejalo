@@ -65,7 +65,7 @@ const ChartsSection = async ({
 	return (
 		<section
 			id="charts-section"
-			className="flex flex-col gap-2 items-center w-5/12"
+			className="flex flex-col gap-2 items-center w-full"
 		>
 			<div className="flex flex-row items-baseline justify-center w-full">
 				<span className="text-primary text-lg mr-1">

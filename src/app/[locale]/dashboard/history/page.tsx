@@ -1,6 +1,7 @@
 import {
 	getBudgetAmountRegistrations,
-	getHighestExpendingMonths,
+	getTotalAmountRegistrationsForCalendarChart,
+	getTotalBudgetAmountRegistrationPerYearForLineChart,
 	getTotalExpensesOverTime,
 } from "@/app/_server-actions/(budget-amount-registration)/actions";
 import { parseISO, startOfMonth } from "date-fns";
@@ -9,22 +10,20 @@ import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import React from "react";
 import ScreenTitle from "../_components/screen-title";
-import HistoryItems from "./_components/history-items";
-import HistoryTable from "./_components/history-table";
 import {
 	Pagination,
 	PaginationContent,
-	PaginationEllipsis,
 	PaginationItem,
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
-import { formatCurrency } from "@/lib/formatters";
-import TotalExpendingOverTimeSection from "./_components/total-expendings-overtime-section";
-import HighestExpendingMonthsBarChart from "./_components/highest-expending-months-bar-chart";
+import TotalExpendingOverTimeSection from "./_components/total-expending-overtime-section";
+import HistoryTable from "./_components/history-table";
+import BudgetCategoryExpensesByMonthLineChartWrapper from "../overview/_components/budget-category-expenses-line-chart-wrapper";
+import TotalAmountRegistrationsCalendarChart from "./_components/total-amount-registrations-calendar-chart";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 const History = async ({
 	searchParams,
@@ -33,7 +32,7 @@ const History = async ({
 }) => {
 	const [cookieStore, t] = await Promise.all([cookies(), getTranslations()]);
 	const selectedDate = searchParams?.selected_date;
-	const currentPage = parseInt((searchParams?.history_page as string) || "1");
+	const currentPage = parseInt((searchParams?.page as string) || "1");
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
 
@@ -53,7 +52,8 @@ const History = async ({
 	const [
 		{ data: tableData },
 		{ data: totalExpensesOverTimeData },
-		{ data: highestExpendingOverTimeData },
+		{ data: totalAmountRegistrationsForCalendarChartData },
+		totalBudgetAmountRegistrationPerYearForLineChartData,
 	] = await Promise.all([
 		getBudgetAmountRegistrations({
 			profileId,
@@ -61,7 +61,14 @@ const History = async ({
 			limit: PAGE_SIZE,
 		}),
 		getTotalExpensesOverTime({ profileId }),
-		getHighestExpendingMonths({ profileId }),
+		getTotalAmountRegistrationsForCalendarChart({
+			profileId,
+			year,
+		}),
+		getTotalBudgetAmountRegistrationPerYearForLineChart({
+			profileId,
+			year,
+		}),
 	]);
 
 	const totalPages = tableData?.data?.totalPages || 1;
@@ -73,7 +80,7 @@ const History = async ({
 				<p className="text-md mb-8">{t("HistoryPage.subtitle")}</p>
 			</section>
 			<div className="flex flex-row gap-8">
-				<div className="w-7/12">
+				<div className="w-5/12">
 					<HistoryTable
 						data={tableData?.data?.registrations || []}
 						totalAmount={tableData?.totalAmount || 0}
@@ -83,7 +90,7 @@ const History = async ({
 							<PaginationContent>
 								<PaginationItem>
 									<PaginationPrevious
-										href={`?history_page=${Math.max(currentPage - 1, 1)}${
+										href={`?page=${Math.max(currentPage - 1, 1)}${
 											selectedDate ? `&selected_date=${selectedDate}` : ""
 										}`}
 									/>
@@ -93,7 +100,7 @@ const History = async ({
 									return (
 										<PaginationItem key={page}>
 											<PaginationLink
-												href={`?history_page=${page}${
+												href={`?page=${page}${
 													selectedDate ? `&selected_date=${selectedDate}` : ""
 												}`}
 												isActive={page === currentPage}
@@ -105,28 +112,35 @@ const History = async ({
 								})}
 								<PaginationItem>
 									<PaginationNext
-										href={`?history_page=${Math.min(
-											currentPage + 1,
-											totalPages
-										)}${selectedDate ? `&selected_date=${selectedDate}` : ""}`}
+										href={`?page=${Math.min(currentPage + 1, totalPages)}`}
 									/>
 								</PaginationItem>
 							</PaginationContent>
 						</Pagination>
 					</div>
 				</div>
-				<div className="w-5/12 flex flex-col gap-4 items-center justify-start ">
+				<div className="w-7/12 flex flex-col gap-2 items-start justify-between">
 					<TotalExpendingOverTimeSection
 						expense={totalExpensesOverTimeData?.EXPENSE || null}
 						recovery={totalExpensesOverTimeData?.RECOVERY || null}
 						total={totalExpensesOverTimeData?.total || null}
 					/>
-					<HighestExpendingMonthsBarChart
-						data={highestExpendingOverTimeData || []}
+					<TotalAmountRegistrationsCalendarChart
+						data={totalAmountRegistrationsForCalendarChartData || []}
+					/>
+					<BudgetCategoryExpensesByMonthLineChartWrapper
+						year={year}
+						// setYear={(year) => {
+						// 	const params = new URLSearchParams(searchParams.toString());
+						// 	params.set("year", year.toString());
+						// 	replace(`?${params.toString()}`);
+						// }}
+						data={
+							totalBudgetAmountRegistrationPerYearForLineChartData?.data || []
+						}
 					/>
 				</div>
 			</div>
-			<HistoryItems profileId={profileId} defaultYear={year} showYearPicker />
 		</div>
 	);
 };

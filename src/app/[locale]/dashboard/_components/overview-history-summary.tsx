@@ -7,8 +7,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import React from "react";
 
-const AppSideHistorySummary = async () => {
-	const t = await getTranslations("AppSideHistorySummary");
+const OverviewHistorySummary = async () => {
+	const t = await getTranslations("OverviewHistorySummary");
 	const cookieStore = await cookies();
 	const locale = await getLocale();
 	const profileId = cookieStore.get("profile-id")?.value || "";
@@ -21,7 +21,7 @@ const AppSideHistorySummary = async () => {
 		locale: [es, enUS].find((l) => l.code.includes(locale)) || es,
 	});
 	return (
-		<div className="flex flex-col items-start justify-between w-full md:w-64 h-96 shadow-md py-2 px-3 border-1 border-foreground-500 rounded-lg">
+		<div className="flex flex-col items-start justify-between w-full md:w-72 h-96 shadow-md py-2 px-3 border-1 border-foreground-500 rounded-lg">
 			<div className="flex flex-col  gap-2 ">
 				<h2 className="text-xl font-semibold text-primary">{t("title")}</h2>
 				<p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -35,21 +35,21 @@ const AppSideHistorySummary = async () => {
 							key={item.id}
 							className="py-2 flex flex-col gap-1 border-b border-gray-300"
 						>
-							<div className="flex justify-between items-center text-sm ">
+							<div className="flex  flex-col justify-between items-start text-sm ">
 								<span>{item.budgetCategory?.name}</span>
+							</div>
+							<div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
 								<span
-									className={`whitespace-nowrap ${
+									className={`whitespace-nowrap font-semibold ${
 										item.type === BudgetAmountType.EXPENSE
 											? "text-primary"
-											: "text-green-500 font-semibold"
+											: "text-green-500"
 									}`}
 								>
 									{`${
 										item.type === BudgetAmountType.EXPENSE ? "-" : "+"
 									}${formatCurrency(Math.abs(item.amount), "DOP", true)}`}
 								</span>
-							</div>
-							<div className="text-sm text-gray-500 dark:text-gray-400">
 								{format(item.correspondingDate, "PPP")}
 							</div>
 						</li>
@@ -62,4 +62,4 @@ const AppSideHistorySummary = async () => {
 	);
 };
 
-export default AppSideHistorySummary;
+export default OverviewHistorySummary;

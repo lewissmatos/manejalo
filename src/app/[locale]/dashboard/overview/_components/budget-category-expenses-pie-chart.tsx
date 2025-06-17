@@ -17,10 +17,10 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
-		<div className="h-[400px] w-full">
+		<div className="h-[340px] w-full">
 			<ResponsivePie
 				data={data}
-				margin={{ top: 40, right: 80, bottom: 100, left: 80 }}
+				margin={{ top: 10, right: 100, bottom: 20, left: 100 }}
 				innerRadius={0.5}
 				colors={{ scheme: "pastel1" }}
 				padAngle={0.6}
@@ -49,16 +49,16 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 				arcLabelsSkipAngle={10}
 				arcLinkLabelsOffset={-10}
 				arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-				legends={[
-					{
-						anchor: "bottom-right",
-						direction: "column",
-						translateY: 70,
-						itemWidth: 80,
-						itemHeight: 20,
-						symbolShape: "circle",
-					},
-				]}
+				// legends={[
+				// 	{
+				// 		anchor: "bottom-right",
+				// 		direction: "column",
+				// 		translateY: 160,
+				// 		itemWidth: 80,
+				// 		itemHeight: 20,
+				// 		symbolShape: "circle",
+				// 	},
+				// ]}
 			/>
 		</div>
 	);

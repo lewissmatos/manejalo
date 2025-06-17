@@ -1,7 +1,7 @@
 import React from "react";
 import AppNavBar from "./_components/app-navbar";
 const AppSideCalendar = dynamic(
-	() => import("./_components/app-side-calendar"),
+	() => import("./overview/_components/overview-date-selector"),
 	{
 		loading: () => <Skeleton className="w-full h-96 rounded-md" />,
 		ssr: !!false,
@@ -12,7 +12,7 @@ import { cookies } from "next/headers";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import AppSideHistorySummary from "./_components/app-side-history-summary";
+import OverviewHistorySummary from "./_components/overview-history-summary";
 
 export const metadata: Metadata = {
 	title: {
@@ -44,10 +44,6 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 			<div className="w-full flex flex-col md:flex-row gap-4 p-4 items-start">
 				<div className="overflow-x-hidden overflow-y-auto w-full">
 					{children}
-				</div>
-				<div className="flex flex-col items-center justify-center w-full md:w-fit gap-2">
-					<AppSideCalendar />
-					<AppSideHistorySummary />
 				</div>
 			</div>
 		</div>

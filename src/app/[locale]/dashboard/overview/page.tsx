@@ -4,19 +4,14 @@ import { cookies } from "next/headers";
 import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
 import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
-const CurrentFormattedDate = dynamic(
-	() => import("../_components/current-formatted-date"),
-	{
-		ssr: !!false,
-	}
-);
 import ChartsSection from "./_components/charts-section";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import dynamic from "next/dynamic";
 import { format, parseISO, startOfMonth } from "date-fns";
-import { getTotalBudgetAmountRegistrationPerYearForLineChart } from "@/app/_server-actions/(budget-amount-registration)/actions";
-import BudgetCategoryExpensesByMonthLineChartWrapper from "./_components/budget-category-expenses-line-chart-wrapper";
+import { getHighestExpendingMonths } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import OverviewHistorySummary from "../_components/overview-history-summary";
+import OverviewDateSelector from "./_components/overview-date-selector";
+import HighestExpendingMonthsBarChart from "../history/_components/highest-expending-months-bar-chart";
 
 const Overview = async ({
 	searchParams,
@@ -45,16 +40,12 @@ const Overview = async ({
 		)
 	).getFullYear();
 
-	const [
-		{ data: profileData },
-		totalBudgetAmountRegistrationPerYearForLineChart,
-	] = await Promise.all([
-		getBudgetCategories(profileId),
-		getTotalBudgetAmountRegistrationPerYearForLineChart({
-			profileId,
-			year,
-		}),
-	]);
+	const [{ data: profileData }, { data: highestExpendingOverTimeData }] =
+		await Promise.all([
+			getBudgetCategories(profileId),
+
+			getHighestExpendingMonths({ profileId }),
+		]);
 
 	const budgetCategories = profileData?.budgetCategories || [];
 
@@ -67,26 +58,32 @@ const Overview = async ({
 		<div className="h-calculate(100vh - 64px) gap-4 w-full">
 			<section className="flex flex-col items-start">
 				<ScreenTitle>{t("title")}</ScreenTitle>
-				<p className="text-md mb-8">{t("subtitle")}</p>
+				<p className="text-md mb-4">{t("subtitle")}</p>
 			</section>
-			<Separator />
-			<CurrentFormattedDate />
-			<div className="flex flex-row mt-4 gap-4">
-				<div className="flex flex-wrap gap-4 w-7/12 max-h-[33rem] justify-start items-start overflow-y-auto">
-					{budgetCategories?.map((category) => (
-						<RegisterAmountToCategoryCard
-							key={category.id}
-							category={category}
-							refetchData={refetchData}
-						/>
-					))}
+			<div className="flex flex-row mt-4 gap-4 justify-between w-full">
+				<div className="flex flex-col gap-4 w-1/2">
+					<OverviewDateSelector />
+					<div className="flex flex-wrap gap-4 justify-start max-h-[33rem]  items-start overflow-y-auto">
+						{budgetCategories?.map((category) => (
+							<RegisterAmountToCategoryCard
+								key={category.id}
+								category={category}
+								refetchData={refetchData}
+							/>
+						))}
+					</div>
 				</div>
-				<ChartsSection searchParams={await searchParams} />
+				<div className="flex flex-col w-1/2">
+					<div className="flex flex-row gap-2 justify-end w-full">
+						<ChartsSection searchParams={await searchParams} />
+						{/* <AppSideCalendar /> */}
+						<OverviewHistorySummary />
+					</div>
+					<HighestExpendingMonthsBarChart
+						data={highestExpendingOverTimeData || []}
+					/>
+				</div>
 			</div>
-			<BudgetCategoryExpensesByMonthLineChartWrapper
-				year={year}
-				data={totalBudgetAmountRegistrationPerYearForLineChart.data || []}
-			/>
 		</div>
 	);
 };

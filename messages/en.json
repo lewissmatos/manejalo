@@ -111,8 +111,7 @@
 	},
 	"ui": {
 		"showPassword": "Show Password",
-		"hidePassword": "Hide Password",
-		"selectedDateWithValue": "Selected Date: {date}"
+		"hidePassword": "Hide Password"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -224,11 +223,12 @@
 			"overpassedMonthlyBudget": "You have exceeded your monthly budget. Please review your spending."
 		},
 		"BudgetCategoryExpensesByMonthLineChart": {
-			"title": "Monthly Expenses by year ({year})",
+			"title": "Monthly Expenses by year",
 			"noData": "No data available for {year}."
-		}
+		},
+		"selectDate": "Select date"
 	},
-	"AppSideHistorySummary": {
+	"OverviewHistorySummary": {
 		"title": "History Summary",
 		"subtitle": "Quick overview of your spending and income history. You can easily check the last {value} records.",
 		"noHistory": "No history available."
@@ -243,6 +243,9 @@
 		"totalExpensesOverTime": "Total Expenses Over Time",
 		"HighestExpendingMonthsBarChart": {
 			"title": "Highest Spending Months"
+		},
+		"TotalAmountRegistrationsCalendarChart": {
+			"title": "Total Amount Registrations by day"
 		}
 	}
 }

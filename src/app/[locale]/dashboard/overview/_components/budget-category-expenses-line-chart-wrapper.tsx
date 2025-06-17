@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import BudgetCategoryExpensesByMonthLineChart from "./budget-category-expenses-line-chart";
 import { LineSeries } from "@nivo/line";
@@ -13,9 +15,9 @@ const BudgetCategoryExpensesByMonthLineChartWrapper = <T extends LineSeries>({
 }) => {
 	const t = useTranslations("OverviewPage");
 	return !!data?.length ? (
-		<div className="flex flex-col items-start w-full h-fit gap-4 mt-4">
+		<div className="flex flex-col items-start w-full h-[450px] gap-1">
 			<h2 className="text-lg font-semibold text-primary">
-				{t("BudgetCategoryExpensesByMonthLineChart.title", { year })}
+				{t("BudgetCategoryExpensesByMonthLineChart.title")}
 			</h2>
 			<BudgetCategoryExpensesByMonthLineChart data={data || []} />
 		</div>
