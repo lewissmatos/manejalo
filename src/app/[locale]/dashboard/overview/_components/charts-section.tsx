@@ -79,7 +79,7 @@ const ChartsSection = async ({
 					{formatCurrency(totalBudgetAmount.data, "DOP", true)}
 				</span>
 				<span className="text-primary/70 text-md">
-					{`/${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
+					{`/ - ${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
 				</span>
 			</div>
 			{hasOverpassedMonthlyBudget ? (

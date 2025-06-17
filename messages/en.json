@@ -104,7 +104,10 @@
 		"emoji": "Emoji",
 		"description": "Description",
 		"details": "Details",
-		"date": "Date"
+		"date": "Date",
+		"year": "Year",
+		"total": "Total",
+		"totalWithValue": "Total: {value}"
 	},
 	"ui": {
 		"showPassword": "Show Password",
@@ -220,13 +223,26 @@
 			"registeredSummary": "Registered: ",
 			"overpassedMonthlyBudget": "You have exceeded your monthly budget. Please review your spending."
 		},
-		"BudgetCategoryExpensesByMonthPerYear": {
-			"title": "Monthly Expenses by year ({year})"
+		"BudgetCategoryExpensesByMonthLineChart": {
+			"title": "Monthly Expenses by year ({year})",
+			"noData": "No data available for {year}."
 		}
 	},
 	"AppSideHistorySummary": {
 		"title": "History Summary",
 		"subtitle": "Quick overview of your spending and income history. You can easily check the last {value} records.",
 		"noHistory": "No history available."
+	},
+	"HistoryPage": {
+		"title": "History",
+		"subtitle": "View your spending and income history.",
+		"HistoryTable": {
+			"title": "History Records",
+			"noRecords": "No records found."
+		},
+		"totalExpensesOverTime": "Total Expenses Over Time",
+		"HighestExpendingMonthsBarChart": {
+			"title": "Highest Spending Months"
+		}
 	}
 }

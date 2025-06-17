@@ -70,7 +70,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 					...amountData,
 					amount: Number(amountData.amount) || 0,
 					budgetCategoryId: category.id,
-					registrationDate: currentSelectedDate || new Date(),
+					correspondingDate: currentSelectedDate || new Date(),
 					budgetCategoryReference: {
 						name: category.name,
 						estimation: category.estimation,
@@ -105,13 +105,15 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 		<Card className="w-full md:w-80 p-2 max-w-sm h-64 gap-1 justify-between">
 			<CardHeader className="p-0 flex flex-row gap-2 items-center">
 				{emoji ? (
-					<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-						<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
-					</Avatar>
+					<div className="size-8">
+						<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+						</Avatar>
+					</div>
 				) : null}
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<CardTitle className="line-clamp-2 w-full max-w-48 text-start text-primary font-semibold text-lg">
+						<CardTitle className="line-clamp-2 w-full max-w-52 text-start text-primary font-semibold text-lg">
 							{name}
 						</CardTitle>
 					</TooltipTrigger>
@@ -190,7 +192,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 						className="text-primary"
 						value={amountData.details}
 						onChange={(e) => {
-							handleUpdateAmountData("details", e.target.value.trim());
+							handleUpdateAmountData("details", e.target.value);
 						}}
 					/>
 					<ButtonLoading

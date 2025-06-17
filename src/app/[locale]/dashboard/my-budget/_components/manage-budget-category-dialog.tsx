@@ -80,7 +80,6 @@ const ManageBudgetCategoryDialog = ({
 			!profileData?.id ||
 			!data.estimation ||
 			data.estimation <= 0 ||
-			!data.description ||
 			!data.name
 		) {
 			return;
@@ -197,7 +196,7 @@ const ManageBudgetCategoryDialog = ({
 									required: true,
 								})}
 								disabled={isEditMode}
-								maxLength={50}
+								maxLength={30}
 							/>
 						</div>
 						<div className="grid gap-3">

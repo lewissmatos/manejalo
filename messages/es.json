@@ -104,7 +104,10 @@
 		"emoji": "Emoji",
 		"description": "Descripción",
 		"details": "Detalles",
-		"date": "Fecha"
+		"date": "Fecha",
+		"year": "Año",
+		"total": "Total",
+		"totalWithValue": "Total: {value}"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
@@ -220,13 +223,26 @@
 			"registeredSummary": "Registrado: ",
 			"overpassedMonthlyBudget": "Has superado tu presupuesto mensual. Por favor, revisa tus gastos."
 		},
-		"BudgetCategoryExpensesByMonthPerYear": {
-			"title": "Gastos mensuales por año ({year})"
+		"BudgetCategoryExpensesByMonthLineChart": {
+			"title": "Gastos mensuales por año ({year})",
+			"noData": "No hay datos disponibles para {year}."
 		}
 	},
 	"AppSideHistorySummary": {
 		"title": "Resumen del historial",
 		"subtitle": "Aquí puedes ver un resumen de tus gastos e ingresos recientes. Puedes visualizar los últimos {value} registros.",
 		"noHistory": "No se encontraron registros."
+	},
+	"HistoryPage": {
+		"title": "Historial",
+		"subtitle": "Consulta tu historial de gastos e ingresos.",
+		"HistoryTable": {
+			"title": "Tabla de historial",
+			"noRecords": "No hay registros disponibles."
+		},
+		"totalExpensesOverTime": "Gastos totales a lo largo del tiempo",
+		"HighestExpendingMonthsBarChart": {
+			"title": "Meses de mayor gasto"
+		}
 	}
 }

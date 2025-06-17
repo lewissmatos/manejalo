@@ -28,12 +28,12 @@ model Profile {
 
 
 enum IncomeType {
-  EMPLOYMENT     // Salaries, wages, bonuses
-  FREELANCE      // Gig work, self-employed jobs
-  BUSINESS       // Business profits, side hustles
-  RENTAL         // Property or equipment rent
-  INVESTMENT     // Dividends, interest, capital gains
-  OTHER          // Gifts, lottery, misc.
+  EMPLOYMENT
+  FREELANCE
+  BUSINESS
+  RENTAL
+  INVESTMENT
+  OTHER
 }
 model MonthlyIncome {
   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -77,7 +77,7 @@ model BudgetAmountRegistration {
   type        BudgetAmountType @default(EXPENSE) @map("type")
   details    String?   @map("details") @db.Text
   budgetCategoryReference Json @map("budget_category_reference") @db.Json
-  registrationDate DateTime @default(now()) @map("registration_date") @db.Timestamptz(6)
-  // profileId String @map("profile_id") @db.Uuid
+  correspondingDate DateTime @default(now()) @map("corresponding_date") @db.Timestamptz(6)
+
   @@map("budget_amount_registrations")
 }

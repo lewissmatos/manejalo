@@ -21,7 +21,7 @@ const AppSideHistorySummary = async () => {
 		locale: [es, enUS].find((l) => l.code.includes(locale)) || es,
 	});
 	return (
-		<div className="flex flex-col items-start justify-between w-full md:w-64 h-96 shadow-md py-2 px-4 border-1 border-foreground-500 rounded-lg">
+		<div className="flex flex-col items-start justify-between w-full md:w-64 h-96 shadow-md py-2 px-3 border-1 border-foreground-500 rounded-lg">
 			<div className="flex flex-col  gap-2 ">
 				<h2 className="text-xl font-semibold text-primary">{t("title")}</h2>
 				<p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -35,20 +35,22 @@ const AppSideHistorySummary = async () => {
 							key={item.id}
 							className="py-2 flex flex-col gap-1 border-b border-gray-300"
 						>
-							<div className="flex justify-between items-center">
-								<span>{(item.budgetCategoryReference as any)?.name}</span>
-								{item.type === BudgetAmountType.EXPENSE ? (
-									<span className="text-primary">
-										{formatCurrency(Math.abs(item.amount))}
-									</span>
-								) : (
-									<span className="text-green-500 font-semibold">
-										+{formatCurrency(Math.abs(item.amount))}
-									</span>
-								)}
+							<div className="flex justify-between items-center text-sm ">
+								<span>{item.budgetCategory?.name}</span>
+								<span
+									className={`whitespace-nowrap ${
+										item.type === BudgetAmountType.EXPENSE
+											? "text-primary"
+											: "text-green-500 font-semibold"
+									}`}
+								>
+									{`${
+										item.type === BudgetAmountType.EXPENSE ? "-" : "+"
+									}${formatCurrency(Math.abs(item.amount), "DOP", true)}`}
+								</span>
 							</div>
 							<div className="text-sm text-gray-500 dark:text-gray-400">
-								{format(item.registrationDate, "PPP")}
+								{format(item.correspondingDate, "PPP")}
 							</div>
 						</li>
 					))}

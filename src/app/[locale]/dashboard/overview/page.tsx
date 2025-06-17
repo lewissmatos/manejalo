@@ -13,8 +13,10 @@ const CurrentFormattedDate = dynamic(
 import ChartsSection from "./_components/charts-section";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import BudgetCategoryExpensesByMonthPerYearWrapper from "./_components/budget-category-expenses-by-month-per-year-wrapper";
 import dynamic from "next/dynamic";
+import { format, parseISO, startOfMonth } from "date-fns";
+import { getTotalBudgetAmountRegistrationPerYearForLineChart } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import BudgetCategoryExpensesByMonthLineChartWrapper from "./_components/budget-category-expenses-line-chart-wrapper";
 
 const Overview = async ({
 	searchParams,
@@ -32,7 +34,27 @@ const Overview = async ({
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
 
-	const { data: profileData } = await getBudgetCategories(profileId);
+	const selectedDate = await searchParams?.selected_date;
+
+	const year = new Date(
+		format(
+			startOfMonth(
+				selectedDate ? new Date(parseISO(selectedDate.toString())) : new Date()
+			),
+			"yyyy-MM-dd"
+		)
+	).getFullYear();
+
+	const [
+		{ data: profileData },
+		totalBudgetAmountRegistrationPerYearForLineChart,
+	] = await Promise.all([
+		getBudgetCategories(profileId),
+		getTotalBudgetAmountRegistrationPerYearForLineChart({
+			profileId,
+			year,
+		}),
+	]);
 
 	const budgetCategories = profileData?.budgetCategories || [];
 
@@ -61,7 +83,10 @@ const Overview = async ({
 				</div>
 				<ChartsSection searchParams={await searchParams} />
 			</div>
-			<BudgetCategoryExpensesByMonthPerYearWrapper />
+			<BudgetCategoryExpensesByMonthLineChartWrapper
+				year={year}
+				data={totalBudgetAmountRegistrationPerYearForLineChart.data || []}
+			/>
 		</div>
 	);
 };
