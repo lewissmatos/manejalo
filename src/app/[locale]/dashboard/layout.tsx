@@ -12,7 +12,7 @@ import { cookies } from "next/headers";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import OverviewHistorySummary from "./_components/overview-history-summary";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
 	title: {
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
 	const cookieStore = await cookies();
+	const locale = await getLocale();
+
 	const isAuthenticated =
 		(await cookieStore.get("is-authenticated")?.value) === "true";
 

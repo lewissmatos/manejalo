@@ -218,7 +218,7 @@
 			"registerAmountSuccessMessage": "Amount registered successfully!",
 			"registerAmountErrorMessage": "There was an error registering the amount. Please try again."
 		},
-		"ChartsSection": {
+		"BudgetCategoryExpensesByMonthLineChartWrapper": {
 			"registeredSummary": "Registered: ",
 			"overpassedMonthlyBudget": "You have exceeded your monthly budget. Please review your spending."
 		},
@@ -240,9 +240,10 @@
 			"title": "History Records",
 			"noRecords": "No records found."
 		},
-		"totalExpensesOverTime": "Total Expenses Over Time",
+		"totalExpensesWithValue": "Total Expenses in {year}",
 		"HighestExpendingMonthsBarChart": {
-			"title": "Highest Spending Months"
+			"title": "Highest Spending Months",
+			"noData": "No data available to display."
 		},
 		"TotalAmountRegistrationsCalendarChart": {
 			"title": "Total Amount Registrations by day"

@@ -7,17 +7,19 @@ type Props = {
 	expense: number | null;
 	recovery: number | null;
 	total: number | null;
+	year: number;
 };
-const TotalExpendingOverTimeSection = async ({
+const TotalExpensesByYearSection = async ({
 	expense,
 	recovery,
 	total,
+	year,
 }: Props) => {
 	const t = await getTranslations();
 	return (
 		<section className="rounded-md w-fit flex flex-col gap-1">
 			<h2 className="text-lg font-semibold text-primary">
-				{t("HistoryPage.totalExpensesOverTime")}
+				{t("HistoryPage.totalExpensesWithValue", { year })}
 			</h2>
 			<div className="flex flex-row justify-center items-center gap-2">
 				<div className="flex flex-col items-start">
@@ -47,4 +49,4 @@ const TotalExpendingOverTimeSection = async ({
 	);
 };
 
-export default TotalExpendingOverTimeSection;
+export default TotalExpensesByYearSection;

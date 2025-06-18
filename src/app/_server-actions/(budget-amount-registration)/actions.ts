@@ -29,7 +29,7 @@ export const addBudgetAmountRegistration = async (
 					payload.type === BudgetAmountType.EXPENSE
 						? -payload?.amount
 						: payload?.amount,
-				correspondingDate: payload?.correspondingDate,
+				correspondingDate: new Date(payload.correspondingDate),
 				details: payload?.details || "",
 				type: payload?.type || BudgetAmountType.EXPENSE,
 				budgetCategoryId: payload?.budgetCategoryId,
@@ -366,8 +366,10 @@ export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
 
 export const getTotalExpensesOverTime = async ({
 	profileId,
+	year,
 }: {
 	profileId: string;
+	year: number;
 }): Promise<
 	ResponseModel<{
 		[BudgetAmountType.EXPENSE]: number;
@@ -376,6 +378,8 @@ export const getTotalExpensesOverTime = async ({
 	}>
 > => {
 	const t = await getTranslations("MyBudgetPage.messages");
+	const startDate = new Date(year, 0, 1);
+	const endDate = new Date(year, 11, 31);
 	try {
 		const expensesTotal = await prisma.budgetAmountRegistration.aggregate({
 			_sum: {
@@ -384,6 +388,10 @@ export const getTotalExpensesOverTime = async ({
 			where: {
 				budgetCategory: {
 					profileId: profileId,
+				},
+				correspondingDate: {
+					gte: startDate,
+					lte: endDate,
 				},
 				type: BudgetAmountType.EXPENSE,
 			},
@@ -419,7 +427,7 @@ export const getTotalExpensesOverTime = async ({
 	}
 };
 
-export const getHighestExpendingMonths = async ({
+export const getHighestExpendingMonthsForBarChart = async ({
 	profileId,
 }: {
 	profileId: string;
@@ -433,22 +441,35 @@ export const getHighestExpendingMonths = async ({
 > => {
 	const t = await getTranslations("MyBudgetPage.messages");
 	try {
-		const res = await prisma.budgetAmountRegistration.groupBy({
-			by: ["correspondingDate"],
-			_sum: { amount: true },
+		// Fetch all registrations for the profile
+		const res = await prisma.budgetAmountRegistration.findMany({
 			where: {
 				budgetCategory: {
 					profileId: profileId,
 				},
 			},
-			orderBy: [{ _sum: { amount: "desc" } }],
-			take: 5,
+			select: {
+				amount: true,
+				correspondingDate: true,
+			},
 		});
 
-		const finalData = res.map((item) => ({
-			date: format(item.correspondingDate, "MMM yyyy").toUpperCase(),
-			value: (item._sum.amount || 0) * -1,
-		}));
+		// Group by month and year
+		const monthMap = new Map<string, number>();
+		res.forEach((item) => {
+			const key = format(item.correspondingDate, "MMM yyyy").toUpperCase();
+			const prev = monthMap.get(key) || 0;
+			monthMap.set(key, prev + (item.amount || 0));
+		});
+
+		// Convert to array and sort by value descending
+		const finalData = Array.from(monthMap.entries())
+			.map(([date, value]) => ({
+				date,
+				value: value * -1,
+			}))
+			.sort((a, b) => b.value - a.value)
+			.slice(0, 5);
 
 		return {
 			data: finalData,

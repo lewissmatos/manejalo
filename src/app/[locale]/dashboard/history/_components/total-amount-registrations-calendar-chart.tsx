@@ -5,6 +5,7 @@ import { ResponsiveCalendar } from "@nivo/calendar";
 import { formatCurrency } from "@/lib/formatters";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { format, formatISO } from "date-fns";
 
 const TotalAmountRegistrationsCalendarChart = ({
 	data,
@@ -16,11 +17,11 @@ const TotalAmountRegistrationsCalendarChart = ({
 	const t = useTranslations(
 		"HistoryPage.TotalAmountRegistrationsCalendarChart"
 	);
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 
 	const textProps = {
-		fill: theme === "dark" ? "#ffffff" : "#333333",
-		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
+		fill: resolvedTheme === "dark" ? "#ffffff" : "#333333",
+		outlineColor: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 	};
 
 	return (
@@ -32,24 +33,42 @@ const TotalAmountRegistrationsCalendarChart = ({
 				data={data}
 				from={`${year + 1}-01-01`}
 				to={`${year}-12-31`}
-				emptyColor="#eeeeee"
+				emptyColor={resolvedTheme === "dark" ? "#4d4d4d" : "#eeeeee"}
 				margin={{ right: 20, bottom: 10, left: 20 }}
-				yearSpacing={2}
-				monthBorderColor="#ffffff"
+				yearSpacing={0}
+				monthBorderColor={resolvedTheme === "dark" ? "#333333" : "#ffffff"}
 				dayBorderWidth={2}
-				dayBorderColor="#ffffff"
-				// legends={[
-				// 	{
-				// 		anchor: "bottom-right",
-				// 		direction: "row",
-				// 		translateY: 36,
-				// 		itemCount: 4,
-				// 		itemWidth: 42,
-				// 		itemHeight: 36,
-				// 		itemsSpacing: 14,
-				// 		itemDirection: "right-to-left",
-				// 	},
-				// ]}
+				dayBorderColor={resolvedTheme === "dark" ? "#333333" : "#ffffff"}
+				theme={{
+					text: {
+						...textProps,
+					},
+					tooltip: {
+						container: {
+							background: resolvedTheme === "dark" ? "#333333" : "#ffffff",
+							color: resolvedTheme === "dark" ? "#ffffff" : "#333333",
+						},
+					},
+				}}
+				tooltip={(val) => {
+					const item = val as unknown as { value: number; date: Date };
+					return (
+						<div
+							className="p-2 max-w-80 rounded-md"
+							style={{
+								background: resolvedTheme === "dark" ? "#333333" : "#ffffff",
+								color: resolvedTheme === "dark" ? "#ffffff" : "#333333",
+							}}
+						>
+							<span className="whitespace-nowrap">
+								{format(formatISO(item.date!), "PPP")}:{" "}
+							</span>
+							<strong className="whitespace-nowrap">
+								- {formatCurrency(Number(item.value), "DOP", true)}
+							</strong>
+						</div>
+					);
+				}}
 			/>
 		</div>
 	);

@@ -10,11 +10,11 @@ type Props = {
 	data: BudgetCategoryExpense[];
 };
 const BudgetCategoryExpensesChart = ({ data }: Props) => {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 
 	const textProps = {
-		fill: theme === "dark" ? "#ffffff" : "#333333",
-		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
+		fill: resolvedTheme === "dark" ? "#ffffff" : "#333333",
+		outlineColor: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
 		<div className="h-[340px] w-full">
@@ -35,30 +35,22 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 					},
 					tooltip: {
 						container: {
-							background: theme === "dark" ? "#333333" : "#ffffff",
-							color: theme === "dark" ? "#ffffff" : "#333333",
+							background: resolvedTheme === "dark" ? "#333333" : "#ffffff",
+							color: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 						},
 					},
 				}}
 				cornerRadius={2}
 				activeOuterRadiusOffset={8}
 				arcLinkLabelsSkipAngle={10}
-				arcLinkLabelsTextColor={theme === "dark" ? "#ffffff" : "#333333"}
+				arcLinkLabelsTextColor={
+					resolvedTheme === "dark" ? "#ffffff" : "#333333"
+				}
 				arcLinkLabelsThickness={2}
 				arcLinkLabelsColor={{ from: "color" }}
 				arcLabelsSkipAngle={10}
 				arcLinkLabelsOffset={-10}
 				arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-				// legends={[
-				// 	{
-				// 		anchor: "bottom-right",
-				// 		direction: "column",
-				// 		translateY: 160,
-				// 		itemWidth: 80,
-				// 		itemHeight: 20,
-				// 		symbolShape: "circle",
-				// 	},
-				// ]}
 			/>
 		</div>
 	);

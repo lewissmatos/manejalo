@@ -10,11 +10,11 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 }: {
 	data: T[];
 }) {
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 
 	const textProps = {
-		fill: theme === "dark" ? "#ffffff" : "#333333",
-		outlineColor: theme === "dark" ? "#ffffff" : "#333333",
+		fill: resolvedTheme === "dark" ? "#ffffff" : "#333333",
+		outlineColor: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
 		<div className="w-full h-[40vh]">
@@ -26,8 +26,6 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 				enableArea
 				colors={{ scheme: "pastel1" }}
 				areaOpacity={0.3}
-				// valueFormat={(val) => formatCurrency(val, "DOP", true)}
-
 				yFormat={(val) => formatCurrency(Number(val), "DOP", true)}
 				yScale={{
 					type: "linear",
@@ -41,8 +39,8 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 					},
 					tooltip: {
 						container: {
-							background: theme === "dark" ? "#333333" : "#ffffff",
-							color: theme === "dark" ? "#ffffff" : "#333333",
+							background: resolvedTheme === "dark" ? "#333333" : "#ffffff",
+							color: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 						},
 					},
 				}}
@@ -50,8 +48,8 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 					<div
 						className="p-2 max-w-80 rounded-md"
 						style={{
-							background: theme === "dark" ? "#333333" : "#ffffff",
-							color: theme === "dark" ? "#ffffff" : "#333333",
+							background: resolvedTheme === "dark" ? "#333333" : "#ffffff",
+							color: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 						}}
 					>
 						<span className="whitespace-nowrap">{point.seriesId}: </span>

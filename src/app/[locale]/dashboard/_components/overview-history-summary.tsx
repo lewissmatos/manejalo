@@ -20,8 +20,9 @@ const OverviewHistorySummary = async () => {
 	setDefaultOptions({
 		locale: [es, enUS].find((l) => l.code.includes(locale)) || es,
 	});
+
 	return (
-		<div className="flex flex-col items-start justify-between w-full md:w-72 h-96 shadow-md py-2 px-3 border-1 border-foreground-500 rounded-lg">
+		<div className="flex flex-col items-start justify-between w-full md:w-76 h-96 shadow-md p-2 border-1 border-foreground-500 rounded-lg">
 			<div className="flex flex-col  gap-2 ">
 				<h2 className="text-xl font-semibold text-primary">{t("title")}</h2>
 				<p className="text-sm text-gray-500 dark:text-gray-400 mb-2">

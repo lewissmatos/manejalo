@@ -11,54 +11,25 @@ import { formatCurrency } from "@/lib/formatters";
 import { getTranslations } from "next-intl/server";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const ChartsSection = async ({
-	searchParams,
-}: {
-	searchParams?: { [key: string]: string | string[] | undefined };
-}) => {
-	const [cookieStore, t] = await Promise.all([
-		cookies(),
-		getTranslations("OverviewPage.ChartsSection"),
-	]);
-	const profileId = cookieStore.get("profile-id")?.value || "";
-
-	const now = new Date();
-
-	const selectedDate = await searchParams?.selected_date;
-
-	const dates = {
-		startDate: format(
-			startOfMonth(
-				selectedDate ? new Date(parseISO(selectedDate.toString())) : now
-			),
-			"yyyy-MM-dd"
-		),
-		endDate: format(
-			endOfMonth(
-				selectedDate ? new Date(parseISO(selectedDate.toString())) : now
-			),
-			"yyyy-MM-dd"
-		),
-	};
-
-	const [
-		budgetAmountRegistrationsGroupedByCategory,
-		totalMonthlyBudget,
-		totalBudgetAmount,
-	] = await Promise.all([
-		getBudgetAmountRegistrationsGroupedByCategoryForPieChart({
-			profileId,
-			startDate: new Date(dates.startDate),
-			endDate: new Date(dates.endDate),
-		}),
-		getTotalMonthlyBudget(profileId),
-		getTotalBudgetAmountRegistrationByDateRange({
-			profileId,
-			startDate: new Date(dates.startDate),
-			endDate: new Date(dates.endDate),
-		}),
-	]);
+type Props = {
+	budgetAmountRegistrationsGroupedByCategory: Awaited<
+		ReturnType<typeof getBudgetAmountRegistrationsGroupedByCategoryForPieChart>
+	>;
+	totalMonthlyBudget: Awaited<ReturnType<typeof getTotalMonthlyBudget>>;
+	totalBudgetAmount: Awaited<
+		ReturnType<typeof getTotalBudgetAmountRegistrationByDateRange>
+	>;
+};
+const BudgetCategoryExpensesByMonthLineChartWrapper = ({
+	budgetAmountRegistrationsGroupedByCategory,
+	totalMonthlyBudget,
+	totalBudgetAmount,
+}: Props) => {
+	const t = useTranslations(
+		"OverviewPage.BudgetCategoryExpensesByMonthLineChartWrapper"
+	);
 
 	const hasOverpassedMonthlyBudget =
 		(totalBudgetAmount?.data || 0) > (totalMonthlyBudget?.data || 0);
@@ -90,21 +61,13 @@ const ChartsSection = async ({
 					</AlertTitle>
 				</Alert>
 			) : null}
-			<ChartWrapper>
+			<div className="w-full flex flex-col items-center justify-center">
 				<BudgetCategoryExpensesChart
 					data={budgetAmountRegistrationsGroupedByCategory.data || []}
 				/>
-			</ChartWrapper>
+			</div>
 		</section>
 	);
 };
 
-const ChartWrapper = ({ children }: { children: React.ReactNode }) => {
-	return (
-		<div className="w-full flex flex-col items-center justify-center">
-			{children}
-		</div>
-	);
-};
-
-export default ChartsSection;
+export default BudgetCategoryExpensesByMonthLineChartWrapper;

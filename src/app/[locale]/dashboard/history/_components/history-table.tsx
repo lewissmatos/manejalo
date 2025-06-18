@@ -57,7 +57,7 @@ const HistoryTable = ({ data, totalAmount }: Props) => {
 											<MessageCircle />
 										</TooltipTrigger>
 										<TooltipContent>
-											<div className="max-w-80 text-lg">{item.details}</div>
+											<div className="max-w-80 text-[1rem]">{item.details}</div>
 										</TooltipContent>
 									</Tooltip>
 								) : null}

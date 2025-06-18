@@ -4,14 +4,19 @@ import { cookies } from "next/headers";
 import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
 import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
-import ChartsSection from "./_components/charts-section";
+import BudgetCategoryExpensesByMonthLineChartWrapper from "./_components/budget-category-expenses-pie-chart-wrapper";
 import ScreenTitle from "../_components/screen-title";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import { format, parseISO, startOfMonth } from "date-fns";
-import { getHighestExpendingMonths } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import { endOfMonth, format, parseISO, startOfMonth } from "date-fns";
+import {
+	getBudgetAmountRegistrationsGroupedByCategoryForPieChart,
+	getHighestExpendingMonthsForBarChart,
+	getTotalBudgetAmountRegistrationByDateRange,
+} from "@/app/_server-actions/(budget-amount-registration)/actions";
 import OverviewHistorySummary from "../_components/overview-history-summary";
 import OverviewDateSelector from "./_components/overview-date-selector";
 import HighestExpendingMonthsBarChart from "../history/_components/highest-expending-months-bar-chart";
+import { getTotalMonthlyBudget } from "@/app/_server-actions/(profile)/actions";
 
 const Overview = async ({
 	searchParams,
@@ -44,8 +49,43 @@ const Overview = async ({
 		await Promise.all([
 			getBudgetCategories(profileId),
 
-			getHighestExpendingMonths({ profileId }),
+			getHighestExpendingMonthsForBarChart({ profileId }),
 		]);
+
+	const now = new Date();
+
+	const dates = {
+		startDate: format(
+			startOfMonth(
+				selectedDate ? new Date(parseISO(selectedDate.toString())) : now
+			),
+			"yyyy-MM-dd"
+		),
+		endDate: format(
+			endOfMonth(
+				selectedDate ? new Date(parseISO(selectedDate.toString())) : now
+			),
+			"yyyy-MM-dd"
+		),
+	};
+
+	const [
+		budgetAmountRegistrationsGroupedByCategory,
+		totalMonthlyBudget,
+		totalBudgetAmount,
+	] = await Promise.all([
+		getBudgetAmountRegistrationsGroupedByCategoryForPieChart({
+			profileId,
+			startDate: new Date(dates.startDate),
+			endDate: new Date(dates.endDate),
+		}),
+		getTotalMonthlyBudget(profileId),
+		getTotalBudgetAmountRegistrationByDateRange({
+			profileId,
+			startDate: new Date(dates.startDate),
+			endDate: new Date(dates.endDate),
+		}),
+	]);
 
 	const budgetCategories = profileData?.budgetCategories || [];
 
@@ -60,8 +100,8 @@ const Overview = async ({
 				<ScreenTitle>{t("title")}</ScreenTitle>
 				<p className="text-md mb-4">{t("subtitle")}</p>
 			</section>
-			<div className="flex flex-row mt-4 gap-4 justify-between w-full">
-				<div className="flex flex-col gap-4 w-1/2">
+			<div className="flex flex-col md:flex-row mt-4 gap-4 justify-between w-full">
+				<div className="flex flex-col gap-4 w-full md:w-1/2">
 					<OverviewDateSelector />
 					<div className="flex flex-wrap gap-4 justify-start max-h-[33rem]  items-start overflow-y-auto">
 						{budgetCategories?.map((category) => (
@@ -73,15 +113,22 @@ const Overview = async ({
 						))}
 					</div>
 				</div>
-				<div className="flex flex-col w-1/2">
-					<div className="flex flex-row gap-2 justify-end w-full">
-						<ChartsSection searchParams={await searchParams} />
-						{/* <AppSideCalendar /> */}
+				<div className="flex flex-col w-full md:w-1/2">
+					<div className="flex flex-col md:flex-row gap-2 justify-end w-full">
+						<BudgetCategoryExpensesByMonthLineChartWrapper
+							budgetAmountRegistrationsGroupedByCategory={
+								budgetAmountRegistrationsGroupedByCategory
+							}
+							totalMonthlyBudget={totalMonthlyBudget}
+							totalBudgetAmount={totalBudgetAmount}
+						/>
 						<OverviewHistorySummary />
 					</div>
-					<HighestExpendingMonthsBarChart
-						data={highestExpendingOverTimeData || []}
-					/>
+					{highestExpendingOverTimeData?.length ? (
+						<HighestExpendingMonthsBarChart
+							data={highestExpendingOverTimeData || []}
+						/>
+					) : null}
 				</div>
 			</div>
 		</div>

@@ -27,8 +27,8 @@ const OverviewDateSelector = () => {
 	const [date, setSelectedDate] = useAtom(selectedDateAtom);
 	const [open, setOpen] = React.useState(false);
 	const [visibleMonth, setVisibleMonth] = useState<Date>(date || new Date());
-	const locale = useLocale();
 	const searchParams = useSearchParams();
+	const locale = useLocale();
 	const [isPending, startTransition] = useTransition();
 	const pathname = usePathname();
 	const { replace } = useRouter();
@@ -43,7 +43,6 @@ const OverviewDateSelector = () => {
 		}
 	}, [selectedDateParam, pathname, replace, date]);
 
-	// Update visibleMonth when date changes (e.g., after selecting a date)
 	useEffect(() => {
 		if (date) setVisibleMonth(date);
 	}, [date]);

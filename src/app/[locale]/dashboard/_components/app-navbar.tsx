@@ -9,7 +9,7 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { LogOut, User, X } from "lucide-react";
@@ -38,6 +38,8 @@ const navItems = [
 	},
 ];
 
+import { setDefaultOptions } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 export default function AppNavBar() {
 	const t = useTranslations("AppNavBar");
 	const searchParams = useSearchParams();
@@ -46,7 +48,10 @@ export default function AppNavBar() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+	const locale = useLocale();
+	setDefaultOptions({
+		locale: [es, enUS].find((l) => l.code.includes(locale)) || es,
+	});
 	const profile = useAtomValue(authAtom).profile;
 
 	const userName = useMemo(() => {
