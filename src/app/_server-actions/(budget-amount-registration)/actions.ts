@@ -454,15 +454,14 @@ export const getHighestExpendingMonthsForBarChart = async ({
 			},
 		});
 
-		// Group by month and year
 		const monthMap = new Map<string, number>();
+
 		res.forEach((item) => {
 			const key = format(item.correspondingDate, "MMM yyyy").toUpperCase();
 			const prev = monthMap.get(key) || 0;
 			monthMap.set(key, prev + (item.amount || 0));
 		});
 
-		// Convert to array and sort by value descending
 		const finalData = Array.from(monthMap.entries())
 			.map(([date, value]) => ({
 				date,

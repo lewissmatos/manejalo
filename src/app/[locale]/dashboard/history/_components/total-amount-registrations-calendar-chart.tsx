@@ -4,8 +4,9 @@ import React from "react";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { formatCurrency } from "@/lib/formatters";
 import { useTheme } from "next-themes";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { format, formatISO } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 
 const TotalAmountRegistrationsCalendarChart = ({
 	data,
@@ -17,6 +18,8 @@ const TotalAmountRegistrationsCalendarChart = ({
 	const t = useTranslations(
 		"HistoryPage.TotalAmountRegistrationsCalendarChart"
 	);
+	const locale = useLocale();
+	const lang = locale === "en" ? enUS : es;
 	const { resolvedTheme } = useTheme();
 
 	const textProps = {
@@ -39,6 +42,11 @@ const TotalAmountRegistrationsCalendarChart = ({
 				monthBorderColor={resolvedTheme === "dark" ? "#333333" : "#ffffff"}
 				dayBorderWidth={2}
 				dayBorderColor={resolvedTheme === "dark" ? "#333333" : "#ffffff"}
+				monthLegend={(_year, month) => {
+					return format(new Date(new Date().getMonth(), month, 1), "LLL", {
+						locale: lang,
+					}).toUpperCase();
+				}}
 				theme={{
 					text: {
 						...textProps,

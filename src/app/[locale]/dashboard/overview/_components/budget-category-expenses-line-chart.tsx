@@ -24,7 +24,7 @@ function BudgetCategoryExpensesByMonthLineChart<T extends LineSeries>({
 				curve="monotoneX"
 				lineWidth={4}
 				enableArea
-				colors={{ scheme: "pastel1" }}
+				colors={{ scheme: resolvedTheme === "dark" ? "dark2" : "pastel2" }}
 				areaOpacity={0.3}
 				yFormat={(val) => formatCurrency(Number(val), "DOP", true)}
 				yScale={{

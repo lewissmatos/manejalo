@@ -21,11 +21,12 @@ import { getTotalMonthlyBudget } from "@/app/_server-actions/(profile)/actions";
 const Overview = async ({
 	searchParams,
 }: {
-	searchParams?: { [key: string]: string | string[] | undefined };
+	searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-	const [cookieStore, t] = await Promise.all([
+	const [cookieStore, t, { selected_date: selectedDate }] = await Promise.all([
 		cookies(),
 		getTranslations("OverviewPage"),
+		(await searchParams) || {},
 	]);
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
@@ -33,17 +34,6 @@ const Overview = async ({
 	if (!profileId) {
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
-
-	const selectedDate = await searchParams?.selected_date;
-
-	const year = new Date(
-		format(
-			startOfMonth(
-				selectedDate ? new Date(parseISO(selectedDate.toString())) : new Date()
-			),
-			"yyyy-MM-dd"
-		)
-	).getFullYear();
 
 	const [{ data: profileData }, { data: highestExpendingOverTimeData }] =
 		await Promise.all([
@@ -114,7 +104,7 @@ const Overview = async ({
 					</div>
 				</div>
 				<div className="flex flex-col w-full md:w-1/2">
-					<div className="flex flex-col md:flex-row gap-2 justify-end w-full">
+					<div className="flex flex-col md:flex-row gap-1 justify-end w-full">
 						<BudgetCategoryExpensesByMonthLineChartWrapper
 							budgetAmountRegistrationsGroupedByCategory={
 								budgetAmountRegistrationsGroupedByCategory

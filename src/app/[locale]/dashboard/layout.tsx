@@ -13,6 +13,8 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getLocale } from "next-intl/server";
+import { setDefaultOptions } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 
 export const metadata: Metadata = {
 	title: {
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
 const layout = async ({ children }: { children: React.ReactNode }) => {
 	const cookieStore = await cookies();
 	const locale = await getLocale();
-
+	setDefaultOptions({ locale: locale === "en" ? enUS : es });
 	const isAuthenticated =
 		(await cookieStore.get("is-authenticated")?.value) === "true";
 

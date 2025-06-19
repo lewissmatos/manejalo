@@ -28,11 +28,14 @@ const PAGE_SIZE = 15;
 const History = async ({
 	searchParams,
 }: {
-	searchParams?: { [key: string]: string | string[] | undefined };
+	searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-	const [cookieStore, t] = await Promise.all([cookies(), getTranslations()]);
-	const selectedYear = searchParams?.year;
-	const currentPage = parseInt((searchParams?.page as string) || "1");
+	const [cookieStore, t, { year: selectedYear, page }] = await Promise.all([
+		cookies(),
+		getTranslations(),
+		(await searchParams) || {},
+	]);
+	const currentPage = parseInt((page as string) || "1");
 
 	const profileId = cookieStore.get("profile-id")?.value || "";
 
@@ -132,15 +135,18 @@ const TablePagination = ({
 	return (
 		<Pagination>
 			<PaginationContent>
-				<PaginationItem>
-					<PaginationPrevious
-						href={`?page=${Math.max(currentPage - 1, 1)}${
-							selectedYear ? `&year=${selectedYear}` : ""
-						}`}
-					/>
-				</PaginationItem>
+				{currentPage > 1 ? (
+					<PaginationItem>
+						<PaginationPrevious
+							href={`?page=${Math.max(currentPage - 1, 1)}${
+								selectedYear ? `&year=${selectedYear}` : ""
+							}`}
+						/>
+					</PaginationItem>
+				) : null}
 				{Array.from({ length: totalPages }, (_, i) => {
 					const page = i + 1;
+					if (totalPages <= 1) return null;
 					return (
 						<PaginationItem key={page}>
 							<PaginationLink
@@ -154,13 +160,15 @@ const TablePagination = ({
 						</PaginationItem>
 					);
 				})}
-				<PaginationItem>
-					<PaginationNext
-						href={`?page=${Math.min(currentPage + 1, totalPages)}${
-							selectedYear ? `&year=${selectedYear}` : ""
-						}`}
-					/>
-				</PaginationItem>
+				{currentPage < totalPages ? (
+					<PaginationItem>
+						<PaginationNext
+							href={`?page=${Math.min(currentPage + 1, totalPages)}${
+								selectedYear ? `&year=${selectedYear}` : ""
+							}`}
+						/>
+					</PaginationItem>
+				) : null}
 			</PaginationContent>
 		</Pagination>
 	);

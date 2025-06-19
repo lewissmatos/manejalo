@@ -22,8 +22,8 @@ const OverviewHistorySummary = async () => {
 	});
 
 	return (
-		<div className="flex flex-col items-start justify-between w-full md:w-76 h-96 shadow-md p-2 border-1 border-foreground-500 rounded-lg">
-			<div className="flex flex-col  gap-2 ">
+		<div className="flex flex-col items-start justify-between w-full md:w-76 h-[350px] shadow-md p-2 border-1 border-foreground-500 rounded-lg">
+			<div className="flex flex-col gap-1 ">
 				<h2 className="text-xl font-semibold text-primary">{t("title")}</h2>
 				<p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
 					{t("subtitle", { value: 20 })}

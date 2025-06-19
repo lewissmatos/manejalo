@@ -17,12 +17,12 @@ const BudgetCategoryExpensesChart = ({ data }: Props) => {
 		outlineColor: resolvedTheme === "dark" ? "#ffffff" : "#333333",
 	};
 	return (
-		<div className="h-[340px] w-full">
+		<div className="h-[320px] w-full">
 			<ResponsivePie
 				data={data}
 				margin={{ top: 10, right: 100, bottom: 20, left: 100 }}
 				innerRadius={0.5}
-				colors={{ scheme: "pastel1" }}
+				colors={{ scheme: resolvedTheme === "dark" ? "dark2" : "pastel2" }}
 				padAngle={0.6}
 				valueFormat={(val) => formatCurrency(val * -1, "DOP", true)}
 				theme={{
