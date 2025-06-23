@@ -26,7 +26,7 @@ import {
 } from "@/app/_server-actions/(budget-categories)/actions";
 import ConfirmDeletionDialog from "@/components/common/confirm-deletion-dialog";
 import { MAX_BUDGET_CATEGORIES } from "@/lib/constants/app-settings";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	category: BudgetCategory;

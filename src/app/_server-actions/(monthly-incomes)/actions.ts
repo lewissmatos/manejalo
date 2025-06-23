@@ -82,7 +82,6 @@ export const deleteMonthlyIncome = async (
 		await prisma.monthlyIncome.delete({
 			where: { id: incomeId },
 		});
-
 		return null;
 	};
 

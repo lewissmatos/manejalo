@@ -22,7 +22,7 @@ import { ButtonLoading } from "../../components/ui/button-loading";
 import { useSetAtom } from "jotai/react";
 import { authAtom } from "@/lib/jotai/auth-atom";
 import { useRouter } from "next/navigation";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 export type Inputs = {
 	email: string;

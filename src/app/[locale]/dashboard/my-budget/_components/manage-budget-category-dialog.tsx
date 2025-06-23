@@ -37,7 +37,7 @@ import {
 	addBudgetCategory,
 	updateBudgetCategory,
 } from "@/app/_server-actions/(budget-categories)/actions";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	canAddMore?: boolean;

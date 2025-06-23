@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/select";
 
 import incomeEmojis from "@/lib/constants/emojis.json";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	dialogTrigger?: React.ReactNode;
@@ -93,7 +93,7 @@ const ManageIncomeDialog = ({
 				description: data.description?.trim() || "",
 				emoji: data?.emoji || incomeEmojis[0],
 				type: data?.type || IncomeType.EMPLOYMENT,
-				profileId: profileData?.id || "",
+				profileId: profileData.id,
 				isActive: true,
 			};
 			const res = !isEditMode

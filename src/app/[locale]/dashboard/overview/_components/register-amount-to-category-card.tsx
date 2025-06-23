@@ -31,7 +31,7 @@ import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amoun
 import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
 import { useAtomValue } from "jotai/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	category: BudgetCategory;

@@ -17,7 +17,7 @@ import {
 import { Button } from "../ui/button";
 import { CircleMinus } from "lucide-react";
 import { ButtonLoading } from "../ui/button-loading";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	itemId: string;

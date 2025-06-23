@@ -80,7 +80,7 @@ const History = async ({
 				<p className="text-md mb-8">{t("HistoryPage.subtitle")}</p>
 			</section>
 			<div className="flex flex-col-reverse md:flex-row gap-8">
-				<div className="w-full md:w-5/12">
+				<div className="w-full md:w-1/3">
 					<HistoryTable data={tableData?.registrations || []} />
 					<div className="pt-4">
 						<TablePagination
@@ -90,7 +90,7 @@ const History = async ({
 						/>
 					</div>
 				</div>
-				<div className="w-full md:w-7/12 flex flex-col gap-2 items-start justify-between">
+				<div className="w-full md:w-2/3 flex flex-col gap-2 items-start justify-between">
 					<div className="flex flex-row justify-between w-full gap-2">
 						<YearPicker defaultYear={year} refresh={refetchData} />
 						<TotalExpensesByYearSection

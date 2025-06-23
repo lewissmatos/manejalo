@@ -19,7 +19,7 @@ import { DatePicker } from "../../components/ui/date-picker";
 import { signUp } from "@/app/_server-actions/(auth)/actions";
 import { ButtonLoading } from "../../components/ui/button-loading";
 import { useDisclosure } from "@/hooks/useDisclosure";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 export type Inputs = {
 	fullName: string;

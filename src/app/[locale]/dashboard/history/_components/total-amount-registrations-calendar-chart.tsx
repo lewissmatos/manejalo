@@ -28,7 +28,7 @@ const TotalAmountRegistrationsCalendarChart = ({
 	};
 
 	return (
-		<div className="hidden md:flex flex-col h-40 w-full gap-2">
+		<div className="hidden md:flex flex-col h-40 w-full gap-2 mb-6">
 			<h2 className="text-lg font-semibold text-primary">
 				{t("title", { count: data.length })}
 			</h2>

@@ -28,7 +28,7 @@ import {
 import { ButtonLoading } from "@/components/ui/button-loading";
 import ConfirmDeletionDialog from "@/components/common/confirm-deletion-dialog";
 import { MAX_INCOMES } from "@/lib/constants/app-settings";
-import feedbackService from "@/lib/feedback-service/feedback-service";
+import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
 	income: MonthlyIncome;
