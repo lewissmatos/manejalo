@@ -9,20 +9,21 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { getTranslations } from "next-intl/server";
-import { BudgetCategory } from "@/generated/prisma";
 import { useTranslations } from "next-intl";
 import ManageBudgetCategoryDialog from "./manage-budget-category-dialog";
+import { MAX_BUDGET_CATEGORIES } from "@/lib/constants/app-settings";
 
 type Props = {
 	title: string;
 	description?: string;
 	refetchBudgetCategories: () => void;
+	maxBudgetCategories: number;
 };
 const RecommendedCategoryCard = ({
 	title,
 	description,
 	refetchBudgetCategories,
+	maxBudgetCategories,
 }: Props) => {
 	const t = useTranslations("MyBudgetPage.RecommendedCategories.Card");
 
@@ -42,7 +43,9 @@ const RecommendedCategoryCard = ({
 							name: title,
 							description: description,
 						}}
+						maxBudgetCategories={MAX_BUDGET_CATEGORIES}
 						refetchBudgetCategories={refetchBudgetCategories}
+						categoriesLength={maxBudgetCategories}
 					/>
 				</div>
 			</CardContent>

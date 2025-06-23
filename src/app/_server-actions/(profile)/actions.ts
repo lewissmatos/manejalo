@@ -1,7 +1,9 @@
 "use server";
 
-import { getTranslations } from "next-intl/server";
-import { ResponseModel } from "../utils/actions.utils";
+import {
+	ResponseModel,
+	serverActionResponseHandler,
+} from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { ProfileWithIncomes } from "@/lib/jotai/auth-atom";
 type ResponseData = ProfileWithIncomes | null;
@@ -9,9 +11,8 @@ type ResponseData = ProfileWithIncomes | null;
 export const getProfileData = async (
 	profileId: string
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
-		const res = await prisma.profile.findUnique({
+	const fn = async () => {
+		return await prisma.profile.findUnique({
 			where: { id: profileId },
 			include: {
 				incomes: {
@@ -19,70 +20,35 @@ export const getProfileData = async (
 				},
 			},
 		});
+	};
 
-		return {
-			data: res,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error(error);
-		return {
-			data: null,
-			message: error instanceof Error ? error.message : "",
-			isSuccess: false,
-		};
-	}
+	return await serverActionResponseHandler<ResponseData>(fn);
 };
 
 export const getTotalMonthlyIncome = async (
 	profileId: string
 ): Promise<ResponseModel<number>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
+	const fn = async () => {
 		const profile = await prisma.profile.findUnique({
 			where: { id: profileId },
 			select: { totalMonthlyIncome: true },
 		});
+		return profile?.totalMonthlyIncome || 0;
+	};
 
-		console.log(profile);
-
-		return {
-			data: profile?.totalMonthlyIncome || 0,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error(error);
-		return {
-			data: 0,
-			message: error instanceof Error ? error.message : "",
-			isSuccess: false,
-		};
-	}
+	return await serverActionResponseHandler<number>(fn);
 };
 
 export const getTotalMonthlyBudget = async (
 	profileId: string
 ): Promise<ResponseModel<number>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
+	const fn = async () => {
 		const profile = await prisma.profile.findUnique({
 			where: { id: profileId },
 			select: { totalBudget: true },
 		});
+		return profile?.totalBudget || 0;
+	};
 
-		return {
-			data: profile?.totalBudget || 0,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error(error);
-		return {
-			data: 0,
-			message: error instanceof Error ? error.message : "",
-			isSuccess: false,
-		};
-	}
+	return await serverActionResponseHandler<number>(fn);
 };

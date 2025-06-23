@@ -24,7 +24,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAtomValue } from "jotai/react";
 import { updateProfileDataAtom } from "@/lib/jotai/auth-atom";
-import { toast } from "sonner";
 import {
 	Select,
 	SelectContent,
@@ -38,6 +37,7 @@ import {
 	addBudgetCategory,
 	updateBudgetCategory,
 } from "@/app/_server-actions/(budget-categories)/actions";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	canAddMore?: boolean;
@@ -108,18 +108,24 @@ const ManageBudgetCategoryDialog = ({
 					res.message || t("MyBudgetPage.messages.defaultErrorMessage")
 				);
 			}
-			toast.success(res.message);
 
+			feedbackService().send({
+				type: "success",
+				message: res.message,
+			});
 			await refetchBudgetCategories();
 			reset();
 			onClose();
 		} catch (err) {
 			console.error("Error adding monthly income:", err);
-			toast.error(
-				err instanceof Error
-					? err.message
-					: "An error occurred while adding income"
-			);
+
+			feedbackService().send({
+				type: "error",
+				message:
+					err instanceof Error
+						? err.message
+						: t("MyBudgetPage.messages.defaultErrorMessage"),
+			});
 		}
 	};
 

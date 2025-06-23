@@ -47,6 +47,7 @@ const RecommendedCategories = async ({ refetchCategories, data }: Props) => {
 										title={name}
 										description={description}
 										refetchBudgetCategories={refetchCategories}
+										maxBudgetCategories={currentCategories.length}
 									/>
 								))}
 						</div>

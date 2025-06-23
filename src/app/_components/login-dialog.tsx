@@ -18,11 +18,11 @@ import { PasswordInput } from "../../components/ui/password-input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { login } from "@/app/_server-actions/(auth)/actions";
-import { toast } from "sonner";
 import { ButtonLoading } from "../../components/ui/button-loading";
 import { useSetAtom } from "jotai/react";
 import { authAtom } from "@/lib/jotai/auth-atom";
 import { useRouter } from "next/navigation";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 export type Inputs = {
 	email: string;
@@ -67,11 +67,21 @@ const LoginDialog = ({ dialogTrigger }: Props) => {
 				totalMonthlyIncome: profile?.totalMonthlyIncome || 0,
 			});
 
-			toast(res.message);
+			feedbackService().send({
+				type: "success",
+				message: res.message,
+			});
+
 			handleCloseDialog();
 			router.push("/dashboard/overview");
 		} catch (err) {
-			toast.error(err instanceof Error ? err.message : String(err));
+			feedbackService().send({
+				type: "error",
+				message:
+					err instanceof Error
+						? err.message
+						: t("LoginDialog.messages.defaultErrorMessage"),
+			});
 		}
 	};
 

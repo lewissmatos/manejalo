@@ -144,13 +144,16 @@
 			"subtitle": "Enter the details of your income.",
 			"messages": {
 				"defaultSuccessMessage": "Income added successfully!",
+				"updateSuccessMessage": "Income updated successfully!",
 				"defaultErrorMessage": "There was an error adding your income. Please try again."
 			}
 		},
 		"MonthlyIncomeCard": {
 			"messages": {
 				"setMonthlyIncomeStatusSuccessMessage": "Status updated successfully.",
-				"setMonthlyIncomeStatusErrorMessage": "There was an error updating the status. Please try again."
+				"setMonthlyIncomeStatusErrorMessage": "There was an error updating the status. Please try again.",
+				"deleteSuccessMessage": "Income deleted successfully.",
+				"deleteErrorMessage": "There was an error deleting the income. Please try again."
 			}
 		},
 		"editProfileButton": "Edit Profile",

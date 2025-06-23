@@ -144,13 +144,16 @@
 			"subtitle": "Ingresa los detalles de tu ingreso mensual.",
 			"messages": {
 				"defaultSuccessMessage": "Ingreso agregado exitosamente.",
+				"updateSuccessMessage": "Ingreso actualizado exitosamente.",
 				"defaultErrorMessage": "Hubo un error al agregar tu ingreso. Por favor, inténtalo de nuevo."
 			}
 		},
 		"MonthlyIncomeCard": {
 			"messages": {
 				"setMonthlyIncomeStatusSuccessMessage": "Estado actualizado exitosamente.",
-				"setMonthlyIncomeStatusErrorMessage": "Error al actualizar el estado. Por favor, inténtalo de nuevo."
+				"setMonthlyIncomeStatusErrorMessage": "Error al actualizar el estado. Por favor, inténtalo de nuevo.",
+				"deleteSuccessMessage": "Ingreso eliminado exitosamente.",
+				"deleteErrorMessage": "Hubo un error al eliminar el ingreso. Por favor, inténtalo de nuevo."
 			}
 		},
 		"editProfileButton": "Editar perfil",

@@ -3,7 +3,6 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { useTranslations } from "next-intl";
 import React, { useTransition } from "react";
-import { toast } from "sonner";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -18,6 +17,7 @@ import {
 import { Button } from "../ui/button";
 import { CircleMinus } from "lucide-react";
 import { ButtonLoading } from "../ui/button-loading";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	itemId: string;
@@ -40,16 +40,20 @@ const ConfirmDeletionDialog = ({
 					throw new Error(res.message || t("common.error.defaultErrorMessage"));
 				}
 
-				toast(res.message || t("common.success.defaultSuccessMessage"));
+				feedbackService().send({
+					type: "success",
+					message: res.message,
+				});
 				await refetchCallback();
 				onClose();
 			} catch (error) {
-				console.error("Error deleting budget category:", error);
-				toast.error(
-					error instanceof Error
-						? error.message
-						: t("common.error.defaultErrorMessage")
-				);
+				feedbackService().send({
+					type: "error",
+					message:
+						error instanceof Error
+							? error.message
+							: t("common.error.defaultErrorMessage"),
+				});
 			}
 		});
 	};

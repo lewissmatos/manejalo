@@ -7,8 +7,8 @@ import { formatCurrency } from "@/lib/formatters";
 import ManageIncomeDialog from "./_components/manage-income-dialog";
 import MonthlyIncomeCard from "./_components/monthly-icome-card";
 import { revalidatePath } from "next/cache";
+import { MAX_INCOMES } from "@/lib/constants/app-settings";
 
-const MAX_INCOMES = 5;
 const Profile = async () => {
 	const [cookieStore, t] = await Promise.all([
 		cookies(),
@@ -87,6 +87,7 @@ const Profile = async () => {
 							refetchProfileData={refetchProfileData}
 							key={income.id}
 							income={income}
+							incomesLength={profile.incomes.length}
 						/>
 					))}
 				</section>

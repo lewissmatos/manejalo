@@ -28,7 +28,6 @@ import {
 } from "@/app/_server-actions/(monthly-incomes)/actions";
 import { useAtomValue } from "jotai/react";
 import { updateProfileDataAtom } from "@/lib/jotai/auth-atom";
-import { toast } from "sonner";
 import {
 	Select,
 	SelectContent,
@@ -38,6 +37,7 @@ import {
 } from "@/components/ui/select";
 
 import incomeEmojis from "@/lib/constants/emojis.json";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	dialogTrigger?: React.ReactNode;
@@ -106,10 +106,12 @@ const ManageIncomeDialog = ({
 						t("ProfilePage.AddIncomeDialog.messages.defaultErrorMessage")
 				);
 			}
-			toast.success(
-				res.message ||
-					t("ProfilePage.AddIncomeDialog.messages.defaultSuccessMessage")
-			);
+			feedbackService().send({
+				type: "success",
+				message:
+					res.message ||
+					t("ProfilePage.AddIncomeDialog.messages.defaultSuccessMessage"),
+			});
 
 			await refetchProfileData();
 
@@ -117,11 +119,13 @@ const ManageIncomeDialog = ({
 			onClose();
 		} catch (err) {
 			console.error("Error adding monthly income:", err);
-			toast.error(
-				err instanceof Error
-					? err.message
-					: "An error occurred while adding income"
-			);
+			feedbackService().send({
+				type: "error",
+				message:
+					err instanceof Error
+						? err.message
+						: t("ProfilePage.AddIncomeDialog.errors.defaultErrorMessage"),
+			});
 		}
 	};
 

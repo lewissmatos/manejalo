@@ -14,6 +14,7 @@ const BudgetCategoryList = ({ data = [], refetchCategories }: Props) => {
 			{data?.map((category) => (
 				<BudgetCategoryCard
 					key={category.name}
+					budgetCategoriesLength={data.length}
 					category={category}
 					refetchBudgetCategories={refetchCategories}
 				/>

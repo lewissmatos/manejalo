@@ -1,17 +1,18 @@
 "use server";
 
-import { getTranslations } from "next-intl/server";
-import { IncomeType, MonthlyIncome, Profile } from "@/generated/prisma";
-import { ResponseModel } from "../utils/actions.utils";
+import { IncomeType, MonthlyIncome } from "@/generated/prisma";
+import {
+	ResponseModel,
+	serverActionResponseHandler,
+} from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 type ResponseData = MonthlyIncome | null;
 
 export const createMonthlyIncome = async (
 	payload: Omit<MonthlyIncome, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("ProfilePage.AddIncomeDialog");
-	try {
-		const res = await prisma.monthlyIncome.create({
+	const fn = async () => {
+		return await prisma.monthlyIncome.create({
 			data: {
 				amount: payload.amount,
 				description: payload.description,
@@ -20,29 +21,21 @@ export const createMonthlyIncome = async (
 				type: payload?.type || IncomeType.EMPLOYMENT,
 			},
 		});
+	};
 
-		return {
-			data: res,
-			message: t("messages.defaultSuccessMessage"),
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error adding monthly income:", error);
-		return {
-			data: null,
-			message: t("messages.defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+	return await serverActionResponseHandler<ResponseData>(fn, {
+		translationsPath: "ProfilePage.AddIncomeDialog.messages",
+		successMessageKey: "defaultSuccessMessage",
+		errorMessageKey: "defaultErrorMessage",
+	});
 };
 
 export const updateMonthlyIncome = async (
 	incomeId: string,
 	payload: Partial<MonthlyIncome>
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
-		const res = await prisma.monthlyIncome.update({
+	const fn = async () => {
+		return await prisma.monthlyIncome.update({
 			where: { id: incomeId },
 			data: {
 				emoji: payload?.emoji,
@@ -51,74 +44,51 @@ export const updateMonthlyIncome = async (
 				description: payload.description,
 			},
 		});
+	};
 
-		return {
-			data: res,
-			message: t("messages.defaultSuccessMessage"),
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error adding monthly income:", error);
-		return {
-			data: null,
-			message: t("messages.defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+	return await serverActionResponseHandler<ResponseData>(fn, {
+		translationsPath: "ProfilePage.AddIncomeDialog.messages",
+		successMessageKey: "updateSuccessMessage",
+		errorMessageKey: "defaultErrorMessage",
+	});
 };
 
 export const setMonthlyIncomeStatus = async (
 	incomeId: string,
 	newStatus: boolean
 ): Promise<ResponseModel<null>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
+	const fn = async () => {
 		await prisma.monthlyIncome.update({
 			where: { id: incomeId },
 			data: {
 				isActive: newStatus,
 			},
 		});
-		return {
-			data: null,
-			//UPDATE
-			message: t(
-				"MonthlyIncomeCard.messages.setMonthlyIncomeStatusSuccessMessage"
-			),
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error removing monthly income:", error);
-		return {
-			data: null,
-			//UPDATE
-			message: t(
-				"MonthlyIncomeCard.messages.setMonthlyIncomeStatusErrorMessage"
-			),
-			isSuccess: false,
-		};
-	}
+
+		return null;
+	};
+
+	return await serverActionResponseHandler<null>(fn, {
+		translationsPath: "ProfilePage.MonthlyIncomeCard.messages.",
+		successMessageKey: "setMonthlyIncomeStatusSuccessMessage",
+		errorMessageKey: "setMonthlyIncomeStatusErrorMessage",
+	});
 };
 
 export const deleteMonthlyIncome = async (
 	incomeId: string
 ): Promise<ResponseModel<null>> => {
-	const t = await getTranslations("ProfilePage");
-	try {
+	const fn = async () => {
 		await prisma.monthlyIncome.delete({
 			where: { id: incomeId },
 		});
-		return {
-			data: null,
-			message: t("messages.defaultSuccessMessage"),
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error removing monthly income:", error);
-		return {
-			data: null,
-			message: t("messages.defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+
+		return null;
+	};
+
+	return await serverActionResponseHandler<null>(fn, {
+		translationsPath: "ProfilePage.MonthlyIncomeCard.messages",
+		successMessageKey: "deleteSuccessMessage",
+		errorMessageKey: "deleteErrorMessage",
+	});
 };

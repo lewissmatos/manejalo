@@ -30,8 +30,8 @@ import { ButtonLoading } from "@/components/ui/button-loading";
 import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amount-registration)/actions";
 import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
 import { useAtomValue } from "jotai/react";
-import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	category: BudgetCategory;
@@ -80,7 +80,10 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 				if (!res.isSuccess)
 					throw new Error(res.message || "Failed to register amount");
 
-				toast.success(res.message);
+				feedbackService().send({
+					type: "success",
+					message: res.message,
+				});
 
 				setAmountData({
 					amount: "",
@@ -90,11 +93,13 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 				await refetchData();
 			} catch (error) {
 				console.error("Error registering amount:", error);
-				toast.error(
-					error instanceof Error
-						? error.message
-						: "An unexpected error occurred while registering the amount."
-				);
+				feedbackService().send({
+					type: "error",
+					message:
+						error instanceof Error
+							? error.message
+							: t("common.error.defaultErrorMessage"),
+				});
 			}
 		});
 	};

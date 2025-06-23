@@ -25,16 +25,22 @@ import {
 	deleteMonthlyIncome,
 	setMonthlyIncomeStatus,
 } from "@/app/_server-actions/(monthly-incomes)/actions";
-import { toast } from "sonner";
 import { ButtonLoading } from "@/components/ui/button-loading";
 import ConfirmDeletionDialog from "@/components/common/confirm-deletion-dialog";
+import { MAX_INCOMES } from "@/lib/constants/app-settings";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	income: MonthlyIncome;
 	refetchProfileData: () => void;
+	incomesLength: number;
 };
 
-const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
+const MonthlyIncomeCard = ({
+	income,
+	refetchProfileData,
+	incomesLength,
+}: Props) => {
 	const t = useTranslations("");
 	const [isPending, startTransition] = useTransition();
 
@@ -47,14 +53,20 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 				if (!res.isSuccess) {
 					throw new Error(res.message);
 				}
-				toast(res.message);
+				feedbackService().send({
+					type: "success",
+					message: res.message,
+				});
+
 				await refetchProfileData();
 			} catch (error) {
-				toast.error(
-					error instanceof Error
-						? error.message
-						: "An error occurred while deleting income"
-				);
+				feedbackService().send({
+					type: "error",
+					message:
+						error instanceof Error
+							? error.message
+							: t("common.error.defaultErrorMessage"),
+				});
 			}
 		});
 	};
@@ -83,7 +95,9 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 				<CardDescription className="line-clamp-2 text-md max-w-72 ">
 					{description || ""}
 					{isDisabled ? (
-						<span className="text-destructive">({t("common.disabled")})</span>
+						<span className="text-destructive">
+							({` ${t("common.disabled")}`})
+						</span>
 					) : (
 						""
 					)}
@@ -110,8 +124,10 @@ const MonthlyIncomeCard = ({ income, refetchProfileData }: Props) => {
 									<PenIcon />
 								</Button>
 							}
-							refetchProfileData={refetchProfileData}
 							defaultValues={income}
+							incomesLength={incomesLength}
+							refetchProfileData={refetchProfileData}
+							maxMonthlyIncomes={MAX_INCOMES}
 							key={income.id}
 						/>
 					)}

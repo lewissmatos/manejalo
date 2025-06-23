@@ -18,8 +18,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { DatePicker } from "../../components/ui/date-picker";
 import { signUp } from "@/app/_server-actions/(auth)/actions";
 import { ButtonLoading } from "../../components/ui/button-loading";
-import { toast } from "sonner";
 import { useDisclosure } from "@/hooks/useDisclosure";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 export type Inputs = {
 	fullName: string;
@@ -56,11 +56,19 @@ const SignUpDialog = ({ dialogTrigger }: Props) => {
 					res.message || t("SignUpDialog.messages.defaultErrorMessage")
 				);
 			}
-			toast(res.message);
+			feedbackService().send({
+				type: "success",
+				message: res.message,
+			});
 			handleCloseDialog();
 		} catch (err) {
-			console.error(err);
-			toast.error(err instanceof Error ? err.message : String(err));
+			feedbackService().send({
+				type: "error",
+				message:
+					err instanceof Error
+						? err.message
+						: t("SignUpDialog.messages.defaultErrorMessage"),
+			});
 		}
 	};
 

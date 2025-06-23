@@ -24,15 +24,21 @@ import {
 	markBudgetCategoryAsFavorite,
 	setBudgetCategoryStatus,
 } from "@/app/_server-actions/(budget-categories)/actions";
-import { toast } from "sonner";
 import ConfirmDeletionDialog from "@/components/common/confirm-deletion-dialog";
+import { MAX_BUDGET_CATEGORIES } from "@/lib/constants/app-settings";
+import feedbackService from "@/lib/feedback-service/feedback-service";
 
 type Props = {
 	category: BudgetCategory;
 	refetchBudgetCategories: () => void;
+	budgetCategoriesLength: number;
 };
 
-const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
+const BudgetCategoryCard = ({
+	category,
+	refetchBudgetCategories,
+	budgetCategoriesLength,
+}: Props) => {
 	const t = useTranslations("MyBudgetPage.RecommendedCategories.Card");
 	const { description, estimation, emoji, name } = category;
 
@@ -47,18 +53,23 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 				);
 
 				if (!res.isSuccess) {
-					toast.error(res.message || t("common.error.defaultErrorMessage"));
+					feedbackService().send({
+						type: "error",
+						message: res.message || t("common.error.defaultErrorMessage"),
+					});
 					return;
 				}
 
 				await refetchBudgetCategories();
 			} catch (error) {
 				console.error("Error marking budget category as favorite:", error);
-				toast.error(
-					error instanceof Error
-						? error.message
-						: t("error.defaultErrorMessage")
-				);
+				feedbackService().send({
+					type: "error",
+					message:
+						error instanceof Error
+							? error.message
+							: t("error.defaultErrorMessage"),
+				});
 			}
 		});
 	};
@@ -72,18 +83,23 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 				);
 
 				if (!res.isSuccess) {
-					toast.error(res.message || t("common.error.defaultErrorMessage"));
+					feedbackService().send({
+						type: "error",
+						message: res.message || t("common.error.defaultErrorMessage"),
+					});
 					return;
 				}
 
 				await refetchBudgetCategories();
 			} catch (error) {
 				console.error("Error toggling budget category status:", error);
-				toast.error(
-					error instanceof Error
-						? error.message
-						: t("error.defaultErrorMessage")
-				);
+				feedbackService().send({
+					type: "error",
+					message:
+						error instanceof Error
+							? error.message
+							: t("error.defaultErrorMessage"),
+				});
 			}
 		});
 	};
@@ -170,6 +186,8 @@ const BudgetCategoryCard = ({ category, refetchBudgetCategories }: Props) => {
 									<PenIcon />
 								</Button>
 							}
+							categoriesLength={budgetCategoriesLength}
+							maxBudgetCategories={MAX_BUDGET_CATEGORIES}
 							refetchBudgetCategories={refetchBudgetCategories}
 							defaultValues={category}
 							key={category.id}

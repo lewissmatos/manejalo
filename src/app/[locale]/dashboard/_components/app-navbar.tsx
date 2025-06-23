@@ -200,7 +200,7 @@ export default function AppNavBar() {
 										router.push("/dashboard/profile");
 									}}
 								>
-									{t("logout")}
+									{t("profile")}
 									<User className="ml-2" />
 								</Button>
 								<Button

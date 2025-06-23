@@ -6,7 +6,10 @@ import {
 	BudgetAmountType,
 	BudgetCategory,
 } from "@/generated/prisma";
-import { ResponseModel } from "../utils/actions.utils";
+import {
+	ResponseModel,
+	serverActionResponseHandler,
+} from "../utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { JsonObject } from "@/generated/prisma/runtime/library";
 import { eachMonthOfInterval, format } from "date-fns";
@@ -21,8 +24,7 @@ export type BudgetCategoryExpense = {
 export const addBudgetAmountRegistration = async (
 	payload: Omit<BudgetAmountRegistration, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
-	const t = await getTranslations("OverviewPage.messages");
-	try {
+	const fn = async () => {
 		const res = await prisma.budgetAmountRegistration.create({
 			data: {
 				amount:
@@ -36,27 +38,15 @@ export const addBudgetAmountRegistration = async (
 				budgetCategoryReference: payload?.budgetCategoryReference as JsonObject,
 			},
 		});
-		if (!res) {
-			return {
-				data: null,
-				message: t("createErrorMessage"),
-				isSuccess: false,
-			};
-		}
+		if (!res) throw new Error("createErrorMessage");
 
-		return {
-			data: res,
-			message: t("registerAmountSuccessMessage"),
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error adding monthly income:", error);
-		return {
-			data: null,
-			message: t("createErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return res;
+	};
+
+	return await serverActionResponseHandler<ResponseData>(fn, {
+		translationsPath: "OverviewPage.messages",
+		successMessageKey: "registerAmountSuccessMessage",
+	});
 };
 
 type HistoryItem = BudgetAmountRegistration & {
@@ -66,8 +56,7 @@ type HistoryItem = BudgetAmountRegistration & {
 export const getBudgetAmountRegistrationHistory = async (
 	profileId: string
 ): Promise<ResponseModel<HistoryItem[]>> => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	try {
+	const fn = async () => {
 		const res = await prisma.budgetAmountRegistration.findMany({
 			where: { budgetCategory: { profileId: profileId } },
 			include: { budgetCategory: { select: { id: true, name: true } } },
@@ -75,19 +64,13 @@ export const getBudgetAmountRegistrationHistory = async (
 			take: 20,
 		});
 
-		return {
-			data: res,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error fetching budget categories:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return res;
+	};
+
+	return await serverActionResponseHandler<HistoryItem[]>(fn, {
+		translationsPath: "OverviewPage.messages",
+		successMessageKey: "registerAmountSuccessMessage",
+	});
 };
 
 export const getBudgetAmountRegistrations = async ({
@@ -111,8 +94,7 @@ export const getBudgetAmountRegistrations = async ({
 		page: number;
 	}>
 > => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	try {
+	const fn = async () => {
 		const [res, totalCount, sumResult] = await Promise.all([
 			prisma.budgetAmountRegistration.findMany({
 				where: { budgetCategory: { profileId: profileId } },
@@ -132,25 +114,29 @@ export const getBudgetAmountRegistrations = async ({
 			}),
 		]);
 		const totalPages = Math.ceil(totalCount / limit);
+
 		return {
-			data: {
-				registrations: res,
-				totalCount,
-				totalPages,
-				limit,
-				page,
-			},
-			message: "",
-			isSuccess: true,
+			registrations: res,
+			totalCount,
+			totalPages,
+			limit,
+			page,
 		};
-	} catch (error) {
-		console.error("Error fetching budget categories:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+	};
+	return await serverActionResponseHandler<{
+		registrations: Array<
+			BudgetAmountRegistration & {
+				budgetCategory: BudgetCategory;
+			}
+		>;
+		totalCount: number;
+		totalPages: number;
+		limit: number;
+		page: number;
+	}>(fn, {
+		translationsPath: "OverviewPage.messages",
+		successMessageKey: "",
+	});
 };
 
 export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
@@ -162,8 +148,7 @@ export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
 	startDate: Date;
 	endDate: Date;
 }): Promise<ResponseModel<BudgetCategoryExpense[]>> => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	try {
+	const fn = async () => {
 		const res = await prisma.budgetAmountRegistration.groupBy({
 			by: ["budgetCategoryId"],
 			_sum: { amount: true },
@@ -193,19 +178,12 @@ export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
 			};
 		});
 
-		return {
-			data: finalData,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error fetching budget categories:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return finalData;
+	};
+	return await serverActionResponseHandler<BudgetCategoryExpense[]>(fn, {
+		translationsPath: "OverviewPage.messages",
+		successMessageKey: "registerAmountSuccessMessage",
+	});
 };
 
 export const getTotalBudgetAmountRegistrationByDateRange = async ({
@@ -217,8 +195,7 @@ export const getTotalBudgetAmountRegistrationByDateRange = async ({
 	startDate: Date;
 	endDate: Date;
 }): Promise<ResponseModel<number>> => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	try {
+	const fn = async () => {
 		const res = await prisma.budgetAmountRegistration.aggregate({
 			_sum: {
 				amount: true,
@@ -233,19 +210,13 @@ export const getTotalBudgetAmountRegistrationByDateRange = async ({
 				},
 			},
 		});
-		return {
-			data: res._sum.amount || 0,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error fetching budget categories:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return res._sum.amount || 0;
+	};
+
+	return await serverActionResponseHandler<number>(fn, {
+		translationsPath: "OverviewPage.messages",
+		successMessageKey: "registerAmountSuccessMessage",
+	});
 };
 
 export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
@@ -262,11 +233,10 @@ export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
 		}[]
 	>
 > => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	const startDate = new Date(year, 0, 1);
-	const endDate = new Date(year, 11, 31);
+	const fn = async () => {
+		const startDate = new Date(year, 0, 1);
+		const endDate = new Date(year, 11, 31);
 
-	try {
 		const res = await prisma.budgetAmountRegistration.groupBy({
 			by: ["budgetCategoryId", "correspondingDate"],
 			_sum: {
@@ -342,19 +312,15 @@ export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
 			};
 		});
 
-		return {
-			data: finalData,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error fetching budget categories:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return finalData;
+	};
+
+	return await serverActionResponseHandler<
+		{
+			id: string;
+			data: Array<{ x: string; y: string }>;
+		}[]
+	>(fn);
 };
 
 export const getTotalExpensesOverTime = async ({
@@ -370,10 +336,9 @@ export const getTotalExpensesOverTime = async ({
 		total: number;
 	}>
 > => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	const startDate = new Date(year, 0, 1);
-	const endDate = new Date(year, 11, 31);
-	try {
+	const fn = async () => {
+		const startDate = new Date(year, 0, 1);
+		const endDate = new Date(year, 11, 31);
 		const expensesTotal = await prisma.budgetAmountRegistration.aggregate({
 			_sum: {
 				amount: true,
@@ -401,23 +366,18 @@ export const getTotalExpensesOverTime = async ({
 			},
 		});
 		return {
-			data: {
-				[BudgetAmountType.EXPENSE]: expensesTotal._sum.amount || 0,
-				[BudgetAmountType.RECOVERY]: recoveryTotal._sum.amount || 0,
-				total:
-					(expensesTotal._sum.amount || 0) + (recoveryTotal._sum.amount || 0),
-			},
-			message: "",
-			isSuccess: true,
+			[BudgetAmountType.EXPENSE]: expensesTotal._sum.amount || 0,
+			[BudgetAmountType.RECOVERY]: recoveryTotal._sum.amount || 0,
+			total:
+				(expensesTotal._sum.amount || 0) + (recoveryTotal._sum.amount || 0),
 		};
-	} catch (error) {
-		console.error("Error fetching total expenses:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+	};
+
+	return await serverActionResponseHandler<{
+		[BudgetAmountType.EXPENSE]: number;
+		[BudgetAmountType.RECOVERY]: number;
+		total: number;
+	}>(fn);
 };
 
 export const getHighestExpendingMonthsForBarChart = async ({
@@ -432,9 +392,7 @@ export const getHighestExpendingMonthsForBarChart = async ({
 		}[]
 	>
 > => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	try {
-		// Fetch all registrations for the profile
+	const fn = async () => {
 		const res = await prisma.budgetAmountRegistration.findMany({
 			where: {
 				budgetCategory: {
@@ -463,19 +421,14 @@ export const getHighestExpendingMonthsForBarChart = async ({
 			.sort((a, b) => b.value - a.value)
 			.slice(0, 5);
 
-		return {
-			data: finalData,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error("Error fetching highest expending months:", error);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return finalData;
+	};
+	return await serverActionResponseHandler<
+		{
+			date: string;
+			value: number;
+		}[]
+	>(fn);
 };
 
 export const getTotalAmountRegistrationsForCalendarChart = async ({
@@ -492,11 +445,9 @@ export const getTotalAmountRegistrationsForCalendarChart = async ({
 		}[]
 	>
 > => {
-	const t = await getTranslations("MyBudgetPage.messages");
-	const startDate = new Date(year, 0, 1);
-	const endDate = new Date(year, 11, 31);
-
-	try {
+	const fn = async () => {
+		const startDate = new Date(year, 0, 1);
+		const endDate = new Date(year, 11, 31);
 		const res = await prisma.budgetAmountRegistration.groupBy({
 			by: ["correspondingDate"],
 			_sum: { amount: true },
@@ -520,20 +471,12 @@ export const getTotalAmountRegistrationsForCalendarChart = async ({
 			value: (item._sum.amount || 0) * -1,
 		}));
 
-		return {
-			data: finalData,
-			message: "",
-			isSuccess: true,
-		};
-	} catch (error) {
-		console.error(
-			"Error fetching total amount registrations for calendar chart:",
-			error
-		);
-		return {
-			data: null,
-			message: t("defaultErrorMessage"),
-			isSuccess: false,
-		};
-	}
+		return finalData;
+	};
+	return await serverActionResponseHandler<
+		{
+			day: `${number}-${number}-${number}`;
+			value: number;
+		}[]
+	>(fn);
 };
