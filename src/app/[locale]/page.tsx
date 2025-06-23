@@ -5,7 +5,6 @@ import features from "@/lib/constants/app-features.json";
 import * as React from "react";
 import MainPageBottomContent from "./_components/main-page-bottom-content";
 import LanguageSelector from "@/components/language/language-selector";
-import { Footer } from "react-day-picker";
 import HomePageFooter from "./_components/home-page-footer";
 import {
 	HoverCard,
@@ -25,16 +24,16 @@ export default async function HomePage() {
 	const t = await getTranslations("HomePage");
 
 	return (
-		<>
+		<div className="flex flex-col min-h-screen bg-background justify-between">
 			<div className="flex flex-col items-center p-4">
-				<section className="w-full flex justify-between items-start mb-8 gap-4">
+				<section className="w-full flex justify-between items-start mb-4 gap-4">
 					<div className="w-1/5 hidden md:flex justify-start">
 						<ThemeSelector />
 					</div>
 					<div className="bg-secondary/50 h-32 w-full items-center md:w-3/5 flex flex-col justify-center rounded-lg shadow-md p-4 ">
-						<h1 className="text-5xl font-semibold text-primary">
-							{"Manejalo!"}
-						</h1>
+						<div className="flex items-center">
+							<h1 className="text-5xl font-semibold text-primary">Manejalo!</h1>
+						</div>
 						<p>{t("slogan")}</p>
 					</div>
 					<div className="w-1/5 hidden md:flex justify-end">
@@ -45,9 +44,9 @@ export default async function HomePage() {
 					<ThemeSelector />
 					<LanguageSelector />
 				</div>
-				<section className="py-8">
+				<section className="py-4">
 					<div className="max-w-5xl mx-auto px-4">
-						<h2 className="text-3xl font-bold mb-8 text-center">
+						<h2 className="text-3xl font-bold mb-4 text-center">
 							📌 {t("features.title")}
 						</h2>
 						<main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -77,6 +76,6 @@ export default async function HomePage() {
 				</section>
 			</div>
 			<HomePageFooter />
-		</>
+		</div>
 	);
 }

@@ -28,12 +28,12 @@ export default function Loading() {
 					</div>
 				</div>
 				<div className="flex flex-col gap-6 items-center justify-center w-1/2">
-					<div className="flex flex-row gap-4 w-full items-center pl-8">
+					<div className="flex flex-row gap-4 w-full items-start pl-4">
 						<div className="flex flex-col gap-4 w-[70%] items-center">
 							<Skeleton className="h-6 w-64" />
-							<Skeleton className="rounded-full size-80"></Skeleton>
+							<Skeleton className="rounded-full size-72"></Skeleton>
 						</div>
-						<Skeleton className="h-96 w-[30%]" />
+						<Skeleton className="h-[350px] w-[34%]" />
 					</div>
 					<Skeleton className="h-52 w-full" />
 				</div>

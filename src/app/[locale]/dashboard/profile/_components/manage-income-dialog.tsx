@@ -40,20 +40,23 @@ import {
 import incomeEmojis from "@/lib/constants/emojis.json";
 
 type Props = {
-	canAddMore?: boolean;
 	dialogTrigger?: React.ReactNode;
 	defaultValues?: Partial<MonthlyIncome>;
 	refetchProfileData: () => void;
+	incomesLength: number;
+	maxMonthlyIncomes: number;
 };
 
 const ManageIncomeDialog = ({
-	canAddMore = true,
 	dialogTrigger,
 	defaultValues,
 	refetchProfileData,
+	incomesLength,
+	maxMonthlyIncomes,
 }: Props) => {
 	const t = useTranslations();
 
+	const canAddMore = incomesLength < maxMonthlyIncomes;
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
 
 	const profileData = useAtomValue(updateProfileDataAtom);
@@ -85,23 +88,17 @@ const ManageIncomeDialog = ({
 		}
 
 		try {
+			const payload = {
+				amount: data.amount || 0,
+				description: data.description?.trim() || "",
+				emoji: data?.emoji || incomeEmojis[0],
+				type: data?.type || IncomeType.EMPLOYMENT,
+				profileId: profileData?.id || "",
+				isActive: true,
+			};
 			const res = !isEditMode
-				? await createMonthlyIncome({
-						amount: data.amount || 0,
-						description: data.description?.trim() || "",
-						emoji: data?.emoji || incomeEmojis[0],
-						type: data?.type || IncomeType.EMPLOYMENT,
-						profileId: profileData?.id || "",
-						isActive: true,
-				  })
-				: await updateMonthlyIncome(defaultValues?.id!, {
-						amount: data.amount || 0,
-						description: data.description?.trim() || "",
-						emoji: data?.emoji || incomeEmojis[0],
-						type: data?.type || IncomeType.EMPLOYMENT,
-						profileId: profileData?.id || "",
-						isActive: true,
-				  });
+				? await createMonthlyIncome(payload)
+				: await updateMonthlyIncome(defaultValues?.id!, payload);
 
 			if (!res.isSuccess) {
 				throw new Error(

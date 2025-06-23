@@ -100,18 +100,15 @@ export const getBudgetAmountRegistrations = async ({
 	limit: number;
 }): Promise<
 	ResponseModel<{
-		data: {
-			registrations: Array<
-				BudgetAmountRegistration & {
-					budgetCategory: BudgetCategory;
-				}
-			>;
-			totalCount: number;
-			totalPages: number;
-			limit: number;
-			page: number;
-		};
-		totalAmount?: number;
+		registrations: Array<
+			BudgetAmountRegistration & {
+				budgetCategory: BudgetCategory;
+			}
+		>;
+		totalCount: number;
+		totalPages: number;
+		limit: number;
+		page: number;
 	}>
 > => {
 	const t = await getTranslations("MyBudgetPage.messages");
@@ -134,18 +131,14 @@ export const getBudgetAmountRegistrations = async ({
 				take: limit,
 			}),
 		]);
-		const totalAmount = sumResult._sum.amount || 0;
 		const totalPages = Math.ceil(totalCount / limit);
 		return {
 			data: {
-				data: {
-					registrations: res,
-					totalCount,
-					totalPages,
-					limit,
-					page,
-				},
-				totalAmount,
+				registrations: res,
+				totalCount,
+				totalPages,
+				limit,
+				page,
 			},
 			message: "",
 			isSuccess: true,

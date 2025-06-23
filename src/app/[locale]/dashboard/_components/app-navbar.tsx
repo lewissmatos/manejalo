@@ -20,7 +20,6 @@ import { logout } from "@/app/_server-actions/(auth)/actions";
 import { useMemo, useState } from "react";
 import LanguageSelector from "@/components/language/language-selector";
 import { ThemeSelector } from "@/components/theme/theme-selector";
-
 import { Menu } from "lucide-react";
 
 const navItems = [
@@ -72,10 +71,12 @@ export default function AppNavBar() {
 	};
 
 	return (
-		<nav className="p-4 flex justify-between items-center w-full">
-			<h1 className="text-2xl sm:text-4xl font-bold text-primary w-auto sm:w-1/5">
-				Manejalo!
-			</h1>
+		<nav className="px-4 py-2 flex justify-between items-center w-full">
+			<div className="flex items-center">
+				<h1 className="text-2xl sm:text-4xl font-bold text-primary w-auto sm:w-1/5">
+					Manejalo!
+				</h1>
+			</div>
 			{/* Desktop Navigation */}
 			<div className="hidden md:flex flex-1 justify-center">
 				<NavigationMenu

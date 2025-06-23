@@ -39,7 +39,7 @@ const TotalExpensesByYearSection = async ({
 					</p>
 				</div>
 				<Separator orientation="vertical" className="h-8" />
-				<p className="text-3xl text-primary font-semibold text-center">
+				<p className="text-xl md:text-3xl text-primary font-semibold text-center">
 					{t("common.totalWithValue", {
 						value: formatCurrency(total, "DOP", true),
 					})}

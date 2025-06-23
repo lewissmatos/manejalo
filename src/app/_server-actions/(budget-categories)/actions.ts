@@ -63,6 +63,8 @@ export const addBudgetCategory = async (
 				name: payload.name,
 				description: payload.description,
 				profileId: payload.profileId,
+				isFavorite: payload?.isFavorite || false,
+				isActive: payload?.isActive || true,
 			},
 		});
 

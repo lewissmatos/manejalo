@@ -16,6 +16,11 @@ const font = Outfit({
 export const metadata: Metadata = {
 	title: "Manejalo!",
 	description: "Your personal budget manager",
+	icons: {
+		icon: "/favicon.ico",
+		shortcut: "/favicon.png",
+		apple: "/apple-icon.png",
+	},
 };
 
 export default async function LocaleLayout({

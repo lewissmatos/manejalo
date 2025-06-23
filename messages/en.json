@@ -193,8 +193,8 @@
 		},
 		"totalMonthlyBudgetWithValue": "Total Monthly Budget: {value}",
 		"addBudgetCategoryButton": "Add Category",
-		"addBudgetCategoryInfo": "You can add up to 12 categories to your budget.",
-		"limitReached": "You have reached the limit of 12 categories.",
+		"addBudgetCategoryInfo": "You can add up to {value} categories to your budget.",
+		"limitReached": "You have reached the limit of {value} categories.",
 		"ManageBudgetCategoryDialog": {
 			"title": "Manage Budget Category",
 			"subtitle": "Add or update categories from your budget."

@@ -15,7 +15,7 @@ const BudgetCategoryExpensesByMonthLineChartWrapper = <T extends LineSeries>({
 }) => {
 	const t = useTranslations("OverviewPage");
 	return !!data?.length ? (
-		<div className="flex flex-col items-start w-full h-[450px] gap-1">
+		<div className="hidden md:flex flex-col items-start w-full h-[450px] gap-1">
 			<h2 className="text-lg font-semibold text-primary">
 				{t("BudgetCategoryExpensesByMonthLineChart.title")}
 			</h2>

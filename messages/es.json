@@ -193,8 +193,8 @@
 		},
 		"totalMonthlyBudgetWithValue": "Presupuesto mensual total: {value}",
 		"addBudgetCategoryButton": "Añadir categoría",
-		"addBudgetCategoryInfo": "Puedes agregar hasta 12 categorías a tu presupuesto.",
-		"limitReached": "Has alcanzado el límite de 12 categorías.",
+		"addBudgetCategoryInfo": "Puedes agregar hasta {value} categorías a tu presupuesto.",
+		"limitReached": "Has alcanzado el límite de {value} categorías.",
 		"ManageBudgetCategoryDialog": {
 			"title": "Administrar categoría de presupuesto",
 			"subtitle": "Aquí puedes agregar o editar categorías de tu presupuesto."

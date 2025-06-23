@@ -26,9 +26,8 @@ import {
 
 type Props = {
 	data: Array<BudgetAmountRegistration & { budgetCategory: BudgetCategory }>;
-	totalAmount: number;
 };
-const HistoryTable = ({ data, totalAmount }: Props) => {
+const HistoryTable = ({ data }: Props) => {
 	const t = useTranslations();
 	return (
 		<section className="rounded-md w-full flex flex-col gap-1">
@@ -39,7 +38,9 @@ const HistoryTable = ({ data, totalAmount }: Props) => {
 				<TableHeader>
 					<TableRow>
 						<TableHead className="w-[100px]">{t("common.category")}</TableHead>
-						<TableHead className="w-[100px]">{t("common.details")}</TableHead>
+						<TableHead className="w-[100px]  hidden md:flex">
+							{t("common.details")}
+						</TableHead>
 						<TableHead>{t("common.date")}</TableHead>
 						<TableHead className="text-right">{t("common.amount")}</TableHead>
 					</TableRow>
@@ -50,7 +51,7 @@ const HistoryTable = ({ data, totalAmount }: Props) => {
 							<TableCell className="font-medium">
 								{item.budgetCategory?.name}
 							</TableCell>
-							<TableCell className="w-24 flex items-center justify-center">
+							<TableCell className="w-24 hidden md:flex items-center justify-center ">
 								{item.details ? (
 									<Tooltip>
 										<TooltipTrigger>
@@ -77,14 +78,6 @@ const HistoryTable = ({ data, totalAmount }: Props) => {
 						</TableRow>
 					))}
 				</TableBody>
-				<TableFooter>
-					<TableRow>
-						<TableCell colSpan={3}>Total</TableCell>
-						<TableCell className="text-right">
-							{formatCurrency(totalAmount)}
-						</TableCell>
-					</TableRow>
-				</TableFooter>
 			</Table>
 		</section>
 	);

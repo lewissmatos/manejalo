@@ -44,18 +44,22 @@ type Props = {
 	dialogTrigger?: React.ReactNode;
 	defaultValues?: Partial<BudgetCategory>;
 	refetchBudgetCategories: () => void;
+	maxBudgetCategories: number;
+	categoriesLength: number;
 };
 
 type Input = Partial<BudgetCategory>;
 
 const ManageBudgetCategoryDialog = ({
-	canAddMore = true,
 	dialogTrigger,
 	defaultValues,
 	refetchBudgetCategories,
+	maxBudgetCategories,
+	categoriesLength,
 }: Props) => {
 	const t = useTranslations();
 
+	const canAddMore = categoriesLength < maxBudgetCategories;
 	const { isOpen, onClose, onOpenChange } = useDisclosure();
 
 	const profileData = useAtomValue(updateProfileDataAtom);
@@ -86,24 +90,18 @@ const ManageBudgetCategoryDialog = ({
 		}
 
 		try {
+			const payload = {
+				estimation: data.estimation || 0,
+				description: data.description?.trim() || "",
+				name: data.name.trim(),
+				emoji: data?.emoji || incomeEmojis[0],
+				profileId: profileData?.id || "",
+			};
 			const res = !isEditMode
-				? await addBudgetCategory({
-						estimation: data.estimation || 0,
-						description: data.description?.trim() || "",
-						name: data.name.trim(),
-						emoji: data?.emoji || incomeEmojis[0],
-						profileId: profileData?.id || "",
-						isFavorite: false,
-						isActive: true,
-				  })
-				: await updateBudgetCategory(defaultValues?.id!, {
-						estimation: data.estimation || 0,
-						description: data.description?.trim() || "",
-						name: data.name.trim(),
-						emoji: data?.emoji || incomeEmojis[0],
-						profileId: profileData?.id || "",
-						isFavorite: defaultValues?.isFavorite || false,
-				  });
+				? await addBudgetCategory(
+						payload as Omit<BudgetCategory, "id" | "createdAt">
+				  )
+				: await updateBudgetCategory(defaultValues?.id!, payload);
 
 			if (!res.isSuccess) {
 				throw new Error(
@@ -169,7 +167,9 @@ const ManageBudgetCategoryDialog = ({
 									}`}
 								>
 									{canAddMore
-										? t("MyBudgetPage.addBudgetCategoryInfo")
+										? t("MyBudgetPage.addBudgetCategoryInfo", {
+												value: maxBudgetCategories || 0,
+										  })
 										: t("MyBudgetPage.limitReached")}
 								</span>
 							</CardContent>

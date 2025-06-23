@@ -8,6 +8,7 @@ import ManageIncomeDialog from "./_components/manage-income-dialog";
 import MonthlyIncomeCard from "./_components/monthly-icome-card";
 import { revalidatePath } from "next/cache";
 
+const MAX_INCOMES = 5;
 const Profile = async () => {
 	const [cookieStore, t] = await Promise.all([
 		cookies(),
@@ -76,7 +77,8 @@ const Profile = async () => {
 				<p className="text-lg text-primary/90 ">{t("myMonthlyIncomes")}</p>
 				<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mt-2">
 					<ManageIncomeDialog
-						canAddMore={profile.incomes?.length < 5}
+						incomesLength={profile.incomes.length}
+						maxMonthlyIncomes={MAX_INCOMES}
 						refetchProfileData={refetchProfileData}
 					/>
 

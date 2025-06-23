@@ -22,7 +22,6 @@ export const getProfileData = async (
 
 		return {
 			data: res,
-			// TODO
 			message: "",
 			isSuccess: true,
 		};
@@ -30,6 +29,33 @@ export const getProfileData = async (
 		console.error(error);
 		return {
 			data: null,
+			message: error instanceof Error ? error.message : "",
+			isSuccess: false,
+		};
+	}
+};
+
+export const getTotalMonthlyIncome = async (
+	profileId: string
+): Promise<ResponseModel<number>> => {
+	const t = await getTranslations("ProfilePage");
+	try {
+		const profile = await prisma.profile.findUnique({
+			where: { id: profileId },
+			select: { totalMonthlyIncome: true },
+		});
+
+		console.log(profile);
+
+		return {
+			data: profile?.totalMonthlyIncome || 0,
+			message: "",
+			isSuccess: true,
+		};
+	} catch (error) {
+		console.error(error);
+		return {
+			data: 0,
 			message: error instanceof Error ? error.message : "",
 			isSuccess: false,
 		};
