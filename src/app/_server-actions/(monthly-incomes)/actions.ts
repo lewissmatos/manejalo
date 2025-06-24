@@ -3,8 +3,8 @@
 import { IncomeType, MonthlyIncome } from "@/generated/prisma";
 import {
 	ResponseModel,
-	serverActionResponseHandler,
-} from "../utils/actions.utils";
+	serviceResponseHandler,
+} from "../../../lib/services/utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 type ResponseData = MonthlyIncome | null;
 
@@ -23,7 +23,7 @@ export const createMonthlyIncome = async (
 		});
 	};
 
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "ProfilePage.AddIncomeDialog.messages",
 		successMessageKey: "defaultSuccessMessage",
 		errorMessageKey: "defaultErrorMessage",
@@ -46,7 +46,7 @@ export const updateMonthlyIncome = async (
 		});
 	};
 
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "ProfilePage.AddIncomeDialog.messages",
 		successMessageKey: "updateSuccessMessage",
 		errorMessageKey: "defaultErrorMessage",
@@ -68,7 +68,7 @@ export const setMonthlyIncomeStatus = async (
 		return null;
 	};
 
-	return await serverActionResponseHandler<null>(fn, {
+	return await serviceResponseHandler<null>(fn, {
 		translationsPath: "ProfilePage.MonthlyIncomeCard.messages.",
 		successMessageKey: "setMonthlyIncomeStatusSuccessMessage",
 		errorMessageKey: "setMonthlyIncomeStatusErrorMessage",
@@ -85,7 +85,7 @@ export const deleteMonthlyIncome = async (
 		return null;
 	};
 
-	return await serverActionResponseHandler<null>(fn, {
+	return await serviceResponseHandler<null>(fn, {
 		translationsPath: "ProfilePage.MonthlyIncomeCard.messages",
 		successMessageKey: "deleteSuccessMessage",
 		errorMessageKey: "deleteErrorMessage",

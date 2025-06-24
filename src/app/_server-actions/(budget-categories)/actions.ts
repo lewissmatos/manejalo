@@ -4,8 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { BudgetCategory } from "@/generated/prisma";
 import {
 	ResponseModel,
-	serverActionResponseHandler,
-} from "../utils/actions.utils";
+	serviceResponseHandler,
+} from "../../../lib/services/utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 type ResponseData = BudgetCategory | null;
 
@@ -38,7 +38,7 @@ export const getBudgetCategories = async (
 		};
 	};
 
-	return await serverActionResponseHandler<{
+	return await serviceResponseHandler<{
 		budgetCategories: BudgetCategory[];
 		totalBudget: number;
 	}>(fn, {
@@ -65,7 +65,7 @@ export const addBudgetCategory = async (
 
 		return res;
 	};
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "MyBudgetPage.messages",
 		successMessageKey: "createSuccessMessage",
 	});
@@ -88,7 +88,7 @@ export const updateBudgetCategory = async (
 
 		return res;
 	};
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "MyBudgetPage.messages",
 		successMessageKey: "updateSuccessMessage",
 	});
@@ -104,7 +104,7 @@ export const deleteBudgetCategory = async (
 
 		return null;
 	};
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "MyBudgetPage.messages",
 		successMessageKey: "deleteSuccessMessage",
 		errorMessageKey: "deleteErrorMessage",
@@ -123,7 +123,7 @@ export const markBudgetCategoryAsFavorite = async (
 
 		return res;
 	};
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "MyBudgetPage.messages",
 		successMessageKey: isFavorite
 			? "markAsFavoriteSuccessMessage"
@@ -142,7 +142,7 @@ export const setBudgetCategoryStatus = async (
 		});
 		return res;
 	};
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "MyBudgetPage.messages",
 		successMessageKey: newStatus
 			? "activateSuccessMessage"

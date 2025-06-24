@@ -2,8 +2,8 @@
 
 import {
 	ResponseModel,
-	serverActionResponseHandler,
-} from "../utils/actions.utils";
+	serviceResponseHandler,
+} from "../../../lib/services/utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { ProfileWithIncomes } from "@/lib/jotai/auth-atom";
 type ResponseData = ProfileWithIncomes | null;
@@ -22,7 +22,7 @@ export const getProfileData = async (
 		});
 	};
 
-	return await serverActionResponseHandler<ResponseData>(fn);
+	return await serviceResponseHandler<ResponseData>(fn);
 };
 
 export const getTotalMonthlyIncome = async (
@@ -36,7 +36,7 @@ export const getTotalMonthlyIncome = async (
 		return profile?.totalMonthlyIncome || 0;
 	};
 
-	return await serverActionResponseHandler<number>(fn);
+	return await serviceResponseHandler<number>(fn);
 };
 
 export const getTotalMonthlyBudget = async (
@@ -50,5 +50,5 @@ export const getTotalMonthlyBudget = async (
 		return profile?.totalBudget || 0;
 	};
 
-	return await serverActionResponseHandler<number>(fn);
+	return await serviceResponseHandler<number>(fn);
 };

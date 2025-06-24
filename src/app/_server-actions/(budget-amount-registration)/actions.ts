@@ -8,8 +8,8 @@ import {
 } from "@/generated/prisma";
 import {
 	ResponseModel,
-	serverActionResponseHandler,
-} from "../utils/actions.utils";
+	serviceResponseHandler,
+} from "../../../lib/services/utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { JsonObject } from "@/generated/prisma/runtime/library";
 import { eachMonthOfInterval, format } from "date-fns";
@@ -43,7 +43,7 @@ export const addBudgetAmountRegistration = async (
 		return res;
 	};
 
-	return await serverActionResponseHandler<ResponseData>(fn, {
+	return await serviceResponseHandler<ResponseData>(fn, {
 		translationsPath: "OverviewPage.messages",
 		successMessageKey: "registerAmountSuccessMessage",
 	});
@@ -67,7 +67,7 @@ export const getBudgetAmountRegistrationHistory = async (
 		return res;
 	};
 
-	return await serverActionResponseHandler<HistoryItem[]>(fn, {
+	return await serviceResponseHandler<HistoryItem[]>(fn, {
 		translationsPath: "OverviewPage.messages",
 		successMessageKey: "registerAmountSuccessMessage",
 	});
@@ -123,7 +123,7 @@ export const getBudgetAmountRegistrations = async ({
 			page,
 		};
 	};
-	return await serverActionResponseHandler<{
+	return await serviceResponseHandler<{
 		registrations: Array<
 			BudgetAmountRegistration & {
 				budgetCategory: BudgetCategory;
@@ -180,7 +180,7 @@ export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
 
 		return finalData;
 	};
-	return await serverActionResponseHandler<BudgetCategoryExpense[]>(fn, {
+	return await serviceResponseHandler<BudgetCategoryExpense[]>(fn, {
 		translationsPath: "OverviewPage.messages",
 		successMessageKey: "registerAmountSuccessMessage",
 	});
@@ -213,7 +213,7 @@ export const getTotalBudgetAmountRegistrationByDateRange = async ({
 		return res._sum.amount || 0;
 	};
 
-	return await serverActionResponseHandler<number>(fn, {
+	return await serviceResponseHandler<number>(fn, {
 		translationsPath: "OverviewPage.messages",
 		successMessageKey: "registerAmountSuccessMessage",
 	});
@@ -315,7 +315,7 @@ export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
 		return finalData;
 	};
 
-	return await serverActionResponseHandler<
+	return await serviceResponseHandler<
 		{
 			id: string;
 			data: Array<{ x: string; y: string }>;
@@ -373,7 +373,7 @@ export const getTotalExpensesOverTime = async ({
 		};
 	};
 
-	return await serverActionResponseHandler<{
+	return await serviceResponseHandler<{
 		[BudgetAmountType.EXPENSE]: number;
 		[BudgetAmountType.RECOVERY]: number;
 		total: number;
@@ -423,7 +423,7 @@ export const getHighestExpendingMonthsForBarChart = async ({
 
 		return finalData;
 	};
-	return await serverActionResponseHandler<
+	return await serviceResponseHandler<
 		{
 			date: string;
 			value: number;
@@ -473,7 +473,7 @@ export const getTotalAmountRegistrationsForCalendarChart = async ({
 
 		return finalData;
 	};
-	return await serverActionResponseHandler<
+	return await serviceResponseHandler<
 		{
 			day: `${number}-${number}-${number}`;
 			value: number;
