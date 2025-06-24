@@ -107,7 +107,8 @@
 		"date": "Date",
 		"year": "Year",
 		"total": "Total",
-		"totalWithValue": "Total: {value}"
+		"totalWithValue": "Total: {value}",
+		"goToWithValue": "Go to {href}"
 	},
 	"ui": {
 		"showPassword": "Show Password",
@@ -229,7 +230,8 @@
 			"title": "Monthly Expenses by year",
 			"noData": "No data available for {year}."
 		},
-		"selectDate": "Select date"
+		"selectDate": "Select date",
+		"noBudgetCategories": "There are not any budget category added yet."
 	},
 	"OverviewHistorySummary": {
 		"title": "History Summary",

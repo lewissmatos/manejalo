@@ -5,7 +5,7 @@ import { ExternalLink } from "lucide-react";
 const HomePageFooter = async () => {
 	const t = await getTranslations("HomePageFooter");
 	return (
-		<footer className="bg-secondary/30 w-full h-fit p-4">
+		<footer className="bg-muted rounded-lg mx-4 mb-4 h-fit p-4">
 			<div className="max-w-5xl mx-auto px-4 h-full flex items-center justify-between flex-col gap-2">
 				<p className="text-lg font-semibold text-primary">
 					{t("top", {
@@ -14,7 +14,6 @@ const HomePageFooter = async () => {
 					})}
 				</p>
 				<div className="flex flex-col items-center justify-between">
-					<p className="text-md text-primary/60">{t("contacts")}:</p>
 					<div className="flex flex-wrap md:flex-row items-center gap-4">
 						{contacts.map((contact) => (
 							<a

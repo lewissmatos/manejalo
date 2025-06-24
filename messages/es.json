@@ -107,7 +107,8 @@
 		"date": "Fecha",
 		"year": "Año",
 		"total": "Total",
-		"totalWithValue": "Total: {value}"
+		"totalWithValue": "Total: {value}",
+		"goToWithValue": "Ir a {href}"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
@@ -229,7 +230,8 @@
 			"title": "Gastos mensuales por año",
 			"noData": "No hay datos disponibles para {year}."
 		},
-		"selectDate": "Seleccionar fecha"
+		"selectDate": "Seleccionar fecha",
+		"noBudgetCategories": "Aún no has agregado ninguna categoría a tu presupuesto."
 	},
 	"OverviewHistorySummary": {
 		"title": "Resumen del historial",

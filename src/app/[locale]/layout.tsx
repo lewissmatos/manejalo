@@ -38,7 +38,11 @@ export default async function LocaleLayout({
 
 	return (
 		<ReactQueryClientProvider>
-			<html lang={locale} className={font.className} suppressHydrationWarning>
+			<html
+				lang={locale}
+				className={`${font.className} `}
+				suppressHydrationWarning
+			>
 				<head />
 				<body
 					suppressHydrationWarning

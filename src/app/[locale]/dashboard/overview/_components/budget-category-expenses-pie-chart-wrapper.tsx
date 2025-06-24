@@ -4,11 +4,8 @@ import {
 	getBudgetAmountRegistrationsGroupedByCategoryForPieChart,
 	getTotalBudgetAmountRegistrationByDateRange,
 } from "@/app/_server-actions/(budget-amount-registrations)/actions";
-import { cookies } from "next/headers";
-import { format, startOfMonth, endOfMonth, parseISO } from "date-fns";
 import { getTotalMonthlyBudget } from "../../../../_server-actions/(profile)/actions";
 import { formatCurrency } from "@/lib/formatters";
-import { getTranslations } from "next-intl/server";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -38,21 +35,25 @@ const BudgetCategoryExpensesByMonthLineChartWrapper = ({
 			id="charts-section"
 			className="flex flex-col gap-2 items-center w-full"
 		>
-			<div className="flex flex-row items-baseline justify-center w-full">
-				<span className="text-primary text-lg mr-1">
-					{t("registeredSummary")}
-				</span>
-				<span
-					className={` text-lg font-semibold ${
-						hasOverpassedMonthlyBudget ? "text-destructive" : "text-primary"
-					}`}
-				>
-					{formatCurrency(totalBudgetAmount.data, "DOP", true)}
-				</span>
-				<span className="text-primary/70 text-md">
-					{`/ - ${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
-				</span>
-			</div>
+			{(totalMonthlyBudget?.data || 0)! > 0 ? (
+				<div className="flex flex-row items-baseline justify-center w-full">
+					<span className="text-primary text-lg mr-1">
+						{t("registeredSummary")}
+					</span>
+					<>
+						<span
+							className={` text-lg font-semibold ${
+								hasOverpassedMonthlyBudget ? "text-destructive" : "text-primary"
+							}`}
+						>
+							{formatCurrency(totalBudgetAmount.data, "DOP", true)}
+						</span>
+						<span className="text-primary/70 text-md">
+							{`/ - ${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
+						</span>
+					</>
+				</div>
+			) : null}
 			{hasOverpassedMonthlyBudget ? (
 				<Alert variant="destructive" className="w-full">
 					<AlertCircleIcon className="h-4 w-4" />

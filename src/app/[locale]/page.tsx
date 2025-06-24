@@ -11,6 +11,14 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 const metadata = {
 	title: "Manejalo! - Home",
@@ -25,18 +33,17 @@ export default async function HomePage() {
 
 	return (
 		<div className="flex flex-col min-h-screen bg-background justify-between">
-			<div className="flex flex-col items-center p-4">
+			<div className="flex flex-col items-center p-2 justify-between">
 				<section className="w-full flex justify-between items-start mb-4 gap-4">
-					<div className="w-1/5 hidden md:flex justify-start">
-						<ThemeSelector />
-					</div>
-					<div className="h-32 w-full items-center md:w-3/5 flex flex-col justify-center rounded-lg shadow-md p-4 gap-2">
+					<div className="w-1/5 hidden md:flex justify-start" />
+					<div className="h-32 w-full items-center md:w-3/5 flex flex-col justify-center p-4 gap-2">
 						<div className="flex items-center">
 							<h1 className="text-6xl font-semibold text-primary">Manejalo!</h1>
 						</div>
 						<p className="text-muted-foreground">{t("slogan")}</p>
 					</div>
-					<div className="w-1/5 hidden md:flex justify-end">
+					<div className="w-1/5 hidden md:flex gap-2 justify-end">
+						<ThemeSelector />
 						<LanguageSelector />
 					</div>
 				</section>
@@ -45,23 +52,31 @@ export default async function HomePage() {
 					<LanguageSelector />
 				</div>
 				<section className="py-4">
-					<div className="max-w-5xl mx-auto px-4">
-						<h2 className="text-3xl font-bold mb-4 text-center">
+					<div className="w-full md:max-w-7xl mx-auto px-2">
+						<h2 className="text-2xl font-semibold mb-4 text-center text-muted-foreground">
 							📌 {t("features.title")}
 						</h2>
 						<main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 							{features.map((feature) => (
 								<HoverCard key={feature.key}>
 									<HoverCardTrigger>
-										<div className="bg-white  dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 shadow-sm ">
-											<div className="text-3xl mb-2">{feature.icon}</div>
-											<h3 className="text-xl font-semibold mb-1">
-												{t(`features.${feature.key}.title`)}
-											</h3>
-											<p className="text-sm text-zinc-600 dark:text-zinc-400">
+										<Card
+											className={`w-full md:w-96 p-2 h-44 gap-2 justify-between `}
+										>
+											<CardHeader className="p-0 flex flex-row gap-2 items-center text-4xl">
+												<CardTitle className="line-clamp-2 max-w-72 font-semibold ">
+													{feature.icon}
+												</CardTitle>
+											</CardHeader>
+											<CardContent className="p-0 flex flex-row gap-2 items-center">
+												<CardDescription className="line-clamp-2 text-2xl text-primary">
+													{t(`features.${feature.key}.title`)}
+												</CardDescription>
+											</CardContent>
+											<CardFooter className="flex flex-row gap-2 items-start p-0 justify-between text-muted-foreground">
 												{t(`features.${feature.key}.description`)}
-											</p>
-										</div>
+											</CardFooter>
+										</Card>
 									</HoverCardTrigger>
 									<HoverCardContent>
 										{t(`features.${feature.key}.tooltip`)}
@@ -71,7 +86,7 @@ export default async function HomePage() {
 						</main>
 					</div>
 				</section>
-				<section className="py-2">
+				<section className="pt-8">
 					<MainPageBottomContent />
 				</section>
 			</div>

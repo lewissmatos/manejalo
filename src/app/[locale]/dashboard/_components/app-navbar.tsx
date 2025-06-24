@@ -71,16 +71,16 @@ export default function AppNavBar() {
 	};
 
 	return (
-		<nav className="px-4 py-2 flex justify-between items-center w-full">
+		<nav className="px-4 py-2 flex justify-between items-center w-full ">
 			<div className="flex items-center">
 				<h1 className="text-2xl sm:text-4xl font-bold text-primary w-auto sm:w-1/5">
 					Manejalo!
 				</h1>
 			</div>
 			{/* Desktop Navigation */}
-			<div className="hidden md:flex flex-1 justify-center">
+			<div className="hidden md:flex flex-1 justify-center ">
 				<NavigationMenu
-					className="border-1 border-background-200 shadow-sm rounded-md justify-end z-30"
+					className="border-1 border-background-200 shadow-sm rounded-md justify-end z-30 bg-background"
 					viewport={false}
 				>
 					<NavigationMenuList className="flex justify-end items-center gap-4 p-1">
@@ -91,7 +91,7 @@ export default function AppNavBar() {
 									<NavigationMenuLink
 										asChild
 										className={`${navigationMenuTriggerStyle()} ${
-											isSelected ? "bg-muted text-muted-foreground" : ""
+											isSelected ? "bg-muted text-foreground" : ""
 										}`}
 									>
 										<Link href={item.href}>
