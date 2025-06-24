@@ -28,7 +28,7 @@ const TotalAmountRegistrationsCalendarChart = ({
 	};
 
 	return (
-		<div className="hidden md:flex flex-col h-40 w-full gap-2 mb-6">
+		<div className="hidden md:flex flex-col h-40 w-full mb-6">
 			<h2 className="text-lg font-semibold text-primary">
 				{t("title", { count: data.length })}
 			</h2>
@@ -37,7 +37,7 @@ const TotalAmountRegistrationsCalendarChart = ({
 				from={`${year + 1}-01-01`}
 				to={`${year}-12-31`}
 				emptyColor={resolvedTheme === "dark" ? "#4d4d4d" : "#eeeeee"}
-				margin={{ right: 20, bottom: 10, left: 20 }}
+				margin={{ right: 20, bottom: 10, left: 20, top: 30 }}
 				yearSpacing={0}
 				monthBorderColor={resolvedTheme === "dark" ? "#333333" : "#ffffff"}
 				dayBorderWidth={2}

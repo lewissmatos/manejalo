@@ -10,9 +10,18 @@ import {
 	ResponseModel,
 	serviceResponseHandler,
 } from "../../../lib/services/utils/actions.utils";
-import { prisma } from "@/lib/prisma/prisma";
-import { JsonObject } from "@/generated/prisma/runtime/library";
-import { eachMonthOfInterval, format } from "date-fns";
+import {
+	addBudgetAmountRegistrationService,
+	getBudgetAmountRegistrationHistoryService,
+	getBudgetAmountRegistrationsGroupedByCategoryForPieChartService,
+	getBudgetAmountRegistrationsService,
+	getHighestExpendingMonthsForBarChartService,
+	getTotalAmountRegistrationsForCalendarChartService,
+	getTotalBudgetAmountRegistrationByDateRangeService,
+	getTotalBudgetAmountRegistrationPerYearForLineChartService,
+	getTotalExpensesOverTimeService,
+	HistoryItem,
+} from "@/lib/services/budget-amount-registration-service";
 type ResponseData = BudgetAmountRegistration | null;
 
 export type BudgetCategoryExpense = {
@@ -24,53 +33,16 @@ export type BudgetCategoryExpense = {
 export const addBudgetAmountRegistration = async (
 	payload: Omit<BudgetAmountRegistration, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		const res = await prisma.budgetAmountRegistration.create({
-			data: {
-				amount:
-					payload.type === BudgetAmountType.EXPENSE
-						? -payload?.amount
-						: payload?.amount,
-				correspondingDate: new Date(payload.correspondingDate),
-				details: payload?.details || "",
-				type: payload?.type || BudgetAmountType.EXPENSE,
-				budgetCategoryId: payload?.budgetCategoryId,
-				budgetCategoryReference: payload?.budgetCategoryReference as JsonObject,
-			},
-		});
-		if (!res) throw new Error("createErrorMessage");
+	const t = await getTranslations("OverviewPage.messages");
 
-		return res;
-	};
-
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "OverviewPage.messages",
-		successMessageKey: "registerAmountSuccessMessage",
-	});
-};
-
-type HistoryItem = BudgetAmountRegistration & {
-	budgetCategory: Pick<BudgetCategory, "id" | "name">;
-};
-
-export const getBudgetAmountRegistrationHistory = async (
-	profileId: string
-): Promise<ResponseModel<HistoryItem[]>> => {
-	const fn = async () => {
-		const res = await prisma.budgetAmountRegistration.findMany({
-			where: { budgetCategory: { profileId: profileId } },
-			include: { budgetCategory: { select: { id: true, name: true } } },
-			orderBy: [{ createdAt: "desc" }],
-			take: 20,
-		});
-
-		return res;
-	};
-
-	return await serviceResponseHandler<HistoryItem[]>(fn, {
-		translationsPath: "OverviewPage.messages",
-		successMessageKey: "registerAmountSuccessMessage",
-	});
+	return await serviceResponseHandler<ResponseData>(
+		async () => await addBudgetAmountRegistrationService(payload),
+		{
+			successMessage: t("registerAmountSuccessMessage"),
+			errorMessage: t("registerAmountErrorMessage"),
+			translator: t,
+		}
+	);
 };
 
 export const getBudgetAmountRegistrations = async ({
@@ -94,35 +66,6 @@ export const getBudgetAmountRegistrations = async ({
 		page: number;
 	}>
 > => {
-	const fn = async () => {
-		const [res, totalCount, sumResult] = await Promise.all([
-			prisma.budgetAmountRegistration.findMany({
-				where: { budgetCategory: { profileId: profileId } },
-				include: { budgetCategory: true },
-				orderBy: [{ createdAt: "desc" }],
-				skip: (page - 1) * limit,
-				take: limit,
-			}),
-			prisma.budgetAmountRegistration.count({
-				where: { budgetCategory: { profileId: profileId } },
-			}),
-			prisma.budgetAmountRegistration.aggregate({
-				where: { budgetCategory: { profileId: profileId } },
-				_sum: { amount: true },
-				skip: (page - 1) * limit,
-				take: limit,
-			}),
-		]);
-		const totalPages = Math.ceil(totalCount / limit);
-
-		return {
-			registrations: res,
-			totalCount,
-			totalPages,
-			limit,
-			page,
-		};
-	};
 	return await serviceResponseHandler<{
 		registrations: Array<
 			BudgetAmountRegistration & {
@@ -133,10 +76,21 @@ export const getBudgetAmountRegistrations = async ({
 		totalPages: number;
 		limit: number;
 		page: number;
-	}>(fn, {
-		translationsPath: "OverviewPage.messages",
-		successMessageKey: "",
-	});
+	}>(
+		async () =>
+			await getBudgetAmountRegistrationsService({ profileId, page, limit })
+	);
+};
+
+export const getBudgetAmountRegistrationHistory = async (
+	profileId: string
+): Promise<ResponseModel<HistoryItem[]>> => {
+	const t = await getTranslations("OverviewPage.messages");
+
+	return await serviceResponseHandler<HistoryItem[]>(
+		async () => await getBudgetAmountRegistrationHistoryService(profileId),
+		{ successMessage: t("registerAmountSuccessMessage") }
+	);
 };
 
 export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
@@ -148,42 +102,17 @@ export const getBudgetAmountRegistrationsGroupedByCategoryForPieChart = async ({
 	startDate: Date;
 	endDate: Date;
 }): Promise<ResponseModel<BudgetCategoryExpense[]>> => {
-	const fn = async () => {
-		const res = await prisma.budgetAmountRegistration.groupBy({
-			by: ["budgetCategoryId"],
-			_sum: { amount: true },
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				correspondingDate: {
-					gte: startDate,
-					lte: endDate,
-				},
-			},
-			orderBy: [{ budgetCategoryId: "asc" }],
-		});
-
-		const categories = await prisma.budgetCategory.findMany({
-			where: { profileId },
-			select: { name: true, id: true },
-		});
-
-		const finalData = res.map((item) => {
-			const category = categories.find((x) => x.id === item.budgetCategoryId);
-			return {
-				value: (item._sum.amount || 0) * -1,
-				label: category?.name || "",
-				id: category?.name || "",
-			};
-		});
-
-		return finalData;
-	};
-	return await serviceResponseHandler<BudgetCategoryExpense[]>(fn, {
-		translationsPath: "OverviewPage.messages",
-		successMessageKey: "registerAmountSuccessMessage",
-	});
+	return await serviceResponseHandler<BudgetCategoryExpense[]>(
+		async () =>
+			await getBudgetAmountRegistrationsGroupedByCategoryForPieChartService({
+				profileId,
+				startDate,
+				endDate,
+			}),
+		{
+			successMessage: "registerAmountSuccessMessage",
+		}
+	);
 };
 
 export const getTotalBudgetAmountRegistrationByDateRange = async ({
@@ -195,28 +124,14 @@ export const getTotalBudgetAmountRegistrationByDateRange = async ({
 	startDate: Date;
 	endDate: Date;
 }): Promise<ResponseModel<number>> => {
-	const fn = async () => {
-		const res = await prisma.budgetAmountRegistration.aggregate({
-			_sum: {
-				amount: true,
-			},
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				correspondingDate: {
-					gte: startDate,
-					lte: endDate,
-				},
-			},
-		});
-		return res._sum.amount || 0;
-	};
-
-	return await serviceResponseHandler<number>(fn, {
-		translationsPath: "OverviewPage.messages",
-		successMessageKey: "registerAmountSuccessMessage",
-	});
+	return await serviceResponseHandler<number>(
+		async () =>
+			await getTotalBudgetAmountRegistrationByDateRangeService({
+				profileId,
+				startDate,
+				endDate,
+			})
+	);
 };
 
 export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
@@ -226,101 +141,19 @@ export const getTotalBudgetAmountRegistrationPerYearForLineChart = async ({
 	year: number;
 	profileId: string;
 }): Promise<
-	ResponseModel<
-		{
-			id: string;
-			data: Array<{ x: string; y: string }>;
-		}[]
-	>
+	ResponseModel<{ id: string; data: Array<{ x: string; y: string }> }[]>
 > => {
-	const fn = async () => {
-		const startDate = new Date(year, 0, 1);
-		const endDate = new Date(year, 11, 31);
-
-		const res = await prisma.budgetAmountRegistration.groupBy({
-			by: ["budgetCategoryId", "correspondingDate"],
-			_sum: {
-				amount: true,
-			},
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				correspondingDate: {
-					gte: startDate,
-					lte: endDate,
-				},
-			},
-			orderBy: [{ budgetCategoryId: "asc" }],
-		});
-
-		const categories = await prisma.budgetCategory.findMany({
-			where: { profileId },
-			select: { name: true, id: true },
-		});
-
-		const months = eachMonthOfInterval({
-			start: startDate,
-			end: endDate,
-		}).map((date) => format(date, "MMM"));
-
-		const groupedRes = res?.reduce(
-			(acc, item) => {
-				const categoryId = item.budgetCategoryId;
-				const currObject = acc[categoryId];
-				if (!currObject) {
-					acc[categoryId] = {
-						budgetCategoryId: categoryId,
-						categoryName:
-							categories.find((x) => x.id === categoryId)?.name || "",
-						data: [
-							{
-								value: item._sum.amount || 0,
-								correspondingDate: item.correspondingDate,
-							},
-						],
-					};
-				}
-				acc[categoryId].data.push({
-					value: item._sum.amount || 0,
-					correspondingDate: item.correspondingDate,
-				});
-				return acc;
-			},
-			{} as Record<
-				string,
-				{
-					budgetCategoryId: string;
-					categoryName: string;
-					data: Array<{ value: number; correspondingDate: Date }>;
-				}
-			>
-		);
-
-		const finalData = Object.entries(groupedRes).map(([key, value]) => {
-			return {
-				id: value.categoryName,
-				data: months.map((month) => {
-					const monthData = value.data.find((d) =>
-						format(d.correspondingDate, "MMM").includes(month)
-					);
-					return {
-						x: month.toUpperCase(),
-						y: monthData ? monthData.value.toString() : "0",
-					};
-				}),
-			};
-		});
-
-		return finalData;
-	};
-
 	return await serviceResponseHandler<
 		{
 			id: string;
 			data: Array<{ x: string; y: string }>;
 		}[]
-	>(fn);
+	>(async () =>
+		getTotalBudgetAmountRegistrationPerYearForLineChartService({
+			year,
+			profileId,
+		})
+	);
 };
 
 export const getTotalExpensesOverTime = async ({
@@ -336,48 +169,11 @@ export const getTotalExpensesOverTime = async ({
 		total: number;
 	}>
 > => {
-	const fn = async () => {
-		const startDate = new Date(year, 0, 1);
-		const endDate = new Date(year, 11, 31);
-		const expensesTotal = await prisma.budgetAmountRegistration.aggregate({
-			_sum: {
-				amount: true,
-			},
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				correspondingDate: {
-					gte: startDate,
-					lte: endDate,
-				},
-				type: BudgetAmountType.EXPENSE,
-			},
-		});
-		const recoveryTotal = await prisma.budgetAmountRegistration.aggregate({
-			_sum: {
-				amount: true,
-			},
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				type: BudgetAmountType.RECOVERY,
-			},
-		});
-		return {
-			[BudgetAmountType.EXPENSE]: expensesTotal._sum.amount || 0,
-			[BudgetAmountType.RECOVERY]: recoveryTotal._sum.amount || 0,
-			total:
-				(expensesTotal._sum.amount || 0) + (recoveryTotal._sum.amount || 0),
-		};
-	};
-
 	return await serviceResponseHandler<{
 		[BudgetAmountType.EXPENSE]: number;
 		[BudgetAmountType.RECOVERY]: number;
 		total: number;
-	}>(fn);
+	}>(async () => getTotalExpensesOverTimeService({ profileId, year }));
 };
 
 export const getHighestExpendingMonthsForBarChart = async ({
@@ -392,43 +188,9 @@ export const getHighestExpendingMonthsForBarChart = async ({
 		}[]
 	>
 > => {
-	const fn = async () => {
-		const res = await prisma.budgetAmountRegistration.findMany({
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-			},
-			select: {
-				amount: true,
-				correspondingDate: true,
-			},
-		});
-
-		const monthMap = new Map<string, number>();
-
-		res.forEach((item) => {
-			const key = format(item.correspondingDate, "MMM yyyy").toUpperCase();
-			const prev = monthMap.get(key) || 0;
-			monthMap.set(key, prev + (item.amount || 0));
-		});
-
-		const finalData = Array.from(monthMap.entries())
-			.map(([date, value]) => ({
-				date,
-				value: value * -1,
-			}))
-			.sort((a, b) => b.value - a.value)
-			.slice(0, 5);
-
-		return finalData;
-	};
-	return await serviceResponseHandler<
-		{
-			date: string;
-			value: number;
-		}[]
-	>(fn);
+	return await serviceResponseHandler<{ date: string; value: number }[]>(
+		async () => await getHighestExpendingMonthsForBarChartService({ profileId })
+	);
 };
 
 export const getTotalAmountRegistrationsForCalendarChart = async ({
@@ -445,38 +207,13 @@ export const getTotalAmountRegistrationsForCalendarChart = async ({
 		}[]
 	>
 > => {
-	const fn = async () => {
-		const startDate = new Date(year, 0, 1);
-		const endDate = new Date(year, 11, 31);
-		const res = await prisma.budgetAmountRegistration.groupBy({
-			by: ["correspondingDate"],
-			_sum: { amount: true },
-			where: {
-				budgetCategory: {
-					profileId: profileId,
-				},
-				correspondingDate: {
-					gte: startDate,
-					lte: endDate,
-				},
-			},
-			orderBy: [{ correspondingDate: "asc" }],
-		});
-
-		const finalData = res.map((item) => ({
-			day: format(
-				item.correspondingDate,
-				"yyyy-MM-dd"
-			) as `${number}-${number}-${number}`,
-			value: (item._sum.amount || 0) * -1,
-		}));
-
-		return finalData;
-	};
 	return await serviceResponseHandler<
-		{
-			day: `${number}-${number}-${number}`;
-			value: number;
-		}[]
-	>(fn);
+		{ day: `${number}-${number}-${number}`; value: number }[]
+	>(
+		async () =>
+			await getTotalAmountRegistrationsForCalendarChartService({
+				profileId,
+				year,
+			})
+	);
 };

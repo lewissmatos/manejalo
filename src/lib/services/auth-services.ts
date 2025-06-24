@@ -2,10 +2,7 @@ import { User } from "@supabase/supabase-js";
 import { ProfileWithIncomes } from "../jotai/auth-atom";
 import { prisma } from "../prisma/prisma";
 import { createServerSupabaseClient } from "../supabase/server";
-import {
-	Inputs,
-	Inputs as SignUpPayload,
-} from "@/app/_components/sign-up-dialog";
+import { Inputs as SignUpPayload } from "@/app/_components/sign-up-dialog";
 import supabaseAdmin from "../supabase/admin";
 import { Inputs as LoginPayload } from "@/app/_components/login-dialog";
 
