@@ -21,7 +21,7 @@ import {
 	getTotalBudgetAmountRegistrationPerYearForLineChartService,
 	getTotalExpensesOverTimeService,
 	HistoryItem,
-} from "@/lib/services/budget-amount-registration-service";
+} from "@/lib/services/budget-amount-registrations-service";
 type ResponseData = BudgetAmountRegistration | null;
 
 export type BudgetCategoryExpense = {

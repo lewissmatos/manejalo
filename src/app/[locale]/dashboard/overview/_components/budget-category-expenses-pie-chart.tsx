@@ -1,6 +1,6 @@
 "use client";
 
-import { BudgetCategoryExpense } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import { BudgetCategoryExpense } from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useTheme } from "next-themes";

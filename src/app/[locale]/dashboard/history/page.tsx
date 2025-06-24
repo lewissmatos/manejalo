@@ -3,7 +3,7 @@ import {
 	getTotalAmountRegistrationsForCalendarChart,
 	getTotalBudgetAmountRegistrationPerYearForLineChart,
 	getTotalExpensesOverTime,
-} from "@/app/_server-actions/(budget-amount-registration)/actions";
+} from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import React from "react";

@@ -1,4 +1,4 @@
-import { getBudgetAmountRegistrationHistory } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import { getBudgetAmountRegistrationHistory } from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { BudgetAmountType } from "@/generated/prisma";
 import { formatCurrency } from "@/lib/formatters";
 import { format, setDefaultOptions } from "date-fns";

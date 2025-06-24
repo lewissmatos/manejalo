@@ -12,7 +12,7 @@ import {
 	getBudgetAmountRegistrationsGroupedByCategoryForPieChart,
 	getHighestExpendingMonthsForBarChart,
 	getTotalBudgetAmountRegistrationByDateRange,
-} from "@/app/_server-actions/(budget-amount-registration)/actions";
+} from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import OverviewHistorySummary from "../_components/overview-history-summary";
 import OverviewDateSelector from "./_components/overview-date-selector";
 import HighestExpendingMonthsBarChart from "../history/_components/highest-expending-months-bar-chart";

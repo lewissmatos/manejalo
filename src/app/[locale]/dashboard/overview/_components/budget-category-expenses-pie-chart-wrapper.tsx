@@ -3,7 +3,7 @@ import BudgetCategoryExpensesChart from "./budget-category-expenses-pie-chart";
 import {
 	getBudgetAmountRegistrationsGroupedByCategoryForPieChart,
 	getTotalBudgetAmountRegistrationByDateRange,
-} from "@/app/_server-actions/(budget-amount-registration)/actions";
+} from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { cookies } from "next/headers";
 import { format, startOfMonth, endOfMonth, parseISO } from "date-fns";
 import { getTotalMonthlyBudget } from "../../../../_server-actions/(profile)/actions";

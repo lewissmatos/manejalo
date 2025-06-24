@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { ButtonLoading } from "@/components/ui/button-loading";
-import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
 import { useAtomValue } from "jotai/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";

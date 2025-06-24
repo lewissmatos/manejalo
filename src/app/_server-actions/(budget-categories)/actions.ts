@@ -6,7 +6,14 @@ import {
 	ResponseModel,
 	serviceResponseHandler,
 } from "../../../lib/services/utils/actions.utils";
-import { prisma } from "@/lib/prisma/prisma";
+import {
+	addBudgetCategoryService,
+	deleteBudgetCategoryService,
+	getBudgetCategoriesService,
+	markBudgetCategoryAsFavoriteService,
+	setBudgetCategoryStatusService,
+	updateBudgetCategoryService,
+} from "@/lib/services/budget-categories-service";
 type ResponseData = BudgetCategory | null;
 
 export const getBudgetCategories = async (
@@ -17,135 +24,80 @@ export const getBudgetCategories = async (
 		totalBudget: number;
 	}>
 > => {
-	const fn = async () => {
-		const res = await prisma.budgetCategory.findMany({
-			where: { profileId },
-			orderBy: [
-				{ isFavorite: "desc" },
-				{ estimation: "desc" },
-				{ createdAt: "desc" },
-			],
-		});
-
-		const profileData = await prisma.profile.findUnique({
-			select: { totalBudget: true },
-			where: { id: profileId },
-		});
-
-		return {
-			budgetCategories: res,
-			totalBudget: profileData?.totalBudget || 0,
-		};
-	};
-
-	return await serviceResponseHandler<{
-		budgetCategories: BudgetCategory[];
-		totalBudget: number;
-	}>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: "",
-	});
+	return await serviceResponseHandler(
+		async () => await getBudgetCategoriesService(profileId)
+	);
 };
 
 export const addBudgetCategory = async (
 	payload: Omit<BudgetCategory, "id" | "createdAt">
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		const res = await prisma.budgetCategory.create({
-			data: {
-				emoji: payload?.emoji,
-				estimation: payload.estimation,
-				name: payload.name,
-				description: payload.description,
-				profileId: payload.profileId,
-				isFavorite: payload?.isFavorite || false,
-				isActive: payload?.isActive || true,
-			},
-		});
+	const t = await getTranslations("MyBudgetPage.messages");
 
-		return res;
-	};
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: "createSuccessMessage",
-	});
+	return await serviceResponseHandler<ResponseData>(
+		async () => await addBudgetCategoryService(payload),
+		{
+			successMessage: t("createSuccessMessage"),
+			errorMessage: t("createErrorMessage"),
+		}
+	);
 };
 
 export const updateBudgetCategory = async (
 	incomeId: string,
 	payload: Partial<BudgetCategory>
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		const res = await prisma.budgetCategory.update({
-			where: { id: incomeId },
-			data: {
-				emoji: payload?.emoji,
-				estimation: payload.estimation,
-				name: payload.name,
-				description: payload.description,
-			},
-		});
-
-		return res;
-	};
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: "updateSuccessMessage",
-	});
+	const t = await getTranslations("MyBudgetPage.messages");
+	return await serviceResponseHandler<ResponseData>(
+		async () => await updateBudgetCategoryService(incomeId, payload),
+		{
+			successMessage: t("updateSuccessMessage"),
+			errorMessage: t("updateErrorMessage"),
+		}
+	);
 };
 
 export const deleteBudgetCategory = async (
 	incomeId: string
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		await prisma.budgetCategory.delete({
-			where: { id: incomeId },
-		});
-
-		return null;
-	};
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: "deleteSuccessMessage",
-		errorMessageKey: "deleteErrorMessage",
-	});
+	const t = await getTranslations("MyBudgetPage.messages");
+	return await serviceResponseHandler<ResponseData>(
+		async () => await deleteBudgetCategoryService(incomeId),
+		{
+			successMessage: t("deleteSuccessMessage"),
+			errorMessage: t("deleteErrorMessage"),
+		}
+	);
 };
 
 export const markBudgetCategoryAsFavorite = async (
 	categoryId: string,
 	isFavorite: boolean
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		const res = await prisma.budgetCategory.update({
-			where: { id: categoryId },
-			data: { isFavorite },
-		});
+	const t = await getTranslations("MyBudgetPage.messages");
 
-		return res;
-	};
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: isFavorite
-			? "markAsFavoriteSuccessMessage"
-			: "unmarkAsFavoriteSuccessMessage",
-	});
+	return await serviceResponseHandler<ResponseData>(
+		async () => markBudgetCategoryAsFavoriteService(categoryId, isFavorite),
+		{
+			successMessage: isFavorite
+				? t("markAsFavoriteSuccessMessage")
+				: t("unmarkAsFavoriteSuccessMessage"),
+		}
+	);
 };
 
 export const setBudgetCategoryStatus = async (
 	categoryId: string,
 	newStatus: boolean
 ): Promise<ResponseModel<ResponseData>> => {
-	const fn = async () => {
-		const res = await prisma.budgetCategory.update({
-			where: { id: categoryId },
-			data: { isActive: newStatus },
-		});
-		return res;
-	};
-	return await serviceResponseHandler<ResponseData>(fn, {
-		translationsPath: "MyBudgetPage.messages",
-		successMessageKey: newStatus
-			? "activateSuccessMessage"
-			: "deactivateSuccessMessage",
-	});
+	const t = await getTranslations("MyBudgetPage.messages");
+
+	return await serviceResponseHandler<ResponseData>(
+		async () => await setBudgetCategoryStatusService(categoryId, newStatus),
+		{
+			successMessage: newStatus
+				? t("activateSuccessMessage")
+				: t("deactivateSuccessMessage"),
+		}
+	);
 };

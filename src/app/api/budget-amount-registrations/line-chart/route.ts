@@ -1,5 +1,5 @@
-import { getTotalBudgetAmountRegistrationPerYearForLineChart } from "@/app/_server-actions/(budget-amount-registration)/actions";
-import { getBudgetAmountRegistrationHistoryService } from "@/lib/services/budget-amount-registration-service";
+import { getTotalBudgetAmountRegistrationPerYearForLineChart } from "@/app/_server-actions/(budget-amount-registrations)/actions";
+import { getBudgetAmountRegistrationHistoryService } from "@/lib/services/budget-amount-registrations-service";
 import { serviceResponseHandler } from "@/lib/services/utils/actions.utils";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -1,4 +1,4 @@
-import { getTotalAmountRegistrationsForCalendarChartService } from "@/lib/services/budget-amount-registration-service";
+import { getTotalAmountRegistrationsForCalendarChartService } from "@/lib/services/budget-amount-registrations-service";
 import { serviceResponseHandler } from "@/lib/services/utils/actions.utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,11 +12,12 @@ export async function GET(req: NextRequest) {
 			{ status: 400 }
 		);
 	}
-	const res = await serviceResponseHandler(() =>
-		getTotalAmountRegistrationsForCalendarChartService({
-			profileId,
-			year: parseInt(year),
-		})
+	const res = await serviceResponseHandler(
+		async () =>
+			await getTotalAmountRegistrationsForCalendarChartService({
+				profileId,
+				year: parseInt(year),
+			})
 	);
 
 	return NextResponse.json(res, { status: res.isSuccess ? 200 : 400 });

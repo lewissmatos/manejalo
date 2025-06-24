@@ -1,20 +1,26 @@
-import { getBudgetAmountRegistrationsGroupedByCategoryForPieChart } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import {
+	getBudgetAmountRegistrationHistoryService,
+	getTotalBudgetAmountRegistrationByDateRangeService,
+} from "@/lib/services/budget-amount-registrations-service";
 import { serviceResponseHandler } from "@/lib/services/utils/actions.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
 	const profileId = req.nextUrl.searchParams.get("profileId");
-
 	const startDate = req.nextUrl.searchParams.get("startDate");
 	const endDate = req.nextUrl.searchParams.get("endDate");
+
 	if (!profileId || !startDate || !endDate) {
 		return NextResponse.json(
-			{ error: "Missing required query parameters." },
+			{
+				error:
+					"Missing required query parameters: profileId, startDate, endDate",
+			},
 			{ status: 400 }
 		);
 	}
 	const res = await serviceResponseHandler(() =>
-		getBudgetAmountRegistrationsGroupedByCategoryForPieChart({
+		getTotalBudgetAmountRegistrationByDateRangeService({
 			profileId,
 			startDate: new Date(startDate),
 			endDate: new Date(endDate),

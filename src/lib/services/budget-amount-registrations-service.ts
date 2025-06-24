@@ -6,7 +6,7 @@ import {
 import { ResponseModel } from "./utils/actions.utils";
 import { prisma } from "@/lib/prisma/prisma";
 import { JsonObject } from "@/generated/prisma/runtime/library";
-import { BudgetCategoryExpense } from "@/app/_server-actions/(budget-amount-registration)/actions";
+import { BudgetCategoryExpense } from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { format } from "date-fns/format";
 import { eachMonthOfInterval } from "date-fns";
 
