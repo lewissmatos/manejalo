@@ -38,10 +38,10 @@ const HistoryTable = ({ data }: Props) => {
 				<TableHeader>
 					<TableRow>
 						<TableHead className="w-[100px]">{t("common.category")}</TableHead>
-						<TableHead className="w-[100px]  hidden md:flex">
+						<TableHead className="w-20 hidden md:flex items-center">
 							{t("common.details")}
 						</TableHead>
-						<TableHead>{t("common.date")}</TableHead>
+						<TableHead className="w-28">{t("common.date")}</TableHead>
 						<TableHead className="text-right">{t("common.amount")}</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -51,7 +51,7 @@ const HistoryTable = ({ data }: Props) => {
 							<TableCell className="font-medium">
 								{item.budgetCategory?.name}
 							</TableCell>
-							<TableCell className="w-24 hidden md:flex items-center justify-center ">
+							<TableCell className="w-20 hidden md:flex items-center justify-center ">
 								{item.details ? (
 									<Tooltip>
 										<TooltipTrigger>
@@ -63,7 +63,9 @@ const HistoryTable = ({ data }: Props) => {
 									</Tooltip>
 								) : null}
 							</TableCell>
-							<TableCell>{format(item.correspondingDate, "PPP")}</TableCell>
+							<TableCell className="w-28">
+								{format(item.correspondingDate, "PPP")}
+							</TableCell>
 							<TableCell
 								className={`text-right ${
 									item.type === BudgetAmountType.EXPENSE

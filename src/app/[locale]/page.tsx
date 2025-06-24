@@ -30,11 +30,11 @@ export default async function HomePage() {
 					<div className="w-1/5 hidden md:flex justify-start">
 						<ThemeSelector />
 					</div>
-					<div className="bg-secondary/50 h-32 w-full items-center md:w-3/5 flex flex-col justify-center rounded-lg shadow-md p-4 ">
+					<div className="h-32 w-full items-center md:w-3/5 flex flex-col justify-center rounded-lg shadow-md p-4 gap-2">
 						<div className="flex items-center">
-							<h1 className="text-5xl font-semibold text-primary">Manejalo!</h1>
+							<h1 className="text-6xl font-semibold text-primary">Manejalo!</h1>
 						</div>
-						<p>{t("slogan")}</p>
+						<p className="text-muted-foreground">{t("slogan")}</p>
 					</div>
 					<div className="w-1/5 hidden md:flex justify-end">
 						<LanguageSelector />

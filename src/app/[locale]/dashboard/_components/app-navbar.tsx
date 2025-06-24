@@ -91,7 +91,7 @@ export default function AppNavBar() {
 									<NavigationMenuLink
 										asChild
 										className={`${navigationMenuTriggerStyle()} ${
-											isSelected ? "bg-accent text-accent-foreground" : ""
+											isSelected ? "bg-muted text-muted-foreground" : ""
 										}`}
 									>
 										<Link href={item.href}>
