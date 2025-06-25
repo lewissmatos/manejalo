@@ -17,7 +17,8 @@ import {
 type ResponseData = BudgetCategory | null;
 
 export const getBudgetCategories = async (
-	profileId: string
+	profileId: string,
+	filters?: Partial<BudgetCategory>
 ): Promise<
 	ResponseModel<{
 		budgetCategories: BudgetCategory[];
@@ -25,7 +26,7 @@ export const getBudgetCategories = async (
 	}>
 > => {
 	return await serviceResponseHandler(
-		async () => await getBudgetCategoriesService(profileId)
+		async () => await getBudgetCategoriesService(profileId, filters)
 	);
 };
 

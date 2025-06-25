@@ -43,9 +43,9 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 	}
 
 	return (
-		<div className="flex w-screen flex-col gap-2 ">
+		<div className="flex w-screen flex-col gap-2 h-screen">
 			<AppNavBar />
-			<div className="w-full flex flex-col md:flex-row gap-4 p-4 items-start">
+			<div className="w-full h-full flex flex-col md:flex-row gap-4 p-4 items-start">
 				<div className="overflow-x-hidden overflow-y-auto w-full">
 					{children}
 				</div>

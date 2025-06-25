@@ -34,11 +34,11 @@ const OverviewHistorySummary = async () => {
 			{history.data?.length ? (
 				<ul className="w-full h-80 overflow-y-auto">
 					{history.data.map((item) => (
-						<HistoryListItem item={item} />
+						<HistoryListItem item={item} key={item.id} />
 					))}
 				</ul>
 			) : (
-				<div className="h-full flex justify-between flex-col items-center">
+				<div className="h-full flex justify-between flex-col items-center w-full">
 					<div />
 					<History size={72} className="text-primary/80" />
 					<p className="text-primary/80 text-sm">{t("noHistory")}</p>

@@ -21,7 +21,7 @@ const HighestExpendingMonthsBarChart = ({
 	const commonProperties = {
 		width: 750,
 		height: 300,
-		margin: { top: 10, right: 20, bottom: 22, left: 60 },
+		margin: { top: 10, right: 20, bottom: 60, left: 60 },
 		data: data,
 		indexBy: "date",
 		keys: ["value"],
@@ -30,7 +30,7 @@ const HighestExpendingMonthsBarChart = ({
 		labelSkipHeight: 16,
 	};
 	return (
-		<div className="h-52 w-full gap-1">
+		<div className="h-60 w-full gap-1">
 			{!data?.length ? (
 				<p className="text-md text-muted-foreground mt-4 w-full text-center">
 					{t("noData")}

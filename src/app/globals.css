@@ -38,7 +38,7 @@
 	--font-sans: Montserrat, sans-serif;
 	--font-serif: Georgia, serif;
 	--font-mono: Fira Code, monospace;
-	--radius: 0.35rem;
+	--radius: 0.25rem;
 	--shadow-2xs: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.07);
 	--shadow-xs: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.07);
 	--shadow-sm: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.15),
@@ -69,7 +69,7 @@
 	--muted-foreground: #808080;
 	--accent: #404040;
 	--accent-foreground: #d9d9d9;
-	--destructive: #62708f;
+	--destructive: #a15959;
 	--destructive-foreground: #ffffff;
 	--border: #353535;
 	--input: #303030;
@@ -90,7 +90,7 @@
 	--font-sans: Inter, sans-serif;
 	--font-serif: Georgia, serif;
 	--font-mono: Fira Code, monospace;
-	--radius: 0.35rem;
+	--radius: 0.45rem;
 	--shadow-2xs: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.07);
 	--shadow-xs: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.07);
 	--shadow-sm: 0px 2px 0px 0px hsl(0 0% 14.902% / 0.15),

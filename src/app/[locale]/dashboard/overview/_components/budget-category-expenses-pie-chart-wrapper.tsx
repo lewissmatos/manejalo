@@ -19,13 +19,13 @@ type Props = {
 		ReturnType<typeof getTotalBudgetAmountRegistrationByDateRange>
 	>;
 };
-const BudgetCategoryExpensesByMonthLineChartWrapper = ({
+const BudgetCategoryExpensesPieChartWrapper = ({
 	budgetAmountRegistrationsGroupedByCategory,
 	totalMonthlyBudget,
 	totalBudgetAmount,
 }: Props) => {
 	const t = useTranslations(
-		"OverviewPage.BudgetCategoryExpensesByMonthLineChartWrapper"
+		"OverviewPage.BudgetCategoryExpensesPieChartWrapper"
 	);
 
 	const hasOverpassedMonthlyBudget =
@@ -40,18 +40,16 @@ const BudgetCategoryExpensesByMonthLineChartWrapper = ({
 					<span className="text-primary text-lg mr-1">
 						{t("registeredSummary")}
 					</span>
-					<>
-						<span
-							className={` text-lg font-semibold ${
-								hasOverpassedMonthlyBudget ? "text-destructive" : "text-primary"
-							}`}
-						>
-							{formatCurrency(totalBudgetAmount.data, "DOP", true)}
-						</span>
-						<span className="text-primary/70 text-md">
-							{`/ - ${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
-						</span>
-					</>
+					<span
+						className={` text-lg font-semibold ${
+							hasOverpassedMonthlyBudget ? "text-destructive" : "text-primary"
+						}`}
+					>
+						{formatCurrency(totalBudgetAmount.data, "DOP", true)}
+					</span>
+					<span className="text-primary/70 text-md">
+						{`/ - ${formatCurrency(totalMonthlyBudget.data, "DOP", true)}`}
+					</span>
 				</div>
 			) : null}
 			{hasOverpassedMonthlyBudget ? (
@@ -71,4 +69,4 @@ const BudgetCategoryExpensesByMonthLineChartWrapper = ({
 	);
 };
 
-export default BudgetCategoryExpensesByMonthLineChartWrapper;
+export default BudgetCategoryExpensesPieChartWrapper;

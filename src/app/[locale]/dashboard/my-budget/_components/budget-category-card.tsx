@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatters";
 import { ArrowLeftRight, PenIcon, Star } from "lucide-react";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar } from "@radix-ui/react-avatar";
 import { BudgetCategory } from "@/generated/prisma";
 import { useTranslations } from "next-intl";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
@@ -107,7 +107,7 @@ const BudgetCategoryCard = ({
 	return (
 		<Card
 			className={`w-full md:w-80 p-2 max-w-sm h-40 flex-col justify-between gap-1 ${
-				isDisabled ? "opacity-50" : ""
+				isDisabled ? "opacity-50 select-none" : ""
 			}`}
 		>
 			<CardHeader className="p-0 flex flex-row gap-2 items-start justify-between">
@@ -115,7 +115,7 @@ const BudgetCategoryCard = ({
 					{emoji ? (
 						<div className="size-8 ">
 							<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-								<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+								{emoji}
 							</Avatar>
 						</div>
 					) : null}

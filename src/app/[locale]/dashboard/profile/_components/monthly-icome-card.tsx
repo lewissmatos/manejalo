@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatters";
-import { ArrowLeftRight, CircleMinus, PenIcon } from "lucide-react";
+import { ArrowLeftRight, PenIcon } from "lucide-react";
 import { MonthlyIncome } from "@/generated/prisma";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar } from "@radix-ui/react-avatar";
 import {
 	Tooltip,
 	TooltipContent,
@@ -83,7 +83,7 @@ const MonthlyIncomeCard = ({
 				{emoji ? (
 					<div className="size-8 ">
 						<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
+							{emoji}
 						</Avatar>
 					</div>
 				) : null}

@@ -30,7 +30,7 @@ import { ButtonLoading } from "@/components/ui/button-loading";
 import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amount-registrations)/actions";
 import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
 import { useAtomValue } from "jotai/react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import feedbackService from "@/app/_components/utils/feedback-service";
 
 type Props = {
@@ -64,6 +64,7 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 	};
 
 	const onRegisterAmount = async () => {
+		if (isPending || isSaveDisabled) return;
 		startTransition(async () => {
 			try {
 				const res = await addBudgetAmountRegistration({
@@ -108,27 +109,29 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 		!amountData.amount || Number(amountData.amount) <= 0 || !amountData.type;
 	return (
 		<Card className="w-full md:w-80 p-2 max-w-sm h-64 gap-1 justify-between">
-			<CardHeader className="p-0 flex flex-row gap-2 items-center">
-				{emoji ? (
-					<div className="size-8">
-						<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-							<AvatarFallback className="text-lg">{emoji}</AvatarFallback>
-						</Avatar>
-					</div>
-				) : null}
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<CardTitle className="line-clamp-2 w-full max-w-52 text-start text-primary font-semibold text-lg">
-							{name}
-						</CardTitle>
-					</TooltipTrigger>
-					<TooltipContent
-						side="top"
-						className="bg-secondary text-primary max-w-52 max-h-44 overflow-y-auto"
-					>
-						<span className="text-sm">{name}</span>
-					</TooltipContent>
-				</Tooltip>
+			<CardHeader className="p-0 flex flex-row gap-2 items-start justify-between">
+				<div className="flex flex-row items-center gap-2 flex-1">
+					{emoji ? (
+						<div className="size-8 ">
+							<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+								{emoji}
+							</Avatar>
+						</div>
+					) : null}
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<CardTitle className="line-clamp-2 w-full max-w-56 text-start text-primary font-semibold text-lg">
+								{name}
+							</CardTitle>
+						</TooltipTrigger>
+						<TooltipContent
+							side="top"
+							className="bg-secondary text-primary max-w-56 max-h-44 overflow-y-auto"
+						>
+							<span className="text-sm">{name}</span>
+						</TooltipContent>
+					</Tooltip>
+				</div>
 			</CardHeader>
 			<CardContent className="p-0 flex flex-col gap-2 items-start">
 				<CardDescription className="line-clamp-2 text-md max-w-72 ">
@@ -166,6 +169,11 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 						}}
 						step="1"
 						min={0}
+						onKeyUp={async (e) => {
+							if (e.key === "Enter") {
+								await onRegisterAmount();
+							}
+						}}
 						value={amountData.amount}
 					/>
 					<Select
@@ -198,6 +206,11 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 						value={amountData.details}
 						onChange={(e) => {
 							handleUpdateAmountData("details", e.target.value);
+						}}
+						onKeyUp={async (e) => {
+							if (e.key === "Enter") {
+								await onRegisterAmount();
+							}
 						}}
 					/>
 					<ButtonLoading

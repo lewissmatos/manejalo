@@ -22,6 +22,10 @@ import BudgetCategoryExpensesByMonthLineChartWrapper from "../overview/_componen
 import TotalAmountRegistrationsCalendarChart from "./_components/total-amount-registrations-calendar-chart";
 import YearPicker from "@/components/common/year-picker";
 import { revalidatePath } from "next/cache";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const PAGE_SIZE = 15;
 
@@ -66,6 +70,7 @@ const History = async ({
 			year,
 		}),
 	]);
+
 	const refetchData = async () => {
 		"use server";
 		await revalidatePath("/dashboard/history");
@@ -74,48 +79,65 @@ const History = async ({
 	const totalPages = tableData?.totalPages || 1;
 
 	return (
-		<div className="h-calculate(100vh - 64px) gap-4 w-full">
+		<div className="h-full gap-4 w-full">
 			<section className="flex flex-col items-start">
 				<ScreenTitle>{t("HistoryPage.title")}</ScreenTitle>
 				<p className="text-md mb-8">{t("HistoryPage.subtitle")}</p>
 			</section>
-			<div className="flex flex-col-reverse md:flex-row gap-8">
-				<div className="w-full md:w-1/3">
-					<HistoryTable data={tableData?.registrations || []} />
-					<div className="pt-4">
-						<TablePagination
-							currentPage={currentPage}
-							totalPages={totalPages}
-							selectedYear={year?.toString()}
-						/>
+			{!tableData?.registrations?.length ? (
+				<div className="w-full md:w-[46vw]">
+					<Alert>
+						<AlertCircleIcon className="h-4 w-4" />
+						<AlertTitle className="text-sm">
+							{t("HistoryPage.noDataHistory")}
+						</AlertTitle>
+						<Link href="/dashboard/overview">
+							<Button variant={"link"}>
+								{t("common.goToWithValue", { href: t("OverviewPage.title") })}
+							</Button>
+						</Link>
+					</Alert>
+				</div>
+			) : (
+				<div className="flex flex-col-reverse md:flex-row gap-8">
+					<div className="w-full md:w-1/3">
+						<HistoryTable data={tableData?.registrations || []} />
+						<div className="pt-4">
+							<TablePagination
+								currentPage={currentPage}
+								totalPages={totalPages}
+								selectedYear={year?.toString()}
+							/>
+						</div>
+					</div>
+					<div className="w-full md:w-2/3 flex flex-col gap-2 items-start justify-between">
+						<div className="flex flex-row justify-between w-full gap-2">
+							<YearPicker defaultYear={year} refresh={refetchData} />
+							<TotalExpensesByYearSection
+								expense={totalExpensesOverTimeData?.EXPENSE || null}
+								recovery={totalExpensesOverTimeData?.RECOVERY || null}
+								total={totalExpensesOverTimeData?.total || null}
+								year={year}
+							/>
+						</div>
+						{totalAmountRegistrationsForCalendarChartData?.length ? (
+							<TotalAmountRegistrationsCalendarChart
+								data={totalAmountRegistrationsForCalendarChartData || []}
+							/>
+						) : null}
+						{totalBudgetAmountRegistrationPerYearForLineChartData?.data
+							?.length ? (
+							<BudgetCategoryExpensesByMonthLineChartWrapper
+								year={year}
+								data={
+									totalBudgetAmountRegistrationPerYearForLineChartData?.data ||
+									[]
+								}
+							/>
+						) : null}
 					</div>
 				</div>
-				<div className="w-full md:w-2/3 flex flex-col gap-2 items-start justify-between">
-					<div className="flex flex-row justify-between w-full gap-2">
-						<YearPicker defaultYear={year} refresh={refetchData} />
-						<TotalExpensesByYearSection
-							expense={totalExpensesOverTimeData?.EXPENSE || null}
-							recovery={totalExpensesOverTimeData?.RECOVERY || null}
-							total={totalExpensesOverTimeData?.total || null}
-							year={year}
-						/>
-					</div>
-					{totalAmountRegistrationsForCalendarChartData?.length ? (
-						<TotalAmountRegistrationsCalendarChart
-							data={totalAmountRegistrationsForCalendarChartData || []}
-						/>
-					) : null}
-					{totalBudgetAmountRegistrationPerYearForLineChartData?.data
-						?.length ? (
-						<BudgetCategoryExpensesByMonthLineChartWrapper
-							year={year}
-							data={
-								totalBudgetAmountRegistrationPerYearForLineChartData?.data || []
-							}
-						/>
-					) : null}
-				</div>
-			</div>
+			)}
 		</div>
 	);
 };

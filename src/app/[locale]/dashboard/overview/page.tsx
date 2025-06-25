@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { getBudgetCategories } from "@/app/_server-actions/(budget-categories)/actions";
 import { revalidatePath } from "next/cache";
 import RegisterAmountToCategoryCard from "./_components/register-amount-to-category-card";
-import BudgetCategoryExpensesByMonthLineChartWrapper from "./_components/budget-category-expenses-pie-chart-wrapper";
 import ScreenTitle from "../_components/screen-title";
 import { endOfMonth, format, parseISO, startOfMonth } from "date-fns";
 import {
@@ -20,6 +19,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import BudgetCategoryExpensesPieChartWrapper from "./_components/budget-category-expenses-pie-chart-wrapper";
 
 const Overview = async ({
 	searchParams,
@@ -38,10 +38,9 @@ const Overview = async ({
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
 
-	const [{ data: profileData }, { data: highestExpendingOverTimeData }] =
+	const [{ data: budgetCategories }, { data: highestExpendingOverTimeData }] =
 		await Promise.all([
-			getBudgetCategories(profileId),
-
+			getBudgetCategories(profileId, { isActive: true }),
 			getHighestExpendingMonthsForBarChart({ profileId }),
 		]);
 
@@ -80,7 +79,7 @@ const Overview = async ({
 		}),
 	]);
 
-	const budgetCategories = profileData?.budgetCategories || [];
+	const categories = budgetCategories?.budgetCategories || [];
 
 	const refetchData = async () => {
 		"use server";
@@ -88,12 +87,12 @@ const Overview = async ({
 	};
 
 	return (
-		<div className="h-calculate(100vh - 64px) gap-4 w-full">
+		<div className="h-full gap-4 w-full overflow-y-hidden">
 			<section className="flex flex-col items-start">
 				<ScreenTitle>{t("OverviewPage.title")}</ScreenTitle>
 				<p className="text-md mb-4">{t("OverviewPage.subtitle")}</p>
 			</section>
-			{!budgetCategories?.length ? (
+			{!categories?.length ? (
 				<div className="w-full md:w-[46vw]">
 					<Alert>
 						<AlertCircleIcon className="h-4 w-4" />
@@ -108,11 +107,11 @@ const Overview = async ({
 					</Alert>
 				</div>
 			) : (
-				<div className="flex flex-col md:flex-row mt-4 gap-4 justify-between w-full">
+				<div className="flex flex-col md:flex-row mt-4 gap-4 justify-between w-full h-full">
 					<div className="flex flex-col gap-4 w-full md:w-1/2">
 						<OverviewDateSelector />
-						<div className="flex flex-wrap gap-4 justify-start max-h-[33rem]  items-start overflow-y-auto">
-							{budgetCategories?.map((category) => (
+						<div className="flex flex-wrap gap-4 justify-start max-h-[33rem]  items-start overflow-y-auto pb-2">
+							{categories?.map((category) => (
 								<RegisterAmountToCategoryCard
 									key={category.id}
 									category={category}
@@ -123,7 +122,7 @@ const Overview = async ({
 					</div>
 					<div className="flex flex-col w-full md:w-1/2">
 						<div className="flex flex-col md:flex-row gap-1 justify-end w-full">
-							<BudgetCategoryExpensesByMonthLineChartWrapper
+							<BudgetCategoryExpensesPieChartWrapper
 								budgetAmountRegistrationsGroupedByCategory={
 									budgetAmountRegistrationsGroupedByCategory
 								}

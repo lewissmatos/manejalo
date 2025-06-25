@@ -2,13 +2,14 @@ import { BudgetCategory } from "@/generated/prisma";
 import { prisma } from "../prisma/prisma";
 
 export const getBudgetCategoriesService = async (
-	profileId: string
+	profileId: string,
+	filters?: Partial<BudgetCategory>
 ): Promise<{
 	budgetCategories: BudgetCategory[];
 	totalBudget: number;
 }> => {
 	const res = await prisma.budgetCategory.findMany({
-		where: { profileId },
+		where: { profileId, ...filters },
 		orderBy: [
 			{ isFavorite: "desc" },
 			{ estimation: "desc" },
