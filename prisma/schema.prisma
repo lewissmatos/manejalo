@@ -10,22 +10,22 @@ datasource db {
 }
 
 model Profile {
-  id          String    @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  birthdate   DateTime? @default(now()) @map("birthdate") @db.Timestamp(6)
-  phoneNumber String?   @map("phone_number")
-  occupation String?   @map("occupation")
-  fullName    String?   @map("full_name")
-  userId      String?   @unique @map("user_id") @db.Uuid
-  email       String   @unique @map("email")
-  incomes MonthlyIncome[]
-  totalMonthlyIncome Float? @default(0) @map("total_monthly_income") @db.DoublePrecision
-  budgetCategories BudgetCategory[]
-  totalBudget Float? @default(0) @map("total_budget") @db.DoublePrecision
+  id                 String           @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  birthdate          DateTime?        @default(now()) @map("birthdate") @db.Timestamp(6)
+  phoneNumber        String?          @map("phone_number")
+  occupation         String?          @map("occupation")
+  fullName           String?          @map("full_name")
+  userId             String?          @unique @map("user_id") @db.Uuid
+  email              String           @unique @map("email")
+  incomes            MonthlyIncome[]
+  totalMonthlyIncome Float?           @default(0) @map("total_monthly_income") @db.DoublePrecision
+  budgetCategories   BudgetCategory[]
+  totalBudget        Float?           @default(0) @map("total_budget") @db.DoublePrecision
+  emergencyFund      EmergencyFund?
 
   @@map("profiles")
 }
-
 
 enum IncomeType {
   EMPLOYMENT
@@ -35,32 +35,34 @@ enum IncomeType {
   INVESTMENT
   OTHER
 }
+
 model MonthlyIncome {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  profile     Profile   @relation(fields: [profileId], references: [id])
-  profileId   String    @map("profile_id") @db.Uuid
-  amount      Float     @map("amount") @db.DoublePrecision
-  description String? @map("description") @db.Text
-  emoji String? @map("emoji") @db.Text
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  profile     Profile    @relation(fields: [profileId], references: [id])
+  profileId   String     @map("profile_id") @db.Uuid
+  amount      Float      @map("amount") @db.DoublePrecision
+  description String?    @map("description") @db.Text
+  emoji       String?    @map("emoji") @db.Text
   isActive    Boolean?   @default(true) @map("status")
-  type       IncomeType @default(OTHER)
+  type        IncomeType @default(OTHER)
 
   @@map("monthly_incomes")
 }
 
 model BudgetCategory {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  name        String    @unique  @map("name") @db.Text
-  description String?   @map("description")
-  emoji String? @map("emoji") @db.Text
-  profile     Profile   @relation(fields: [profileId], references: [id])
-  profileId      String   @map("profile_id") @db.Uuid
-  estimation   Float    @map("estimation") @db.DoublePrecision
-  isFavorite    Boolean? @default(false) @map("favorite")
-  isActive    Boolean?   @default(true) @map("status")
+  id            String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  name          String                     @unique @map("name") @db.Text
+  description   String?                    @map("description")
+  emoji         String?                    @map("emoji") @db.Text
+  profile       Profile                    @relation(fields: [profileId], references: [id])
+  profileId     String                     @map("profile_id") @db.Uuid
+  estimation    Float                      @map("estimation") @db.DoublePrecision
+  isFavorite    Boolean?                   @default(false) @map("favorite")
+  isActive      Boolean?                   @default(true) @map("status")
   budgetAmounts BudgetAmountRegistration[]
+
   @@map("budget_categories")
 }
 
@@ -68,16 +70,28 @@ enum BudgetAmountType {
   EXPENSE
   RECOVERY
 }
+
 model BudgetAmountRegistration {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  budgetCategory BudgetCategory @relation(fields: [budgetCategoryId], references: [id])
-  budgetCategoryId String @map("budget_category_id") @db.Uuid
-  amount      Float     @map("amount") @db.DoublePrecision
-  type        BudgetAmountType @default(EXPENSE) @map("type")
-  details    String?   @map("details") @db.Text
-  budgetCategoryReference Json @map("budget_category_reference") @db.Json
-  correspondingDate DateTime @default(now()) @map("corresponding_date") @db.Timestamptz(6)
+  id                      String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  budgetCategory          BudgetCategory   @relation(fields: [budgetCategoryId], references: [id])
+  budgetCategoryId        String           @map("budget_category_id") @db.Uuid
+  amount                  Float            @map("amount") @db.DoublePrecision
+  type                    BudgetAmountType @default(EXPENSE) @map("type")
+  details                 String?          @map("details") @db.Text
+  budgetCategoryReference Json             @map("budget_category_reference") @db.Json
+  correspondingDate       DateTime         @default(now()) @map("corresponding_date") @db.Timestamptz(6)
 
   @@map("budget_amount_registrations")
+}
+
+model EmergencyFund {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  amount    Float    @map("amount") @db.DoublePrecision
+  details   String?  @map("details") @db.Text
+  profileId String   @unique @map("profile_id") @db.Uuid
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@map("emergency_fund")
 }

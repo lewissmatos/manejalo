@@ -1,8 +1,47 @@
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
+// middleware.ts
+import {NextRequest, NextResponse} from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
+import {routing} from "./i18n/routing";
+import {jwtVerify} from "jose";
 
-export default createMiddleware(routing);
+const secret = Buffer.from(process.env.SESSION_SECRET!, "hex");
+
+const intlMiddleware = createIntlMiddleware(routing);
+
+async function verifyJWT(token: string) {
+    try {
+        const {payload} = await jwtVerify(token, secret);
+        return payload;
+    } catch (e) {
+        console.error("JWT verification failed:", e);
+        return null;
+    }
+}
+
+export async function middleware(request: NextRequest) {
+    const {pathname} = request.nextUrl;
+
+    if (pathname.startsWith("/api")) {
+        if (pathname.includes("auth")) return NextResponse.next();
+        const authHeader = request.headers.get("authorization");
+
+        if (!authHeader?.startsWith("Bearer ")) {
+            return NextResponse.json({error: "Unauthorized"}, {status: 401});
+        }
+
+        const token = authHeader.split(" ")[1];
+        const payload = await verifyJWT(token);
+
+        if (!payload) {
+            return NextResponse.json({error: "Invalid token"}, {status: 401});
+        }
+
+        return NextResponse.next();
+    }
+
+    return intlMiddleware(request);
+}
 
 export const config = {
-	matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
+    matcher: ["/((?!_next|_vercel|.*\\..*).*)"],
 };
