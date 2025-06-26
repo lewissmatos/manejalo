@@ -1,116 +1,116 @@
 import React from "react";
-import {getTranslations} from "next-intl/server";
-import {getProfileData} from "@/app/_server-actions/(profile)/actions";
+import { getTranslations } from "next-intl/server";
+import { getProfileData } from "@/app/_server-actions/(profile)/actions";
 import ScreenTitle from "../_components/screen-title";
-import {formatCurrency} from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import ManageIncomeDialog from "./_components/manage-income-dialog";
 import MonthlyIncomeCard from "./_components/monthly-icome-card";
-import {revalidatePath} from "next/cache";
-import {MAX_INCOMES} from "@/lib/constants/app-settings";
-import {getSession} from "@/lib/session-crypto";
+import { revalidatePath } from "next/cache";
+import { MAX_INCOMES } from "@/lib/constants/app-settings";
+import { getSession } from "@/middleware";
 
 const Profile = async () => {
-    const [profileId, t] = await Promise.all([
-        (await getSession())?.profile?.id,
-        getTranslations("ProfilePage"),
-    ]);
-	
-    if (!profileId) {
-        return (
-            <section className="flex flex-col justify-center w-full max-w-3xl">
-                <h1 className="text-2xl font-bold">{t("profileNotFound")}</h1>
-                <p className="text-lg text-muted-foreground">
-                    {t("profileNotFoundMessage")}
-                </p>
-            </section>
-        );
-    }
+	const [profileId, t] = await Promise.all([
+		(await getSession())?.profile?.id,
+		getTranslations("ProfilePage"),
+	]);
 
-    const profileData = await getProfileData(profileId);
+	if (!profileId) {
+		return (
+			<section className="flex flex-col justify-center w-full max-w-3xl">
+				<h1 className="text-2xl font-bold">{t("profileNotFound")}</h1>
+				<p className="text-lg text-muted-foreground">
+					{t("profileNotFoundMessage")}
+				</p>
+			</section>
+		);
+	}
 
-    const profile = profileData?.data;
+	const profileData = await getProfileData(profileId);
 
-    if (!profile) {
-        return (
-            <section className="flex flex-col justify-center w-full max-w-3xl">
-                <h1 className="text-2xl font-bold">{t("profileNotFound")}</h1>
-                <p className="text-lg text-muted-foreground">
-                    {t("profileNotFoundMessage")}
-                </p>
-            </section>
-        );
-    }
+	const profile = profileData?.data;
 
-    const refetchProfileData = async () => {
-        "use server";
-        revalidatePath("/dashboard/profile");
-    };
+	if (!profile) {
+		return (
+			<section className="flex flex-col justify-center w-full max-w-3xl">
+				<h1 className="text-2xl font-bold">{t("profileNotFound")}</h1>
+				<p className="text-lg text-muted-foreground">
+					{t("profileNotFoundMessage")}
+				</p>
+			</section>
+		);
+	}
 
-    const age = calculateAge(profile?.birthdate as unknown as string);
+	const refetchProfileData = async () => {
+		"use server";
+		revalidatePath("/dashboard/profile");
+	};
 
-    return (
-        <main className="flex flex-col justify-center w-full">
-            <ScreenTitle>
-                {`${profile?.fullName} ${
-                    !age ? "" : `(${t("yearsWithValue", {years: age})})`
-                }`}
-            </ScreenTitle>
+	const age = calculateAge(profile?.birthdate as unknown as string);
 
-            {profile.occupation ? (
-                <span className="text-lg text-muted-foreground">
+	return (
+		<main className="flex flex-col justify-center w-full">
+			<ScreenTitle>
+				{`${profile?.fullName} ${
+					!age ? "" : `(${t("yearsWithValue", { years: age })})`
+				}`}
+			</ScreenTitle>
+
+			{profile.occupation ? (
+				<span className="text-lg text-muted-foreground">
 					{profile?.occupation}
 				</span>
-            ) : null}
+			) : null}
 
-            <span className="text-lg text-primary/80">{profile?.email}</span>
-            {profile?.phoneNumber ? (
-                <span className="text-md text-primary/80">
+			<span className="text-lg text-primary/80">{profile?.email}</span>
+			{profile?.phoneNumber ? (
+				<span className="text-md text-primary/80">
 					{profile?.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")}
 				</span>
-            ) : null}
-            <p className="text-xl text-primary font-semibold">
-                {t("profileTotalMonthlyIncomeWithValue", {
-                    value: formatCurrency(profile.totalMonthlyIncome || 0),
-                })}
-            </p>
-            <section className="flex flex-col items justify-center mt-4 ">
-                <p className="text-lg text-primary/90 ">{t("myMonthlyIncomes")}</p>
-                <section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mt-2">
-                    <ManageIncomeDialog
-                        incomesLength={profile.incomes.length}
-                        maxMonthlyIncomes={MAX_INCOMES}
-                        refetchProfileData={refetchProfileData}
-                    />
+			) : null}
+			<p className="text-xl text-primary font-semibold">
+				{t("profileTotalMonthlyIncomeWithValue", {
+					value: formatCurrency(profile.totalMonthlyIncome || 0),
+				})}
+			</p>
+			<section className="flex flex-col items justify-center mt-4 ">
+				<p className="text-lg text-primary/90 ">{t("myMonthlyIncomes")}</p>
+				<section className="flex flex-wrap gap-4 overflow-y-auto max-h-[calc(70vh-100px)] mt-2">
+					<ManageIncomeDialog
+						incomesLength={profile.incomes.length}
+						maxMonthlyIncomes={MAX_INCOMES}
+						refetchProfileData={refetchProfileData}
+					/>
 
-                    {profile.incomes?.map((income) => (
-                        <MonthlyIncomeCard
-                            refetchProfileData={refetchProfileData}
-                            key={income.id}
-                            income={income}
-                            incomesLength={profile.incomes.length}
-                        />
-                    ))}
-                </section>
-            </section>
-        </main>
-    );
+					{profile.incomes?.map((income) => (
+						<MonthlyIncomeCard
+							refetchProfileData={refetchProfileData}
+							key={income.id}
+							income={income}
+							incomesLength={profile.incomes.length}
+						/>
+					))}
+				</section>
+			</section>
+		</main>
+	);
 };
 
 const calculateAge = (birthdate: string | null | Date) => {
-    if (!birthdate) return 0;
-    const birthDateObj = new Date(birthdate);
-    const today = new Date();
-    const age = today.getFullYear() - birthDateObj.getFullYear();
-    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+	if (!birthdate) return 0;
+	const birthDateObj = new Date(birthdate);
+	const today = new Date();
+	const age = today.getFullYear() - birthDateObj.getFullYear();
+	const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
-    if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() - 1 < birthDateObj.getDate())
-    ) {
-        return age - 1;
-    }
+	if (
+		monthDiff < 0 ||
+		(monthDiff === 0 && today.getDate() - 1 < birthDateObj.getDate())
+	) {
+		return age - 1;
+	}
 
-    return age;
+	return age;
 };
 
 export default Profile;

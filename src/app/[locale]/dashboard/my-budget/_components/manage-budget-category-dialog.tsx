@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PlusCircle } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { BudgetCategory, IncomeType } from "@/generated/prisma";
+import { BudgetCategory } from "@/generated/prisma";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -154,9 +154,9 @@ const ManageBudgetCategoryDialog = ({
 		>
 			<DialogTrigger asChild>
 				{dialogTrigger || (
-					<div className="flex flex-col items-start gap-1 justify-between w-full md:w-36 ">
+					<div className="flex flex-col items-start justify-between w-full md:w-36 ">
 						<Card
-							className={`w-full p-1 h-40 items-center justify-center ${
+							className={`w-full p-2 h-40 items-center justify-center ${
 								canAddMore
 									? "cursor-pointer hover:bg-secondary/20"
 									: "opacity-40 cursor-not-allowed select-none"

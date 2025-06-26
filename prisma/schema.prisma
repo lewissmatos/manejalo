@@ -88,10 +88,11 @@ model BudgetAmountRegistration {
 model EmergencyFund {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  amount    Float    @map("amount") @db.DoublePrecision
-  details   String?  @map("details") @db.Text
-  profileId String   @unique @map("profile_id") @db.Uuid
+  estimation    Float    @map("estimation") @db.DoublePrecision @default(0)
+  actualAmount    Float    @map("actual_amount") @db.DoublePrecision @default(0)
   profile   Profile  @relation(fields: [profileId], references: [id])
+  profileId String   @unique @map("profile_id") @db.Uuid
+  isActive      Boolean?                   @default(true) @map("status")
 
   @@map("emergency_fund")
 }

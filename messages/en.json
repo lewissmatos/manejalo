@@ -99,6 +99,8 @@
 		"category": "Category",
 		"confirm": "Confirm",
 		"disabled": "Disabled",
+		"disable": "Disable",
+		"enable": "Enable",
 		"enabled": "Enabled",
 		"name": "Name",
 		"emoji": "Emoji",
@@ -108,11 +110,15 @@
 		"year": "Year",
 		"total": "Total",
 		"totalWithValue": "Total: {value}",
-		"goToWithValue": "Go to {href}"
+		"goToWithValue": "Go to {href}",
+		"accept": "Accept",
+		"add": "Add",
+		"subtract": "Subtract"
 	},
 	"ui": {
 		"showPassword": "Show Password",
-		"hidePassword": "Hide Password"
+		"hidePassword": "Hide Password",
+		"errorMessage": "An error occurred"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -188,6 +194,18 @@
 			"deleteSuccessMessage": "Budget deleted successfully!",
 			"deleteErrorMessage": "There was an error deleting your budget. Please try again.",
 			"defaultErrorMessage": "There was an error getting your budgets. Please, try again."
+		},
+		"AddEmergencyFundDialog": {
+			"trigger": {
+				"title": "Emergency Fund",
+				"info": "Reserve of money intended to cover unexpected situations. The estimation is 3 times your current monthly income{value}"
+			},
+			"title": "Manage your emergency fund",
+			"subtitle": "The estimation for your emergency fund is:",
+			"messages": {
+				"success": "Emergency fund created successfully!",
+				"error": "Error creating emergency fund"
+			}
 		},
 		"BudgetCategoryCard": {
 			"ConfirmDeletionDialog": {

@@ -99,6 +99,8 @@
 		"category": "Categoría",
 		"confirm": "Confirmar",
 		"disabled": "Deshabilitado",
+		"disable": "Deshabilitar",
+		"enable": "Habilitar",
 		"enabled": "Habilitado",
 		"name": "Nombre",
 		"emoji": "Emoji",
@@ -108,11 +110,15 @@
 		"year": "Año",
 		"total": "Total",
 		"totalWithValue": "Total: {value}",
-		"goToWithValue": "Ir a {href}"
+		"goToWithValue": "Ir a {href}",
+		"accept": "Aceptar",
+		"add": "Agregar",
+		"subtract": "Retirar"
 	},
 	"ui": {
 		"showPassword": "Mostrar contraseña",
-		"hidePassword": "Ocultar contraseña"
+		"hidePassword": "Ocultar contraseña",
+		"errorMessage": "Ha ocurrido un error"
 	},
 	"AppNavBar": {
 		"title": "Manejalo!",
@@ -178,6 +184,18 @@
 			"subtitle": "Estas son las categorías recomendadas para tu presupuesto. Puedes personalizarlas según tus necesidades.",
 			"Card": {
 				"actionTitle": "Agregar a mi presupuesto"
+			}
+		},
+		"AddEmergencyFundDialog": {
+			"trigger": {
+				"title": "Fondo de emergencias",
+				"info": "Reserva de dinero destinada a cubrir situaciones imprevistas. La estimación es 3 veces tu ingreso mensual actual{value}"
+			},
+			"title": "Agregar tu fondo de emergencia",
+			"subtitle": "La estimación del fondo de emergencias es:",
+			"messages": {
+				"success": "Fondo de emergencia creado exitosamente!",
+				"error": "Error al crear el fondo de emergencia"
 			}
 		},
 		"messages": {

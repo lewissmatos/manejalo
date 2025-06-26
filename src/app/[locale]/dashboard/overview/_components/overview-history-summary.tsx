@@ -2,6 +2,7 @@ import { getBudgetAmountRegistrationHistory } from "@/app/_server-actions/(budge
 import { BudgetAmountType } from "@/generated/prisma";
 import { formatCurrency } from "@/lib/formatters";
 import { HistoryItem } from "@/lib/services/budget-amount-registrations-service";
+import { getSession } from "@/middleware";
 import { format, setDefaultOptions } from "date-fns";
 import { enUS, es } from "date-fns/locale";
 import { History } from "lucide-react";
@@ -10,10 +11,12 @@ import { cookies } from "next/headers";
 import React from "react";
 
 const OverviewHistorySummary = async () => {
-	const t = await getTranslations("OverviewHistorySummary");
-	const cookieStore = await cookies();
-	const locale = await getLocale();
-	const profileId = cookieStore.get("profile-id")?.value || "";
+	const [profileId, t, locale] = await Promise.all([
+		(await getSession())?.profile?.id,
+		getTranslations("OverviewHistorySummary"),
+		getLocale(),
+	]);
+
 	if (!profileId) {
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
