@@ -5,7 +5,7 @@ import {
 	addAmountToEmergencyFundService,
 	addEmergencyFundService,
 	getEmergencyFundService,
-	toggleEmergencyFundStatusService,
+	setEmergencyFundStatusService,
 } from "@/lib/services/emergency-fund-services";
 import { serviceResponseHandler } from "@/lib/services/utils/actions.utils";
 import { getTranslations } from "next-intl/server";
@@ -22,13 +22,12 @@ export const addEmergencyFund = async (
 		async () => await addEmergencyFundService(payload)
 	);
 
-export const toggleEmergencyFundStatus = async (
+export const setEmergencyFundStatus = async (
 	emergencyFundId: string,
 	newStatus: boolean
 ) =>
 	await serviceResponseHandler(
-		async () =>
-			await toggleEmergencyFundStatusService(emergencyFundId, newStatus)
+		async () => await setEmergencyFundStatusService(emergencyFundId, newStatus)
 	);
 
 export const addAmountToEmergencyFund = async (

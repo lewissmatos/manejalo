@@ -13,7 +13,7 @@ export const addEmergencyFundService = async (
 ): Promise<EmergencyFund | null> =>
 	await prisma.emergencyFund.create({ data: payload });
 
-export const toggleEmergencyFundStatusService = async (
+export const setEmergencyFundStatusService = async (
 	emergencyFundId: string,
 	newStatus: boolean
 ): Promise<EmergencyFund | null> =>

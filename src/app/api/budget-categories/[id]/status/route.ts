@@ -10,7 +10,7 @@ export async function PUT(
 	const { t } = await withTranslator(req, "MyBudgetPage.messages");
 
 	const body = await req.json();
-	const newStatus = body.newStatus;
+	const newStatus = body?.newStatus;
 	if (typeof newStatus !== "boolean") {
 		return NextResponse.json(
 			{ error: "Invalid status value" },

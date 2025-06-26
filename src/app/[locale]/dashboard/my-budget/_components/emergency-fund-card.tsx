@@ -22,7 +22,7 @@ import { Heart, InfoIcon } from "lucide-react";
 import { EmergencyFund } from "@/generated/prisma";
 import { Button } from "@/components/ui/button";
 import { ButtonLoading } from "@/components/ui/button-loading";
-import { toggleEmergencyFundStatus } from "@/app/_server-actions/(emergency-fund)/actions";
+import { setEmergencyFundStatus } from "@/app/_server-actions/(emergency-fund)/actions";
 import feedbackService from "@/app/_components/utils/feedback-service";
 import { Avatar } from "@/components/ui/avatar";
 import AddEmergencyFundDialog from "./add-emergency-fund-dialog";
@@ -43,7 +43,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 		if (!data?.id) return;
 		startTransition(async () => {
 			try {
-				const res = await toggleEmergencyFundStatus(data?.id, !data?.isActive);
+				const res = await setEmergencyFundStatus(data?.id, !data?.isActive);
 
 				if (!res.isSuccess) {
 					feedbackService().send({
