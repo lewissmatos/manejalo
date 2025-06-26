@@ -19,15 +19,15 @@ const AppSideCalendar = dynamic(
 
 export const metadata: Metadata = {
 	title: {
-		default: "Manejalo - Your Finance Manager",
-		template: "%s | Manejalo",
+		default: "Presupuestalo - Your Finance Manager",
+		template: "%s | Presupuestalo",
 	},
 	description: "Track and manage your personal finances effortlessly.",
 	openGraph: {
-		title: "Manejalo",
+		title: "Presupuestalo",
 		description: "Finance management app for personal budgeting.",
-		url: "https://manejalo.app",
-		siteName: "Manejalo",
+		url: "https://presupu3stalo.vercel.app",
+		siteName: "Presupuestalo",
 		type: "website",
 	},
 };

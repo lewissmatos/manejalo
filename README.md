@@ -1,6 +1,6 @@
-# 💰 Manejalo!
+# 💰 PRESUPU3STALO!
 
-**Manejalo** is a minimalist, privacy-focused web app that helps you track your personal budget, visualize your expenses, and stay on top of your financial goals — month after month.
+**Presupuestalo** is a minimalist, privacy-focused web app that helps you track your personal budget, visualize your expenses, and stay on top of your financial goals — month after month.
 
 ---
 
@@ -49,8 +49,8 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/yourusername/manejalo.git
-cd manejalo
+git clone https://github.com/yourusername/presupu3stalo.git
+cd presupu3stalo
 
 # 2. Install dependencies
 pnpm install

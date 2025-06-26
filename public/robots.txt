@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://presupu3stalo.vercel.app
+
+# Sitemaps
+Sitemap: https://presupu3stalo.vercel.app/sitemap.xml

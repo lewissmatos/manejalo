@@ -10,7 +10,7 @@ const HomePageFooter = async () => {
 				<p className="text-lg font-semibold text-primary">
 					{t("top", {
 						year: new Date().getFullYear(),
-						appName: "Manejalo!",
+						appName: "PRESUPU3STALO!",
 					})}
 				</p>
 				<div className="flex flex-col items-center justify-between">

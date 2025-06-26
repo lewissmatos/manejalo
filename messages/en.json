@@ -2,7 +2,7 @@
 	"HomePage": {
 		"slogan": "Stay on budget without the stress.",
 		"features": {
-			"title": "What You Can Do with Manejalo!",
+			"title": "What You Can Do with PRESUPU3STALO!",
 			"monthlyBudgets": {
 				"title": "Create Monthly Budgets",
 				"description": "Set limits for different spending categories every month.",
@@ -53,7 +53,7 @@
 	},
 	"LoginDialog": {
 		"triggerText": "Log In",
-		"title": "Log In to Manejalo!",
+		"title": "Log In to PRESUPU3STALO!",
 		"subtitle": "Enter your credentials to continue.",
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
@@ -66,7 +66,7 @@
 	},
 	"SignUpDialog": {
 		"triggerText": "Sign Up",
-		"title": "Create Your Manejalo Account",
+		"title": "Create Your Presupuestalo Account",
 		"subtitle": "Join us to start managing your budget.",
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
@@ -121,7 +121,7 @@
 		"errorMessage": "An error occurred"
 	},
 	"AppNavBar": {
-		"title": "Manejalo!",
+		"title": "PRESUPU3STALO!",
 		"navigationItems": {
 			"overview": "Overview",
 			"myBudget": "My Budget",

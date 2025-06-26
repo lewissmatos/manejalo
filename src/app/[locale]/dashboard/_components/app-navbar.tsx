@@ -74,9 +74,9 @@ export default function AppNavBar({ profile }: Props) {
 
 	return (
 		<nav className="px-4 py-2 flex justify-between items-center w-full ">
-			<div className="flex items-center">
-				<h1 className="text-2xl sm:text-4xl font-bold text-primary w-auto sm:w-1/5">
-					Manejalo!
+			<div className="flex items-baseline justify-center">
+				<h1 className="text-2xl sm:text-4xl font-bold text-primary  break-keep w-1/5 md:w-40">
+					P3💰
 				</h1>
 			</div>
 			{/* Desktop Navigation */}

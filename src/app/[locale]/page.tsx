@@ -19,13 +19,27 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Metadata } from "next";
 
-const metadata = {
-	title: "Manejalo! - Home",
-	description: "Manejalo! is a personal finance management app.",
+export const metadata: Metadata = {
+	title: "Presupuestalo - Controla tus Finanzas",
+	description:
+		"Tu aplicación para gestionar presupuestos, gastos y ahorros de forma sencilla.",
+	keywords: [
+		"presupuestalo",
+		"presupu3stalo",
+		"finanzas",
+		"presupuesto",
+		"ahorros",
+		"gastos",
+	],
 	openGraph: {
-		title: "Manejalo! - Home",
-		description: "Manejalo! is a personal finance management app.",
+		title: "Presupuestalo",
+		description: "Tu app para finanzas personales",
+		url: "https://presupu3stal.vercel.app",
+		siteName: "Presupuestalo",
+		locale: "es_DO",
+		type: "website",
 	},
 };
 export default async function HomePage() {
@@ -38,7 +52,9 @@ export default async function HomePage() {
 					<div className="w-1/5 hidden md:flex justify-start" />
 					<div className="h-32 w-full items-center md:w-3/5 flex flex-col justify-center p-4 gap-2">
 						<div className="flex items-center">
-							<h1 className="text-6xl font-semibold text-primary">Manejalo!</h1>
+							<h1 className="text-4Presupuestaloxl font-bold text-primary">
+								PRESUPU3STALO!
+							</h1>
 						</div>
 						<p className="text-muted-foreground">{t("slogan")}</p>
 					</div>
