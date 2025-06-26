@@ -207,6 +207,7 @@ export const getTotalAmountRegistrationsForCalendarChart = async ({
 		}[]
 	>
 > => {
+	console.log("year", year);
 	return await serviceResponseHandler<
 		{ day: `${number}-${number}-${number}`; value: number }[]
 	>(

@@ -8,6 +8,7 @@ import {
 	toggleEmergencyFundStatusService,
 } from "@/lib/services/emergency-fund-services";
 import { serviceResponseHandler } from "@/lib/services/utils/actions.utils";
+import { getTranslations } from "next-intl/server";
 
 export const getEmergencyFund = async (profileId: string) =>
 	await serviceResponseHandler(
@@ -33,7 +34,15 @@ export const toggleEmergencyFundStatus = async (
 export const addAmountToEmergencyFund = async (
 	emergencyFundId: string,
 	amount: number
-) =>
-	await serviceResponseHandler(
-		async () => await addAmountToEmergencyFundService(emergencyFundId, amount)
+) => {
+	const t = await getTranslations(
+		"OverviewPage.RegisterAmountEmergencyFundCard.messages"
 	);
+	return await serviceResponseHandler(
+		async () => await addAmountToEmergencyFundService(emergencyFundId, amount),
+		{
+			successMessage: t("success"),
+			errorMessage: t("error"),
+		}
+	);
+};

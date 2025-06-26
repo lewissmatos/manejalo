@@ -189,7 +189,7 @@
 		"AddEmergencyFundDialog": {
 			"trigger": {
 				"title": "Fondo de emergencias",
-				"info": "Reserva de dinero destinada a cubrir situaciones imprevistas. La estimación es 3 veces tu ingreso mensual actual{value}"
+				"info": "Reserva de dinero destinada a cubrir situaciones imprevistas. Esta es una categoría especial que funciona diferente a las otras. La estimación es 3x tu ingreso mensual actual{value}"
 			},
 			"title": "Agregar tu fondo de emergencia",
 			"subtitle": "La estimación del fondo de emergencias es:",
@@ -249,7 +249,13 @@
 			"noData": "No hay datos disponibles para {year}."
 		},
 		"selectDate": "Seleccionar fecha",
-		"noBudgetCategories": "Aún no has agregado ninguna categoría a tu presupuesto."
+		"noBudgetCategories": "Aún no has agregado ninguna categoría a tu presupuesto.",
+		"RegisterAmountEmergencyFundCard": {
+			"messages": {
+				"success": "Monto agregado exitosamente!",
+				"error": "Error al añadir el monto"
+			}
+		}
 	},
 	"OverviewHistorySummary": {
 		"title": "Resumen del historial",

@@ -106,7 +106,7 @@ const BudgetCategoryCard = ({
 	const isDisabled = !category?.isActive;
 	return (
 		<Card
-			className={`w-full md:w-80 p-2 max-w-sm h-40 flex-col justify-between gap-1 ${
+			className={`w-full md:w-80 p-2 max-w-sm h-44 flex-col justify-between gap-1 ${
 				isDisabled ? "opacity-50 select-none" : ""
 			}`}
 		>

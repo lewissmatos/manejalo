@@ -4,6 +4,7 @@ import React, { useTransition } from "react";
 import {
 	Card,
 	CardContent,
+	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
@@ -63,7 +64,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 	};
 	return (
 		<Card
-			className={`w-80 p-2 h-40 items-start justify-center gap-2 ${
+			className={`w-[30rem] p-2 h-52 md:h-44 items-start justify-center gap-2 ${
 				!data?.isActive ? "opacity-50 select-none" : ""
 			}`}
 		>
@@ -90,7 +91,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 				</div>
 			</CardHeader>
 			<CardContent className="flex items-start justify-between gap-2 flex-col p-0  h-full">
-				<span className={`text-sm text-start text-muted-foreground`}>
+				<CardDescription className="line-clamp-4 text-md max-w-[28rem] ">
 					{t("MyBudgetPage.AddEmergencyFundDialog.trigger.info", {
 						value: ` (${formatCurrency(
 							profileData?.totalMonthlyIncome,
@@ -99,7 +100,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 						)})`,
 					})}
 					.
-				</span>
+				</CardDescription>
 			</CardContent>
 			<CardFooter className="flex flex-row gap-2 items-center  p-0 justify-between w-full">
 				<Tooltip>

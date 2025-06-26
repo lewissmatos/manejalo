@@ -9,19 +9,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { formatCurrency } from "@/lib/formatters";
-import {
-	BudgetAmountType,
-	BudgetCategory,
-	EmergencyFund,
-} from "@/generated/prisma";
+import { BudgetAmountType, EmergencyFund } from "@/generated/prisma";
 import { Input } from "@/components/ui/input";
-import { Heart, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import {
 	Select,
 	SelectContent,
@@ -31,10 +22,6 @@ import {
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { ButtonLoading } from "@/components/ui/button-loading";
-import { addBudgetAmountRegistration } from "@/app/_server-actions/(budget-amount-registrations)/actions";
-import { selectedDateAtom } from "@/lib/jotai/app-filters-atoms";
-import { useAtomValue } from "jotai/react";
-import { Avatar } from "@/components/ui/avatar";
 import feedbackService from "@/app/_components/utils/feedback-service";
 import CircularProgress from "@/components/ui/circular-progress";
 import { addAmountToEmergencyFund } from "@/app/_server-actions/(emergency-fund)/actions";
@@ -110,104 +97,97 @@ const RegisterAmountEmergencyFundCard = ({
 	const isSaveDisabled =
 		!amountData.amount || Number(amountData.amount) <= 0 || !amountData.type;
 
-	const progress = actualAmount / estimation;
+	const progress = (actualAmount / estimation) * 100;
 	return (
-		<Card className="w-full md:w-80 p-2 max-w-sm h-64 gap-1 justify-between">
-			<CardHeader className="p-0 flex flex-row gap-2 items-start justify-start w-full">
-				<div className="flex flex-row items-center justify-start gap-2 w-full">
-					<CardTitle className="line-clamp-2 w-full flex gap-2 items-center text-start text-primary font-semibold text-lg">
-						<div className="size-8 ">
-							<Avatar className="size-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
-								🚨
-							</Avatar>
-						</div>
-						{t("MyBudgetPage.AddEmergencyFundDialog.trigger.title")}
-					</CardTitle>
-					<Heart
-						size={18}
-						className={`mr-2 mt-1 ${"fill-primary text-primary"}`}
-					/>
-				</div>
-			</CardHeader>
-			<CardContent className="flex items-start justify-between gap-2 flex-col p-0  h-full">
-				<CardDescription className="line-clamp-4 text-md max-w-72 ">
-					{t("MyBudgetPage.AddEmergencyFundDialog.trigger.info", {
-						value: ".",
-					})}
-				</CardDescription>
-				<div className="flex justify-between w-full">
-					<div className="flex flex-col justify-center">
-						<span className="text-2xl text-primary font-semibold max-w-44 truncate">
-							{formatCurrency(actualAmount)}
-						</span>
-						<span className="text-xl text-primary/50 font-semibold max-w-44 truncate">
-							{`/${formatCurrency(estimation, "DOP", true)}`}
-						</span>
+		<Card className="w-full md:w-[41rem] flex flex-col md:flex-row p-2 h-fit md:h-54 gap-2 justify-between">
+			<div className="flex flex-col gap-2">
+				<CardHeader className="p-0 flex flex-row gap-2 items-start justify-start w-full">
+					<div className="flex flex-row items-center justify-start gap-2 w-full">
+						<CardTitle className="line-clamp-2 w-full flex gap-1 items-center text-start text-primary font-semibold text-2xl">
+							<div className="size-8">🚨</div>
+							{t("MyBudgetPage.AddEmergencyFundDialog.trigger.title")}
+						</CardTitle>
 					</div>
-					<CircularProgress
-						value={progress}
-						className="width-20 "
-						labelClassName="text-xs text-primary"
-						circleStrokeWidth={6}
-						progressStrokeWidth={8}
-						size={80}
-						showLabel
-						renderLabel={(progress) => `${Number(progress * 100).toFixed(1)}%`}
-					/>
+				</CardHeader>
+				<CardContent className="flex items-start justify-between gap-2 flex-col p-0 h-full">
+					<CardDescription className="line-clamp-4 text-md w-fit">
+						{t("MyBudgetPage.AddEmergencyFundDialog.trigger.info", {
+							value: ".",
+						})}
+					</CardDescription>
+					<div className="flex flex-row items-center justify-between gap-2 w-full">
+						<Select
+							defaultValue={"Add"}
+							onValueChange={(value) => {
+								handleUpdateAmountData("type", value as BudgetAmountType);
+							}}
+							value={amountData.type}
+						>
+							<SelectTrigger className="min-w-1/2 bg-background text-foreground">
+								<SelectValue placeholder={t("common.type")} />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem key={"add"} value={"add"}>
+									{t("common.add")}
+								</SelectItem>
+								<SelectItem key={"subtract"} value={"subtract"}>
+									{t("common.subtract")}
+								</SelectItem>
+							</SelectContent>
+						</Select>
+						<Input
+							type="number"
+							placeholder="0.00"
+							className="text-primary w-1/2"
+							onChange={(e) => {
+								const value = parseFloat(e.target.value);
+								if (!isNaN(value)) {
+									handleUpdateAmountData("amount", value);
+								} else {
+									handleUpdateAmountData("amount", 0);
+								}
+							}}
+							step="1"
+							min={0}
+							onKeyUp={async (e) => {
+								if (e.key === "Enter") {
+									await onRegisterAmount();
+								}
+							}}
+							value={amountData.amount}
+						/>
+
+						<ButtonLoading
+							isLoading={isPending}
+							disabled={isSaveDisabled}
+							className="w-12"
+							variant={"outline"}
+							onClick={onRegisterAmount}
+						>
+							<Save className="text-primary" />
+						</ButtonLoading>
+					</div>
+				</CardContent>
+			</div>
+			<CardFooter className="flex flex-col gap-2 p-0 justify-between w-full md:w-60 items-center">
+				<div className="flex flex-col justify-center w-fit">
+					<span className="text-2xl text-primary font-semibold max-w-44 truncate">
+						{formatCurrency(actualAmount)}
+					</span>
+					<span className="text-xl text-primary/75 font-semibold max-w-44 truncate">
+						{`/${formatCurrency(estimation, "DOP", true)}`}
+					</span>
 				</div>
-			</CardContent>
-			<CardFooter className="flex flex-col gap-2 items-start p-0 justify-between">
-				<div className="flex flex-row items-center justify-between gap-2 w-full">
-					<Input
-						type="number"
-						placeholder="0.00"
-						className="text-primary w-1/2"
-						onChange={(e) => {
-							const value = parseFloat(e.target.value);
-							if (!isNaN(value)) {
-								handleUpdateAmountData("amount", value);
-							} else {
-								handleUpdateAmountData("amount", 0);
-							}
-						}}
-						step="1"
-						min={0}
-						onKeyUp={async (e) => {
-							if (e.key === "Enter") {
-								await onRegisterAmount();
-							}
-						}}
-						value={amountData.amount}
-					/>
-					<Select
-						defaultValue={"Add"}
-						onValueChange={(value) => {
-							handleUpdateAmountData("type", value as BudgetAmountType);
-						}}
-						value={amountData.type}
-					>
-						<SelectTrigger className="min-w-1/2 bg-background text-foreground">
-							<SelectValue placeholder={t("common.type")} />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem key={"add"} value={"add"}>
-								{t("common.add")}
-							</SelectItem>
-							<SelectItem key={"subtract"} value={"subtract"}>
-								{t("common.subtract")}
-							</SelectItem>
-						</SelectContent>
-					</Select>
-					<ButtonLoading
-						isLoading={isPending}
-						disabled={isSaveDisabled}
-						className="w-12"
-						variant={"outline"}
-						onClick={onRegisterAmount}
-					>
-						<Save className="text-primary" />
-					</ButtonLoading>
-				</div>
+				<CircularProgress
+					value={Math.min(progress, 100)}
+					className="width-20 "
+					labelClassName="text-md text-primary"
+					circleStrokeWidth={10}
+					progressStrokeWidth={14}
+					size={140}
+					showLabel
+					renderLabel={() => `${Number(progress).toFixed(1)}%`}
+				/>
 			</CardFooter>
 		</Card>
 	);

@@ -155,6 +155,26 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 					{t("OverviewPage.RegisterAmountToCategoryCard.registerAValue")}
 				</span>
 				<div className="flex flex-row items-center justify-end gap-2 w-full">
+					<Select
+						defaultValue={BudgetAmountType.EXPENSE}
+						onValueChange={(value) => {
+							handleUpdateAmountData("type", value as BudgetAmountType);
+						}}
+						value={amountData.type}
+					>
+						<SelectTrigger className="min-w-1/2 bg-background text-foreground">
+							<SelectValue placeholder={t("common.type")} />
+						</SelectTrigger>
+						<SelectContent>
+							{Object.values(BudgetAmountType).map((val) => (
+								<SelectItem key={val} value={val}>
+									{`${t(
+										`OverviewPage.budgetAmountTypes.${val.toLocaleLowerCase()}`
+									)}`}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 					<Input
 						type="number"
 						placeholder="0.00"
@@ -176,26 +196,6 @@ const RegisterAmountToCategoryCard = ({ category, refetchData }: Props) => {
 						}}
 						value={amountData.amount}
 					/>
-					<Select
-						defaultValue={BudgetAmountType.EXPENSE}
-						onValueChange={(value) => {
-							handleUpdateAmountData("type", value as BudgetAmountType);
-						}}
-						value={amountData.type}
-					>
-						<SelectTrigger className="min-w-1/2 bg-background text-foreground">
-							<SelectValue placeholder={t("common.type")} />
-						</SelectTrigger>
-						<SelectContent>
-							{Object.values(BudgetAmountType).map((val) => (
-								<SelectItem key={val} value={val}>
-									{`${t(
-										`OverviewPage.budgetAmountTypes.${val.toLocaleLowerCase()}`
-									)}`}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
 				</div>
 				<div className="flex flex-row items-center justify-between gap-2 w-full">
 					<Input

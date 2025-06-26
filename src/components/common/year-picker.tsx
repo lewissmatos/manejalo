@@ -17,14 +17,14 @@ import { Loader2Icon } from "lucide-react";
 type Props = {
 	defaultYear: number | string;
 	yearsInThePast?: number;
-	refresh?: () => void;
 };
-const YearPicker = ({ defaultYear, yearsInThePast = 10, refresh }: Props) => {
+
+const YearPicker = ({ defaultYear, yearsInThePast = 10 }: Props) => {
 	const t = useTranslations();
 	const [isPending, startTransition] = useTransition();
 
 	const searchParams = useSearchParams();
-	const { replace } = useRouter();
+	const { replace, push } = useRouter();
 	const pathname = usePathname();
 
 	const yearFromUrl = searchParams.get("year");
@@ -41,8 +41,7 @@ const YearPicker = ({ defaultYear, yearsInThePast = 10, refresh }: Props) => {
 		startTransition(async () => {
 			const params = new URLSearchParams(searchParams.toString());
 			params.set("year", year.toString());
-			replace(`${pathname}?${params.toString()}`);
-			await refresh?.();
+			push(`${pathname}?${params.toString()}`);
 		});
 	};
 

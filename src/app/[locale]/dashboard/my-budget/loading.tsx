@@ -7,14 +7,14 @@ export default function Loading() {
 			<Skeleton className="h-6 w-[22rem] mb-8" />
 			<Skeleton className="h-6 w-96" />
 			<div className="flex flex-wrap mt-4 gap-4 w-full max-h-[33rem] justify-start items-start overflow-y-auto">
-				<div className="flex flex-col w-full md:w-36 max-w-sm h-40 gap-2 justify-between">
-					<Skeleton className="h-40 w-full rounded-lg" />
+				<div className="flex flex-col w-full md:w-36 max-w-sm h-44 gap-2 justify-between">
+					<Skeleton className="h-44 w-full rounded-lg" />
 				</div>{" "}
 				{Array(9)
 					.fill("")
 					?.map((_, i) => (
 						<div
-							className="flex flex-col w-full md:w-80 max-w-sm h-40 gap-2 justify-between"
+							className="flex flex-col w-full md:w-96 max-w-sm h-44 gap-2 justify-between"
 							key={i}
 						>
 							<Skeleton className="h-64 w-full rounded-md" />

@@ -13,6 +13,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import EmergencyFundCard from "./_components/emergency-fund-card";
 import { getSession } from "@/middleware";
 import { getEmergencyFund } from "@/app/_server-actions/(emergency-fund)/actions";
+import { Separator } from "@/components/ui/separator";
 
 const MAX_BUDGET_CATEGORIES = 10;
 const MyBudget = async () => {
@@ -70,7 +71,6 @@ const MyBudget = async () => {
 						categoriesLength={budgetCategories.length}
 						maxBudgetCategories={MAX_BUDGET_CATEGORIES}
 					/>
-
 					<EmergencyFundCard
 						refetch={refetchBudgetCategories}
 						data={emergencyFundData}

@@ -69,11 +69,6 @@ const History = async ({
 		}),
 	]);
 
-	const refetchData = async () => {
-		"use server";
-		await revalidatePath("/dashboard/history");
-	};
-
 	const totalPages = tableData?.totalPages || 1;
 
 	return (
@@ -110,7 +105,7 @@ const History = async ({
 					</div>
 					<div className="w-full md:w-2/3 flex flex-col gap-2 items-start justify-between">
 						<div className="flex flex-row justify-between w-full gap-2">
-							<YearPicker defaultYear={year} refresh={refetchData} />
+							<YearPicker defaultYear={year} />
 							<TotalExpensesByYearSection
 								expense={totalExpensesOverTimeData?.EXPENSE || null}
 								recovery={totalExpensesOverTimeData?.RECOVERY || null}

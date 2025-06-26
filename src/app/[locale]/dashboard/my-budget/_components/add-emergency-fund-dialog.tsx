@@ -37,6 +37,7 @@ const AddEmergencyFundDialog = ({ estimation, profileId, refetch }: Props) => {
 					estimation,
 					profileId,
 					isActive: true,
+					actualAmount: 0,
 				});
 
 				if (!res.isSuccess) {

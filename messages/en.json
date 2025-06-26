@@ -198,7 +198,7 @@
 		"AddEmergencyFundDialog": {
 			"trigger": {
 				"title": "Emergency Fund",
-				"info": "Reserve of money intended to cover unexpected situations. The estimation is 3 times your current monthly income{value}"
+				"info": "Reserve of money intended to cover unexpected situations. This is a special category that works different from the others. The estimation is 3x your current monthly income{value}"
 			},
 			"title": "Manage your emergency fund",
 			"subtitle": "The estimation for your emergency fund is:",
@@ -249,7 +249,13 @@
 			"noData": "No data available for {year}."
 		},
 		"selectDate": "Select date",
-		"noBudgetCategories": "There are not any budget category added yet."
+		"noBudgetCategories": "There are not any budget category added yet.",
+		"RegisterAmountEmergencyFundCard": {
+			"messages": {
+				"success": "Amount added successfully!",
+				"error": "Error adding the amount"
+			}
+		}
 	},
 	"OverviewHistorySummary": {
 		"title": "History Summary",

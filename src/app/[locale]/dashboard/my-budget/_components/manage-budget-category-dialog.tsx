@@ -156,7 +156,7 @@ const ManageBudgetCategoryDialog = ({
 				{dialogTrigger || (
 					<div className="flex flex-col items-start justify-between w-full md:w-36 ">
 						<Card
-							className={`w-full p-2 h-40 items-center justify-center ${
+							className={`w-full p-2 h-44 items-center justify-center ${
 								canAddMore
 									? "cursor-pointer hover:bg-secondary/20"
 									: "opacity-40 cursor-not-allowed select-none"
