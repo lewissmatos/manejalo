@@ -62,9 +62,6 @@ const OverviewDateSelector = () => {
 		});
 	};
 
-	const formattedDate = format(date || new Date(), "PPP", {
-		locale: locales[locale as keyof typeof locales] || locales.es,
-	});
 	return (
 		<div>
 			<div className="flex flex-col gap-3">

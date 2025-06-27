@@ -186,7 +186,23 @@ const RegisterAmountEmergencyFundCard = ({
 					progressStrokeWidth={14}
 					size={140}
 					showLabel
-					renderLabel={() => `${Number(progress).toFixed(1)}%`}
+					renderLabel={() =>
+						(
+							<div className="flex flex-col items-center">
+								<span className="font-semibold">
+									{" "}
+									{Number(progress).toFixed(1)}%
+								</span>
+								{progress < 40
+									? "🥱"
+									: progress < 80
+									? "🤩"
+									: progress < 101
+									? "🤑"
+									: "🚀"}
+							</div>
+						) as any
+					}
 				/>
 			</CardFooter>
 		</Card>

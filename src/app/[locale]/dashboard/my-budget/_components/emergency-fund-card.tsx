@@ -19,7 +19,7 @@ import { formatCurrency } from "@/lib/formatters";
 import { useAtomValue } from "jotai/react";
 import { updateProfileDataAtom } from "@/lib/jotai/auth-atom";
 import { Heart, InfoIcon } from "lucide-react";
-import { EmergencyFund } from "@/generated/prisma";
+import { EmergencyFund, Profile } from "@/generated/prisma";
 import { Button } from "@/components/ui/button";
 import { ButtonLoading } from "@/components/ui/button-loading";
 import { setEmergencyFundStatus } from "@/app/_server-actions/(emergency-fund)/actions";
@@ -30,20 +30,26 @@ import AddEmergencyFundDialog from "./add-emergency-fund-dialog";
 type Props = {
 	refetch: () => void;
 	data?: EmergencyFund | null;
+	profileData: Profile;
 };
-const EmergencyFundCard = ({ refetch, data }: Props) => {
+const EmergencyFundCard = ({
+	refetch,
+	data: emergencyFund,
+	profileData,
+}: Props) => {
 	const t = useTranslations();
-	const profileData = useAtomValue(updateProfileDataAtom);
-	const defaultEstimation = (profileData?.totalMonthlyIncome || 0) * 3;
 
-	const isAlreadyAdded = Boolean(data);
+	const defaultEstimation =
+		emergencyFund?.estimation || (profileData?.totalMonthlyIncome || 0) * 3;
+
+	const isAlreadyAdded = Boolean(emergencyFund);
 	const [isPending, startTransition] = useTransition();
 
 	const onToggleStatus = async () => {
-		if (!data?.id) return;
+		if (!emergencyFund?.id) return;
 		startTransition(async () => {
 			try {
-				const res = await setEmergencyFundStatus(data?.id, !data?.isActive);
+				const res = await setEmergencyFundStatus(emergencyFund?.id, !isActive);
 
 				if (!res.isSuccess) {
 					feedbackService().send({
@@ -62,10 +68,11 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 			}
 		});
 	};
+	const isActive = emergencyFund?.isActive;
 	return (
 		<Card
 			className={`w-[30rem] p-2 h-52 md:h-44 items-start justify-center gap-2 ${
-				!data?.isActive ? "opacity-50 select-none" : ""
+				!isActive ? "opacity-50 select-none" : ""
 			}`}
 		>
 			<CardHeader className="p-0 flex flex-row gap-2 items-start justify-start w-full">
@@ -84,7 +91,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 						<Heart
 							size={18}
 							className={`mr-2 mt-1 ${
-								data?.isActive ? "fill-primary text-primary" : "text-primary"
+								isActive ? "fill-primary text-primary" : "text-primary"
 							}`}
 						/>
 					)}
@@ -123,7 +130,7 @@ const EmergencyFundCard = ({ refetch, data }: Props) => {
 						className="text-destructive hover:text-destructive"
 						onClick={onToggleStatus}
 					>
-						{data?.isActive ? t("common.disable") : t("common.enable")}
+						{isActive ? t("common.disable") : t("common.enable")}
 					</ButtonLoading>
 				) : (
 					<AddEmergencyFundDialog

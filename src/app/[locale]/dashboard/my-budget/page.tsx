@@ -7,7 +7,10 @@ import { formatCurrency } from "@/lib/formatters";
 import ManageBudgetCategoryDialog from "./_components/manage-budget-category-dialog";
 import BudgetCategoryList from "./_components/budget-category-list";
 import RecommendedCategories from "./_components/recommended-categories";
-import { getTotalMonthlyIncome } from "@/app/_server-actions/(profile)/actions";
+import {
+	getProfileData,
+	getTotalMonthlyIncome,
+} from "@/app/_server-actions/(profile)/actions";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import EmergencyFundCard from "./_components/emergency-fund-card";
@@ -25,6 +28,7 @@ const MyBudget = async () => {
 	if (!profileId) {
 		return <div className="text-destructive">Profile ID not found.</div>;
 	}
+	const profileData = await getProfileData(profileId);
 
 	const [
 		{ data: emergencyFundData },
@@ -71,10 +75,13 @@ const MyBudget = async () => {
 						categoriesLength={budgetCategories.length}
 						maxBudgetCategories={MAX_BUDGET_CATEGORIES}
 					/>
-					<EmergencyFundCard
-						refetch={refetchBudgetCategories}
-						data={emergencyFundData}
-					/>
+					{profileData.data ? (
+						<EmergencyFundCard
+							refetch={refetchBudgetCategories}
+							data={emergencyFundData}
+							profileData={profileData.data}
+						/>
+					) : null}
 					<BudgetCategoryList
 						data={budgetCategories || []}
 						refetchCategories={refetchBudgetCategories}

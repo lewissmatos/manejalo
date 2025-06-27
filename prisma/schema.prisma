@@ -94,5 +94,5 @@ model EmergencyFund {
   profileId String   @unique @map("profile_id") @db.Uuid
   isActive      Boolean?                   @default(true) @map("status")
 
-  @@map("emergency_fund")
+  @@map("emergency_funds")
 }
